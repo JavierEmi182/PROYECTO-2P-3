@@ -13,8 +13,7 @@ import java.util.ArrayList;
  * @author Javier
  */
 public class Restaurant {
-    private static ArrayList<Usuario> usuarios ;
-    
+    public static ArrayList<Usuario> usuarios;
         
     public static Restaurant restaurant = new Restaurant();
     
@@ -25,5 +24,8 @@ public class Restaurant {
         return usuarios;
     }
     
+    public Restaurant(){
+        usuarios= new ArrayList<Usuario>();
+    }
 }
 

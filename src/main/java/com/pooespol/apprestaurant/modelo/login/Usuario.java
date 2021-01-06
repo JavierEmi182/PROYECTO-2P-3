@@ -37,5 +37,8 @@ public class Usuario {
         this.contraseña = contraseña;
     }
     
-    
+    //Metodos
+    public String toString(){
+        return "Usuario: "+getCorreo()+", Contraseña: "+getContraseña();
+    }
 }
