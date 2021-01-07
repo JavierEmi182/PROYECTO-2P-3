@@ -60,7 +60,7 @@ public class App extends Application {
     
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(App.class.getResource("apprestaurant/"+fxml + ".fxml"));
+        loader.setLocation(App.class.getResource(fxml + ".fxml"));
         return loader.load();
     }
     

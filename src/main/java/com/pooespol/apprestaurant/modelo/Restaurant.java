@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Restaurant {
     public static ArrayList<Usuario> usuarios;
-        
+    public static ArrayList<Mesa> mesas ;
     public static Restaurant restaurant = new Restaurant();
     
     
@@ -23,9 +23,13 @@ public class Restaurant {
     public static ArrayList<Usuario> getUsuarios() {
         return usuarios;
     }
+    public static ArrayList<Mesa> geMesas() {
+        return mesas;
+    }
     
     public Restaurant(){
         usuarios= new ArrayList<Usuario>();
+        mesas = new ArrayList<Mesa>();
     }
 }
 

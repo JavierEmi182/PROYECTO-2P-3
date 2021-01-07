@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pooespol.apprestaurant.LoginController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="BOTTOM_CENTER">
@@ -42,10 +41,10 @@
       </VBox>
    </center>
    <bottom>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER_LEFT">
          <children>
             <Button fx:id="btlogin" mnemonicParsing="false" onMouseClicked="#realizarLogin" text="login" />
-            <Label fx:id="lbMensajeLogin">
+            <Label fx:id="lbMensajeLogin" alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="186.0" textAlignment="CENTER">
                <padding>
                   <Insets left="10.0" top="10.0" />
                </padding>

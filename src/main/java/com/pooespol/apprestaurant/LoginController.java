@@ -61,10 +61,11 @@ public class LoginController implements Initializable {
                 us = usuario;
                 }
             }
-        } 
+        }
+        /*
         if (us == null){
                 System.out.println("Credenciales invalidas. Vuelva a ingresar");
-        }
+        }*/
         return us;
     }
     

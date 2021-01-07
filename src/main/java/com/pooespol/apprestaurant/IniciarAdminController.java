@@ -32,6 +32,7 @@ public class IniciarAdminController implements Initializable {
     
     @FXML
     private void GestionMenu(MouseEvent event) {
+        
     }
 
 }

@@ -10,5 +10,7 @@ package com.pooespol.apprestaurant.modelo;
  * @author Javier
  */
 public class Comida {
-    
+    private String nombre;
+    private double precio;
+    //imagen
 }

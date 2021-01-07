@@ -10,10 +10,14 @@ package com.pooespol.apprestaurant.modelo.login;
  * @author Javier
  */
 public class Mesero extends Usuario {
-    
+    private String nombre;
     //Constructor
     public Mesero(String correo, String contraseña) {
         super(correo, contraseña);
+    }
+
+    public String getNombre() {
+        return nombre;
     }
     
     
