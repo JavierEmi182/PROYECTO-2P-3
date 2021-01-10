@@ -15,13 +15,15 @@ public class Mesero extends Usuario {
     public Mesero(String correo, String contraseña) {
         super(correo, contraseña);
     }
+    public Mesero(String nombre,String correo, String contraseña) {
+        super(correo, contraseña);
+        this.nombre = nombre;
+    }
 
     public String getNombre() {
         return nombre;
     }
-    
-    
-    
+
     public void tomaPedido(){
         
     }

@@ -1,0 +1,3 @@
+Lasagna;5.00;lasagna.jpg
+Paella;10.00;paella.jpg
+Sushi;13.00;sushi.jpg

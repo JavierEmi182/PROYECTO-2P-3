@@ -1,9 +1,11 @@
+package com.pooespol.apprestaurant;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pooespol.apprestaurant;
+
 
 import com.pooespol.apprestaurant.data.ComidaData;
 import com.pooespol.apprestaurant.modelo.Comida;
@@ -16,48 +18,34 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-
 import javafx.scene.control.Button;
+
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 /**
  * FXML Controller class
  *
- * @author Javier
+ * @author user
  */
-public class IniciarAdminController implements Initializable {
+public class TomaPedidoController implements Initializable {
 
 
     @FXML
-    private Button btGestionMenu;
+    private FlowPane fpPedido;
     @FXML
-    private FlowPane fpPantallaAdmin;
+    private ComboBox<?> cbComida;
+    @FXML
+    private FlowPane fpComida;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
-    @FXML
-    /**
-     * El administrador puede ver información de los platos que hay en el menú
-     * Ingresar nuevos platos, o editar los que ya existen
-     * 
-     */
-    private void GestionMenu(MouseEvent event) {
-        // se muestran el menu, debajo de cada menu hay una opcion que dice editar
-        // al final hay un boton de "mas" que es para agregar un plato
-        
-        
-        fpPantallaAdmin.getChildren().clear();
-        
+        fpComida.getChildren().clear(); 
         try{
            ArrayList<Comida> comidas = ComidaData.leerComida(); 
            for (Comida c: comidas){
@@ -78,17 +66,15 @@ public class IniciarAdminController implements Initializable {
                  vboxmenu.getChildren().add(lprecio);
                   vboxmenu.setPadding(new Insets(2,3,3,4));
                   
-                 Button bteditar = new Button("EDITAR");
-                 vboxmenu.getChildren().add(bteditar);
-               fpPantallaAdmin.getChildren().add(vboxmenu);
+                
+               fpComida.getChildren().add(vboxmenu);
            }
-           Button btagregar = new Button("Agregar nuevo plato");
-           fpPantallaAdmin.getChildren().add(btagregar);
+          
         }catch(IOException ex){
             System.out.println("Problemas técnicos");
         }
         
         
-    }
-
+    }    
+    
 }
