@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pooespol.apprestaurant.TomaPedidoController">
    <children>
       <Label text="Mesa, Cliente" />
@@ -20,6 +19,13 @@
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
+                     <children>
+                        <FlowPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="200.0" prefWidth="198.0" />
+                           </children>
+                        </FlowPane>
+                     </children>
                   </FlowPane>
                   <Button mnemonicParsing="false" text="Finalizar Orden" />
                   <Button mnemonicParsing="false" text="Regresar" />

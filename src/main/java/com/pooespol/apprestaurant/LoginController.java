@@ -39,6 +39,7 @@ public class LoginController implements Initializable {
    
     @FXML
     private HBox hboxLogin;
+    public static Usuario usuario1 = null ; 
 
     /**
      * Initializes the controller class.
@@ -50,6 +51,7 @@ public class LoginController implements Initializable {
         usuarios.add(admin1);
         Mesero mesero1 = new Mesero("mesero@gmail.com","mesero");
         usuarios.add(mesero1);
+        
     } 
     
     /**
@@ -76,8 +78,9 @@ public class LoginController implements Initializable {
      * Dependiendo del privilegio de credenciales se abre la ventana correspondiente
      */
     private void realizarLogin(MouseEvent event) throws IOException {
+        usuario1 = validarCredenciales(tfUsuario.getText(), tfContraseña.getText());
         try{
-            Usuario usuario = validarCredenciales(tfUsuario.getText(), tfContraseña.getText());
+            Usuario usuario = usuario1;
             if (usuario instanceof Administrador){
             App.setRoot("IniciarAdmin");
         }else if (usuario instanceof Mesero){
