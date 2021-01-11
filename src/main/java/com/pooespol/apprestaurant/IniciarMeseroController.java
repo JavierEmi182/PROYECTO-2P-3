@@ -39,6 +39,7 @@ public class IniciarMeseroController implements Initializable {
             Mesero mesero = (Mesero)LoginController.usuario1;
             lbMeseroNombre.setText("Mesero "+ mesero.getNombre() );
         }
+        
     }    
 
     @FXML

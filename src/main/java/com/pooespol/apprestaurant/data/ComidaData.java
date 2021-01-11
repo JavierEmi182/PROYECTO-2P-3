@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package com.pooespol.apprestaurant.data;
-import com.pooespol.apprestaurant.modelo.Comida;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
+import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +40,7 @@ public class ComidaData {
                     //System.out.println(linea);
                     //dividir la en partes 
                     String[] partes = linea.split(";");
-                    comidas.add(new Comida(partes[0],Double.parseDouble(partes[1]),partes[2]));
+                    comidas.add(new Comida(partes[0],Double.parseDouble(partes[1]),partes[2],partes[3]));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
@@ -53,6 +54,28 @@ public class ComidaData {
         }
         return comidas;
     }
+    /**
+     * Devuelve un List de las comidas que coinciden con el tipo
+     * @param tipo
+     * @return 
+     */
+    public static ArrayList<Comida> leerComidaPorTipo(TipoComida tipo)throws IOException{
+        ArrayList<Comida> comidas = new ArrayList<Comida>();
+        
+            ArrayList<Comida> comidasporfiltrar = leerComida();
+            for (Comida c :comidasporfiltrar){
+                if (c.getTipoComida().equals(tipo.getNombre())){
+                    comidas.add(c);
+                }
+            
+        }
+        
+        return comidas;
+        
+    
+    }
+   
+    
     /*
     public static void main (String[] args){
         try{

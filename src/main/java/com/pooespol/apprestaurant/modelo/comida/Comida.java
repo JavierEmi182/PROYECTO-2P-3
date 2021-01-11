@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.pooespol.apprestaurant.modelo;
+package com.pooespol.apprestaurant.modelo.comida;
 
 /**
  *
@@ -13,11 +13,13 @@ public class Comida {
     private String nombre;
     private double precio;
     private String rutaImagen;
+    private String tipoComida;
 
-    public Comida(String nombre, double precio, String rutaImagen) {
+    public Comida(String nombre, double precio, String rutaImagen,String tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
         this.rutaImagen = rutaImagen;
+        this.tipoComida = tipoComida;
     }
 
     public String getNombre() {
@@ -32,6 +34,11 @@ public class Comida {
         return rutaImagen;
     }
 
+    public String getTipoComida() {
+        return tipoComida;
+    }
+    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -43,6 +50,11 @@ public class Comida {
     public void setRutaImagen(String rutaImagen) {
         this.rutaImagen = rutaImagen;
     }
+
+    public void setTipoComida(String tipoComida) {
+        this.tipoComida = tipoComida;
+    }
+    
 
     @Override
     public String toString() {

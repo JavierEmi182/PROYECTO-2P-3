@@ -8,12 +8,17 @@ package com.pooespol.apprestaurant;
 
 
 import com.pooespol.apprestaurant.data.ComidaData;
-import com.pooespol.apprestaurant.modelo.Comida;
+import com.pooespol.apprestaurant.data.TipoComidaData;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
+import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -37,7 +42,7 @@ public class TomaPedidoController implements Initializable {
     @FXML
     private FlowPane fpPedido;
     @FXML
-    private ComboBox<?> cbComida;
+    private ComboBox<TipoComida> cbComida;
     @FXML
     private FlowPane fpComida;
     /**
@@ -45,9 +50,22 @@ public class TomaPedidoController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+         try{
+            List<TipoComida> tipos = TipoComidaData.leerTipoComida();
+            cbComida.getItems().addAll(tipos);
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        
+        
+    }    
+
+    @FXML
+    private void filtrarComida(ActionEvent event) {
+        TipoComida tipo = cbComida.getValue();
         fpComida.getChildren().clear(); 
         try{
-           ArrayList<Comida> comidas = ComidaData.leerComida(); 
+           ArrayList<Comida> comidas = ComidaData.leerComidaPorTipo(tipo); 
            for (Comida c: comidas){
                //vbox con imagen,nombre, precio, boton
                VBox vboxmenu = new VBox();
@@ -73,8 +91,6 @@ public class TomaPedidoController implements Initializable {
         }catch(IOException ex){
             System.out.println("Problemas técnicos");
         }
-        
-        
-    }    
+    }
     
 }

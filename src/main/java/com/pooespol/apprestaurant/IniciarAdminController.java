@@ -6,7 +6,7 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
-import com.pooespol.apprestaurant.modelo.Comida;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -37,6 +37,8 @@ public class IniciarAdminController implements Initializable {
     private Button btGestionMenu;
     @FXML
     private FlowPane fpPantallaAdmin;
+    @FXML
+    private Button btnSalir;
     /**
      * Initializes the controller class.
      */
@@ -89,6 +91,11 @@ public class IniciarAdminController implements Initializable {
         }
         
         
+    }
+
+    @FXML
+    private void regresarPrincipalAdmin(MouseEvent event) throws IOException{
+        App.setRoot("Login");
     }
 
 }

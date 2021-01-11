@@ -1,9 +1,8 @@
 com\pooespol\apprestaurant\modelo\login\Usuario.class
 com\pooespol\apprestaurant\modelo\Restaurant.class
-com\pooespol\apprestaurant\modelo\Comida.class
 com\pooespol\apprestaurant\LoginController.class
 com\pooespol\apprestaurant\modelo\login\Mesero.class
-com\pooespol\apprestaurant\App.class
-com\pooespol\apprestaurant\modelo\login\Administrador.class
 module-info.class
 com\pooespol\apprestaurant\IniciarAdminController.class
+com\pooespol\apprestaurant\App.class
+com\pooespol\apprestaurant\modelo\login\Administrador.class
