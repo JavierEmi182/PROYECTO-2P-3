@@ -5,7 +5,9 @@
  */
 package com.pooespol.apprestaurant;
 
+import com.pooespol.apprestaurant.modelo.Mesa;
 import com.pooespol.apprestaurant.modelo.Restaurant;
+import static com.pooespol.apprestaurant.modelo.Restaurant.mesas;
 import com.pooespol.apprestaurant.modelo.login.Administrador;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import com.pooespol.apprestaurant.modelo.login.Usuario;
@@ -49,9 +51,10 @@ public class LoginController implements Initializable {
         ArrayList<Usuario> usuarios = Restaurant.getUsuarios();
         Administrador admin1 = new Administrador("admin@gmail.com","admin");
         usuarios.add(admin1);
-        Mesero mesero1 = new Mesero("mesero@gmail.com","mesero");
+        Mesero mesero1 = new Mesero("Javier","mesero@gmail.com","mesero");
         usuarios.add(mesero1);
-        
+        Mesa mesa1 = new Mesa(2,1,mesero1);
+        mesas.add(mesa1);
     } 
     
     /**

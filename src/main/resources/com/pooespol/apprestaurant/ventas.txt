@@ -1,0 +1,2 @@
+10/01/2021;Carlos Vera;1;Javier;18.00
+12/01/2021;Juan Parraga;1;Javier;12.00

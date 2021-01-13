@@ -12,7 +12,7 @@
             <Button mnemonicParsing="false" text="Monitoreo" />
             <Button mnemonicParsing="false" text="Diseño Plano" />
             <Button fx:id="btGestionMenu" mnemonicParsing="false" onMouseClicked="#GestionMenu" text="Gestión Menú" />
-            <Button mnemonicParsing="false" text="Reportes Ventas" />
+            <Button fx:id="btReportesVentas" mnemonicParsing="false" onMouseClicked="#ReportesVentas" text="Reportes Ventas" />
             <Button fx:id="btnSalir" mnemonicParsing="false" onMouseClicked="#regresarPrincipalAdmin" text="Salir" />
          </children>
       </HBox>

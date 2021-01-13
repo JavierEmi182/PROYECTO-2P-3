@@ -6,6 +6,7 @@
 package com.pooespol.apprestaurant.data;
 
 import com.pooespol.apprestaurant.App;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.BufferedReader;
 import java.io.File;
@@ -57,5 +58,5 @@ public class TipoComidaData {
         }
         return tipocomidas;
     }
-    
+        
 }
