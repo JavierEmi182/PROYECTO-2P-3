@@ -5,6 +5,7 @@
  */
 package com.pooespol.apprestaurant.modelo;
 
+import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import com.pooespol.apprestaurant.modelo.login.Usuario;
 import java.time.LocalDate;
@@ -20,8 +21,8 @@ public class Restaurant {
     public static ArrayList<Mesa> mesas ;
     public static Restaurant restaurant = new Restaurant();
     public static ArrayList<Venta> ventas;
-    
-    
+    public static ArrayList<Comida> comidas;
+     
     //Getter
 
     public static ArrayList<Usuario> getUsuarios() {
@@ -34,6 +35,7 @@ public class Restaurant {
     public Restaurant(){
         usuarios= new ArrayList<Usuario>();
         mesas = new ArrayList<Mesa>();
+        comidas = new ArrayList<Comida>();
     }
     
     public static LocalDate toLocalDate(String date){
@@ -66,6 +68,9 @@ public class Restaurant {
                 return m;
             }
         }return null;
+    }
+    public static void añadirComida (Comida c){
+        comidas.add(c);
     }
 }
 

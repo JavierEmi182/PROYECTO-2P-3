@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import com.pooespol.apprestaurant.App;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 /**
  *
  * @author user
@@ -28,11 +30,14 @@ public class ComidaData {
     public static ArrayList<Comida> leerComida() throws IOException{
         ArrayList<Comida> comidas = new ArrayList<>();
         //Usamos la clase BufferedReader para leer archivos de texto
-        try{
+        try(InputStream input = App.class.getResource(ruta).openStream();
+                BufferedReader bf = new BufferedReader(
+                                    new InputStreamReader(input,"UTF-8"))){
             //GENERA EL URL RELATIVO AL ARCHIVO QUE VAMOS A LEER
-            URL u = App.class.getResource(ruta);
+           
+            /*URL u = App.class.getResource(ruta);
             File file = new File(u.toURI());
-            try(BufferedReader bf = new BufferedReader(new FileReader(file))){
+            try(BufferedReader bf = new BufferedReader(new FileReader(file))){*/
                 String linea;
                 //leemos linea a linea hasta llegar la final del archivo
                 while( (linea=bf.readLine())!=null ){
@@ -40,7 +45,7 @@ public class ComidaData {
                     //System.out.println(linea);
                     //dividir la en partes 
                     String[] partes = linea.split(";");
-                    comidas.add(new Comida(partes[0],Double.parseDouble(partes[1]),partes[2],partes[3]));
+                    comidas.add(new Comida(partes[0],Double.parseDouble(partes[1]),partes[2],new TipoComida(partes[3])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
@@ -49,9 +54,7 @@ public class ComidaData {
                 System.out.println(ex.getMessage());
                 throw ex;
             } 
-        }catch(Exception ex){
-            System.out.println(ex);
-        }
+       
         return comidas;
     }
     /**

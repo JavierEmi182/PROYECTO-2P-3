@@ -13,12 +13,18 @@ public class Comida {
     private String nombre;
     private double precio;
     private String rutaImagen;
-    private String tipoComida;
+    private TipoComida tipoComida;
 
-    public Comida(String nombre, double precio, String rutaImagen,String tipoComida) {
+    public Comida(String nombre, double precio, String rutaImagen,TipoComida tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
         this.rutaImagen = rutaImagen;
+        this.tipoComida = tipoComida;
+    }
+    public Comida(String nombre, double precio, TipoComida tipoComida) {
+        this.nombre = nombre;
+        this.precio = precio;
+       
         this.tipoComida = tipoComida;
     }
 
@@ -34,7 +40,7 @@ public class Comida {
         return rutaImagen;
     }
 
-    public String getTipoComida() {
+    public TipoComida getTipoComida() {
         return tipoComida;
     }
     
@@ -51,7 +57,7 @@ public class Comida {
         this.rutaImagen = rutaImagen;
     }
 
-    public void setTipoComida(String tipoComida) {
+    public void setTipoComida(TipoComida tipoComida) {
         this.tipoComida = tipoComida;
     }
     

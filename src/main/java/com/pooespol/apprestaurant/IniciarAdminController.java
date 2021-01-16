@@ -11,6 +11,7 @@ import static com.pooespol.apprestaurant.data.VentaData.leerVentas;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
+import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -19,9 +20,11 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -43,7 +46,7 @@ import javafx.scene.layout.VBox;
  * @author Javier
  */
 public class IniciarAdminController implements Initializable {
-
+    private EditarPlatoController edt;
 
     @FXML
     private Button btGestionMenu;
@@ -92,19 +95,85 @@ public class IniciarAdminController implements Initializable {
                 //anio
                 Label lprecio = new Label("$"+String.valueOf(c.getPrecio()));
                  vboxmenu.getChildren().add(lprecio);
-                  vboxmenu.setPadding(new Insets(2,3,3,4));
+                  vboxmenu.setPadding(new Insets(2,4,3,4));
                   
                  Button bteditar = new Button("EDITAR");
                  vboxmenu.getChildren().add(bteditar);
                fpPantallaAdmin.getChildren().add(vboxmenu);
+               
+               bteditar.setOnMouseClicked ( 
+                       (MouseEvent) -> {
+                   
+                       editarPlato(c);
+                   
+                       }
+               );
+               
            }
-           Button btagregar = new Button("Agregar nuevo plato");
+           Button btagregar = new Button("Click para agregar nuevo plato");
+           /*btagregar.setOnMouseClicked(
+              (MouseEvent) ->{
+               try {
+                   crearPlato();
+               } catch (IOException ex) {
+                   ex.printStackTrace();
+               }
+              }
+           
+           );*/
            fpPantallaAdmin.getChildren().add(btagregar);
+           btagregar.setAlignment(Pos.CENTER);
         }catch(IOException ex){
             System.out.println("Problemas técnicos");
         }
         
         
+    }
+    
+    public  void editarPlato(Comida comida) {
+        try {
+            App.setRoot("editarPlato");
+            /*
+            para poner en la misma scene
+            fpPantallaAdmin.getChildren().clear();
+            
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("editarPlato.fxml"));
+            Parent root = fxmlLoader.load();
+            fpPantallaAdmin.getChildren().add(root);*/
+            
+            /*
+            try{
+            App.setRoot("editarPlato");
+            
+            
+            
+            comida.setNombre(edt.getTxtNombre());
+            
+            }catch(IOException ex){
+            ex.printStackTrace();
+            }*/
+            
+            /*
+            comida.setNombre(editarPlato.getTxtNombre());
+            comida.setPrecio(editarPlato.getTxtPrecio());
+            comida.setTipoComida(editarPlato.getCbTipos());
+            System.out.println(comida);*/
+            
+            /*
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("editarPlato.fxml"));
+            EditarPlatoController editarPlato = fxmlLoader.getController();
+            String nombre =editarPlato.getTxtNombre();
+            double precio = editarPlato.getTxtPrecio();
+            TipoComida tipo = editarPlato.getCbTipos();
+            System.out.println(nombre+precio+tipo);*/
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+  
+    }
+    public void crearPlato()throws IOException{
+        App.setRoot("editarPlato");
     }
 
     @FXML
