@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import com.pooespol.apprestaurant.App;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 /**
  *
  * @author user
@@ -77,7 +80,28 @@ public class ComidaData {
         
     
     }
-   
+    /**
+     * Escribe una comida dentro del archivo "comida.txt"
+     * @param comida 
+     */
+   public static void escribirComida(Comida comida) {
+        
+        String ruta = "comida.txt";
+        //List<Comida> comidas = new ArrayList<>();
+        File file = new File(App.class.getResource(ruta).getFile());
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file,true))){
+            bw.newLine();
+            String linea = comida.getNombre()+";"+ comida.getPrecio()+";"+comida.getRutaImagen()+";"+comida.getTipoComida();
+            bw.write(linea);
+            bw.close();
+            
+        }  catch (IOException ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            
+        }
+        //return comidas;
+    }
     
     /*
     public static void main (String[] args){

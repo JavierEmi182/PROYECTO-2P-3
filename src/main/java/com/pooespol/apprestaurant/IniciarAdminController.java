@@ -6,8 +6,10 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
+import com.pooespol.apprestaurant.data.TipoComidaData;
 import com.pooespol.apprestaurant.data.VentaData;
 import static com.pooespol.apprestaurant.data.VentaData.leerVentas;
+import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +31,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -46,12 +51,12 @@ import javafx.scene.layout.VBox;
  * @author Javier
  */
 public class IniciarAdminController implements Initializable {
-    private EditarPlatoController edt;
+    
 
     @FXML
     private Button btGestionMenu;
     @FXML
-    private FlowPane fpPantallaAdmin;
+    private  FlowPane fpPantallaAdmin;
     @FXML
     private Button btnSalir;
     @FXML
@@ -73,9 +78,10 @@ public class IniciarAdminController implements Initializable {
     private void GestionMenu(MouseEvent event) {
         // se muestran el menu, debajo de cada menu hay una opcion que dice editar
         // al final hay un boton de "mas" que es para agregar un plato
-        
-        
-        fpPantallaAdmin.getChildren().clear();
+      MostrarGestionMenu();
+    }
+    public void MostrarGestionMenu(){
+             fpPantallaAdmin.getChildren().clear();
         
         try{
            ArrayList<Comida> comidas = ComidaData.leerComida(); 
@@ -88,93 +94,153 @@ public class IniciarAdminController implements Initializable {
                 ImageView imgv = new ImageView(new Image(inputImg));
                 vboxmenu.getChildren().add(imgv);
                 
-                //el nombre de la pelicula
+                
                 Label lnombre = new Label(c.getNombre());
               
                 vboxmenu.getChildren().add(lnombre);
                 //anio
                 Label lprecio = new Label("$"+String.valueOf(c.getPrecio()));
-                 vboxmenu.getChildren().add(lprecio);
-                  vboxmenu.setPadding(new Insets(2,4,3,4));
+                vboxmenu.getChildren().add(lprecio);
+                vboxmenu.setPadding(new Insets(2,4,3,4));
                   
-                 Button bteditar = new Button("EDITAR");
-                 vboxmenu.getChildren().add(bteditar);
-               fpPantallaAdmin.getChildren().add(vboxmenu);
+                Button bteditar = new Button("EDITAR");
+                vboxmenu.getChildren().add(bteditar);
+                fpPantallaAdmin.getChildren().add(vboxmenu);
                
                bteditar.setOnMouseClicked ( 
                        (MouseEvent) -> {
-                   
-                       editarPlato(c);
-                   
+                   try {
+                       System.out.println(c);
+                       
+                       Comida newComida = PantallaEditarPlato();
+                       /*
+                       c.setNombre(newComida.getNombre());
+                       c.setPrecio(newComida.getPrecio());
+                       c.setTipoComida(newComida.getTipoComida());*/
+                       
+                   } catch (IOException ex) {
+                       ex.printStackTrace();
+                   }
+                  
+                       
                        }
                );
                
            }
            Button btagregar = new Button("Click para agregar nuevo plato");
-           /*btagregar.setOnMouseClicked(
+           btagregar.setOnMouseClicked(
               (MouseEvent) ->{
+ 
+   
                try {
-                   crearPlato();
+                  
+                   Comida newComida = PantallaEditarPlato();
+                   /*
+                   Restaurant.añadirComida(newComida);
+                   ComidaData.escribirComida(newComida);
+                   System.out.println(newComida);
+                   System.out.println(Restaurant.getComidas());*/
                } catch (IOException ex) {
                    ex.printStackTrace();
                }
+      
+                   
               }
            
-           );*/
+           );
            fpPantallaAdmin.getChildren().add(btagregar);
            btagregar.setAlignment(Pos.CENTER);
         }catch(IOException ex){
             System.out.println("Problemas técnicos");
         }
-        
-        
+    }
+    public Comida PantallaEditarPlato() throws IOException {
+            Comida comida = new Comida();
+           //System.out.println(comida);
+            fpPantallaAdmin.getChildren().clear();
+            //container principal
+            fpPantallaAdmin.setAlignment(Pos.CENTER);
+            VBox vcontainer = new VBox();
+            vcontainer.setAlignment(Pos.CENTER);
+            vcontainer.setSpacing(40);
+            
+            Label lnombre = new Label("Nombre:");
+            TextField txtNombre =new TextField();
+            HBox hNombre = new HBox(lnombre,txtNombre);
+            hNombre.setAlignment(Pos.CENTER);
+            hNombre.setSpacing(30);
+            
+            Label lprecio = new Label("Precio");
+            TextField txtPrecio = new TextField();
+            HBox hPrecio = new HBox(lprecio,txtPrecio);
+            hPrecio.setAlignment(Pos.CENTER);
+            hPrecio.setSpacing(30);
+            
+            Label lTipo = new Label("Tipo");
+            ComboBox<TipoComida> cbTipo = new ComboBox();
+            List<TipoComida> tipos = TipoComidaData.leerTipoComida();
+            cbTipo.getItems().addAll(tipos);
+            HBox hTipo = new HBox(lTipo,cbTipo);
+            hTipo.setAlignment(Pos.CENTER);
+            hTipo.setSpacing(30);
+                    
+            Button btnRegresar = new Button("Regresar");
+            Button btnLimpiar = new Button("Limpiar");
+            Button btnGuardar = new Button("Guardar");
+            HBox hBtn=new HBox(btnRegresar,btnLimpiar,btnGuardar);
+            hBtn.setSpacing(20);
+            Label lblMessage = new Label();
+            lblMessage.setAlignment(Pos.CENTER);
+            vcontainer.getChildren().addAll(hNombre,hPrecio,hTipo,hBtn,lblMessage);
+            fpPantallaAdmin.getChildren().add(vcontainer);
+            //MANEJADORES PARA LOS BOTONES GUARDAR, LIMPIAR, REGRESAR
+            btnGuardar.setOnMouseClicked(
+            (MouseEvent)->{
+               // comida.setNombre(txtNombre.getText());
+               // System.out.println(comida);
+               
+            try{
+               String nombre =txtNombre.getText();
+               double precio =Double.parseDouble(txtPrecio.getText());
+               TipoComida tipo = cbTipo.getValue();
+
+               if ( nombre.equals("") || tipo.equals("")){
+               throw new NullPointerException();
+               }
+               
+               comida.setNombre(nombre);
+               comida.setPrecio(precio);
+               comida.setTipoComida(tipo);
+               lblMessage.setText("Cambios guardados exitosamente");
+               //System.out.println(comida);
+
+               }catch(NullPointerException ex){
+                   lblMessage.setText("Algo ocurrió. No se han guardado cambios");
+               }catch(InputMismatchException ex){
+                   lblMessage.setText("Formato no válido. No se han guardado cambios");
+               }catch(NumberFormatException ex){
+                   lblMessage.setText("Formato no válido. No se han guardado cambios");
+
+               }    
+            }
+            
+            );
+            
+            btnRegresar.setOnMouseClicked((MouseEvent)->{
+                MostrarGestionMenu();
+            });
+            
+            btnLimpiar.setOnMouseClicked((MouseEvent)->{
+                txtNombre.setText("");
+                txtPrecio.setText("");
+                cbTipo.getItems().clear();
+                cbTipo.getItems().addAll(tipos);
+                lblMessage.setText("");
+            });
+            return comida;
+            
     }
     
-    public  void editarPlato(Comida comida) {
-        try {
-            App.setRoot("editarPlato");
-            /*
-            para poner en la misma scene
-            fpPantallaAdmin.getChildren().clear();
-            
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("editarPlato.fxml"));
-            Parent root = fxmlLoader.load();
-            fpPantallaAdmin.getChildren().add(root);*/
-            
-            /*
-            try{
-            App.setRoot("editarPlato");
-            
-            
-            
-            comida.setNombre(edt.getTxtNombre());
-            
-            }catch(IOException ex){
-            ex.printStackTrace();
-            }*/
-            
-            /*
-            comida.setNombre(editarPlato.getTxtNombre());
-            comida.setPrecio(editarPlato.getTxtPrecio());
-            comida.setTipoComida(editarPlato.getCbTipos());
-            System.out.println(comida);*/
-            
-            /*
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("editarPlato.fxml"));
-            EditarPlatoController editarPlato = fxmlLoader.getController();
-            String nombre =editarPlato.getTxtNombre();
-            double precio = editarPlato.getTxtPrecio();
-            TipoComida tipo = editarPlato.getCbTipos();
-            System.out.println(nombre+precio+tipo);*/
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        
-  
-    }
-    public void crearPlato()throws IOException{
-        App.setRoot("editarPlato");
-    }
 
     @FXML
     private void regresarPrincipalAdmin(MouseEvent event) throws IOException{

@@ -68,27 +68,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-    /*
-    public static void loadNewScene(String name,double width,double height){
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(name+".fxml"));
-            try{
-                Parent root = fxmlLoader.load();
-                //crear el scene y fijar el root
-            Scene sc = new Scene (root);
-           
-            //crear el stage con el scene
-            Stage st = new Stage();
-            st.setWidth(width);
-            st.setHeight( height);
-            st.setScene(sc);
-            //mostrar el scene
-            st.show();
-            //la ventana no se puede cambiar de tamaño
-            //st.setResizable(false);
-            }catch(IOException ex){
-                ex.printStackTrace();
-            }
-    }*/
-    
-
 }

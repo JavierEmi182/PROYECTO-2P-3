@@ -31,7 +31,9 @@ public class Restaurant {
     public static ArrayList<Mesa> getMesas() {
         return mesas;
     }
-    
+     public static ArrayList<Comida> getComidas() {
+        return comidas;
+     }
     public Restaurant(){
         usuarios= new ArrayList<Usuario>();
         mesas = new ArrayList<Mesa>();

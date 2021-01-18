@@ -21,6 +21,9 @@ public class Comida {
         this.rutaImagen = rutaImagen;
         this.tipoComida = tipoComida;
     }
+    public Comida(){
+        
+    }
     public Comida(String nombre, double precio, TipoComida tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
