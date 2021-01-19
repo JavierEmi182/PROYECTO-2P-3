@@ -29,6 +29,7 @@ public class ComidaData {
      * Esta funcion lee el archivo "comida.txt" que se encuentra en resources y
      * retorna una List de las comidas
      * @return 
+     * @throws java.io.IOException 
      */
     public static ArrayList<Comida> leerComida() throws IOException{
         ArrayList<Comida> comidas = new ArrayList<>();
@@ -105,13 +106,15 @@ public class ComidaData {
     
     /*
     public static void main (String[] args){
-        try{
-         System.out.println(leerComida());        
-        }catch(IOException ec){
-            System.out.println("algo paso");
+        
+        try {
+            //escribirComida(new Comida("pai",5,".jpeg",new TipoComida("postre")));
+            System.out.println(leerComida());
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-   
-    }
-    */
+                
+    }*/
+    
     
 }

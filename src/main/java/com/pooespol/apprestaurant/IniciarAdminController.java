@@ -90,13 +90,17 @@ public class IniciarAdminController implements Initializable {
     private void GestionMenu(MouseEvent event) {
         // se muestran el menu, debajo de cada menu hay una opcion que dice editar
         // al final hay un boton de "mas" que es para agregar un plato
-      MostrarGestionMenu();
+        
+        MostrarGestionMenu();
     }
     public void MostrarGestionMenu(){
-             fpPantallaAdmin.getChildren().clear();
+       
+       fpPantallaAdmin.getChildren().clear();
         
         try{
+            //System.out.println("aqui 1 ");
            ArrayList<Comida> comidas = ComidaData.leerComida(); 
+           //System.out.println("aqui 2 ");
            for (Comida c: comidas){
                //vbox con imagen,nombre, precio, boton
                VBox vboxmenu = new VBox();
@@ -118,35 +122,31 @@ public class IniciarAdminController implements Initializable {
                 Button bteditar = new Button("EDITAR");
                 vboxmenu.getChildren().add(bteditar);
                 fpPantallaAdmin.getChildren().add(vboxmenu);
-               
+                
                bteditar.setOnMouseClicked ( 
                        (MouseEvent) -> {
                    try {
-                       System.out.println(c);
+                       // System.out.println(c);
                        
-                       Comida newComida = PantallaEditarPlato();
+                       PantallaEditarPlato(c,true);
                        /*
                        c.setNombre(newComida.getNombre());
                        c.setPrecio(newComida.getPrecio());
                        c.setTipoComida(newComida.getTipoComida());*/
-                       
                    } catch (IOException ex) {
                        ex.printStackTrace();
                    }
-                  
-                       
                        }
                );
-               
-           }
+           }         
            Button btagregar = new Button("Click para agregar nuevo plato");
+           fpPantallaAdmin.getChildren().add(btagregar);
+           btagregar.setAlignment(Pos.CENTER);
            btagregar.setOnMouseClicked(
               (MouseEvent) ->{
- 
-   
                try {
-                  
-                   Comida newComida = PantallaEditarPlato();
+                   Comida comida = new Comida();
+                   PantallaEditarPlato(comida,false);
                    /*
                    Restaurant.añadirComida(newComida);
                    ComidaData.escribirComida(newComida);
@@ -154,22 +154,18 @@ public class IniciarAdminController implements Initializable {
                    System.out.println(Restaurant.getComidas());*/
                } catch (IOException ex) {
                    ex.printStackTrace();
-               }
-      
-                   
+               }   
               }
-           
            );
-           fpPantallaAdmin.getChildren().add(btagregar);
-           btagregar.setAlignment(Pos.CENTER);
+           
         }catch(IOException ex){
             System.out.println("Problemas técnicos");
         }
     }
-    public Comida PantallaEditarPlato() throws IOException {
-            Comida comida = new Comida();
+    public void PantallaEditarPlato(Comida comida, boolean editar) throws IOException {
+           
            //System.out.println(comida);
-            fpPantallaAdmin.getChildren().clear();
+           fpPantallaAdmin.getChildren().clear();
             //container principal
             fpPantallaAdmin.setAlignment(Pos.CENTER);
             VBox vcontainer = new VBox();
@@ -195,7 +191,12 @@ public class IniciarAdminController implements Initializable {
             HBox hTipo = new HBox(lTipo,cbTipo);
             hTipo.setAlignment(Pos.CENTER);
             hTipo.setSpacing(30);
-                    
+            
+            if (editar==true){
+                txtNombre.setText(comida.getNombre());
+                txtPrecio.setText(String.valueOf(comida.getPrecio()));
+            }
+    
             Button btnRegresar = new Button("Regresar");
             Button btnLimpiar = new Button("Limpiar");
             Button btnGuardar = new Button("Guardar");
@@ -208,9 +209,6 @@ public class IniciarAdminController implements Initializable {
             //MANEJADORES PARA LOS BOTONES GUARDAR, LIMPIAR, REGRESAR
             btnGuardar.setOnMouseClicked(
             (MouseEvent)->{
-               // comida.setNombre(txtNombre.getText());
-               // System.out.println(comida);
-               
             try{
                String nombre =txtNombre.getText();
                double precio =Double.parseDouble(txtPrecio.getText());
@@ -223,6 +221,18 @@ public class IniciarAdminController implements Initializable {
                comida.setNombre(nombre);
                comida.setPrecio(precio);
                comida.setTipoComida(tipo);
+               if (editar == false){
+                   //System.out.println(Restaurant.getComidas());
+                   Restaurant.añadirComida(comida);
+                   ComidaData.escribirComida(comida);
+                   //System.out.println(comida);
+                   //System.out.println(Restaurant.getComidas());
+                   //se escribe la nueva linea de comida
+               }else{
+                   //se escribe todo el contenido de nuevo o se borra la linea y se la reemplaza
+                   //System.out.println(comida);
+               }
+               
                lblMessage.setText("Cambios guardados exitosamente");
                //System.out.println(comida);
 
@@ -239,6 +249,7 @@ public class IniciarAdminController implements Initializable {
             );
             
             btnRegresar.setOnMouseClicked((MouseEvent)->{
+                
                 MostrarGestionMenu();
             });
             
@@ -249,7 +260,7 @@ public class IniciarAdminController implements Initializable {
                 cbTipo.getItems().addAll(tipos);
                 lblMessage.setText("");
             });
-            return comida;
+           
             
     }
     
