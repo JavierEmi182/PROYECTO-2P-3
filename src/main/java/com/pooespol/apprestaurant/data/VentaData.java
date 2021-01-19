@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -63,6 +64,7 @@ public class VentaData {
     public static ArrayList<Venta> leerVentasPorFecha(LocalDate inicio, LocalDate fin) throws IOException{
         ArrayList<Venta> sinfiltrar= leerVentas();
         ArrayList<Venta> filtrada= new ArrayList<Venta>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         
         for(Venta v:sinfiltrar){
             if(v.getDate().isAfter(inicio)&&v.getDate().isBefore(fin)){

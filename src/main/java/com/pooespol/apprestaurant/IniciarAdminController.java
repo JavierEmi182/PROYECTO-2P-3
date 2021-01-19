@@ -9,20 +9,25 @@ import com.pooespol.apprestaurant.data.ComidaData;
 import com.pooespol.apprestaurant.data.TipoComidaData;
 import com.pooespol.apprestaurant.data.VentaData;
 import static com.pooespol.apprestaurant.data.VentaData.leerVentas;
+import static com.pooespol.apprestaurant.data.VentaData.leerVentasPorFecha;
 import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
+import static com.pooespol.apprestaurant.modelo.Restaurant.toLocalDate;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -61,6 +66,13 @@ public class IniciarAdminController implements Initializable {
     private Button btnSalir;
     @FXML
     private Button btReportesVentas;
+    
+    private TextField fechaInicio= new TextField();
+    private TextField fechaFinal=new TextField();;
+    private HBox barraSuperior;
+    private Button btBuscar;
+    private BorderPane menu;
+    private TableView<VentaStringProperties> tablaVentas;
     /**
      * Initializes the controller class.
      */
@@ -261,11 +273,12 @@ public class IniciarAdminController implements Initializable {
             fechai.setPadding(new Insets(0,10,0,30));
             Label fechaf = new Label("Fecha final: ");
             fechaf.setPadding(new Insets(0,30,0,10));
-            TextField fechaInicio= new TextField();
+            //TextField fechaInicio= new TextField();
             fechaInicio.setPadding(new Insets(0,30,0,10));
-            TextField fechaFinal= new TextField();
+            //TextField fechaFinal= new TextField();
             fechaFinal.setPadding(new Insets(0,30,0,10));
             Button btBuscar= new Button("Buscar");
+            btBuscar.addEventHandler(MouseEvent.MOUSE_CLICKED, FiltrarVentas);
             btBuscar.setPadding(new Insets(0,10,0,10));
             barraSuperior.getChildren().add(fechai);
             barraSuperior.getChildren().add(fechaInicio);
@@ -308,11 +321,50 @@ public class IniciarAdminController implements Initializable {
             menu.setCenter(tablaVentas);
             //menu.getChildren().add(tablaVentas);
             fpPantallaAdmin.getChildren().add(menu);
-            
-        }catch(IOException ex){
+            }catch(IOException ex){
             System.out.println("Problemas técnicos");
-        }
+        }}
+        EventHandler<MouseEvent> FiltrarVentas = new EventHandler<MouseEvent>(){  
+        public void handle(MouseEvent event){
+                LocalDate FechaI= toLocalDate(fechaInicio.getText());
+                LocalDate FechaF= toLocalDate(fechaFinal.getText());
+                try {
+                    ArrayList<Venta> filtrada = leerVentasPorFecha(FechaI, FechaF);
+                    ObservableList<VentaStringProperties> ventas = FXCollections.observableArrayList();;
+                    for(Venta v:filtrada){
+                        VentaStringProperties v1 = new VentaStringProperties(v);
+                        System.out.println(v1);
+                        ventas.add(v1);
+                        System.out.println(ventas);
+                    }
+                    
+                    TableColumn<VentaStringProperties,String> FechaCol = new TableColumn<VentaStringProperties,String>("fecha");
+                    FechaCol.setCellValueFactory(new PropertyValueFactory("fecha"));
+                    TableColumn<VentaStringProperties,String> MesaCol = new TableColumn<VentaStringProperties,String>("numeroMesa");
+                    MesaCol.setCellValueFactory(new PropertyValueFactory("numeroMesa"));
+                    TableColumn<VentaStringProperties,String> MeseroCol = new TableColumn<VentaStringProperties,String>("mesero");
+                    MeseroCol.setCellValueFactory(new PropertyValueFactory("mesero"));
+                    TableColumn<VentaStringProperties,String> nombreClienteCol = new TableColumn<VentaStringProperties,String>("nombreCliente");
+                    nombreClienteCol.setCellValueFactory(new PropertyValueFactory("nombreCliente"));
+                    TableColumn<VentaStringProperties,String> totalCol = new TableColumn<VentaStringProperties,String>("total");
+                    totalCol.setCellValueFactory(new PropertyValueFactory("total"));
+            
+                    tablaVentas.getColumns().setAll(FechaCol,MesaCol,MeseroCol,nombreClienteCol,totalCol);
+                    tablaVentas.setItems(ventas);
+            
+            
+            
+                    menu.setTop(barraSuperior);
+                    menu.setCenter(tablaVentas);
+                    //menu.getChildren().add(tablaVentas);
+                    fpPantallaAdmin.getChildren().add(menu);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    }
+                }};
+            
+        
         
     }
 
-}
+
