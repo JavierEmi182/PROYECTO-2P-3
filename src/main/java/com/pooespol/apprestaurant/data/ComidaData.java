@@ -71,7 +71,7 @@ public class ComidaData {
         
             ArrayList<Comida> comidasporfiltrar = leerComida();
             for (Comida c :comidasporfiltrar){
-                if (c.getTipoComida().equals(tipo.getNombre())){
+                if (c.getTipoComida().equals(tipo)){
                     comidas.add(c);
                 }
             

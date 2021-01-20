@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -45,6 +46,10 @@ public class TomaPedidoController implements Initializable {
     private ComboBox<TipoComida> cbComida;
     @FXML
     private FlowPane fpComida;
+    @FXML
+    private Label lbMEsaCliente;
+    @FXML
+    private TextField txtCliente;
     /**
      * Initializes the controller class.
      */
@@ -52,7 +57,7 @@ public class TomaPedidoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
          try{
             List<TipoComida> tipos = TipoComidaData.leerTipoComida();
-            cbComida.getItems().addAll(tipos);
+            cbComida.getItems().addAll(tipos);   
         }catch(IOException ex){
             ex.printStackTrace();
         }

@@ -6,19 +6,26 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.modelo.Mesa;
+import com.pooespol.apprestaurant.modelo.Restaurant;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
@@ -33,6 +40,10 @@ public class IniciarMeseroController implements Initializable {
     private Circle circulo;
     private Mesero mesero;
     private Label nmesa;
+    @FXML
+    private Button btnCrearMesa;
+    @FXML
+    private Pane PanelMesas;
     /**
      * Initializes the controller class.
      */
@@ -48,19 +59,52 @@ public class IniciarMeseroController implements Initializable {
         
     }    
 
+    public static void CrearVentana(String s){
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(s+".fxml"));
+        Parent root;
+        try {
+            root = loader.load();
+            Scene sc = new Scene(root);
+             Stage stage = new Stage();
+             stage.setScene(sc);
+             stage.show();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }}    
+
     @FXML
     private void disponibilidad(MouseEvent event) throws IOException {
-         App.setRoot("TomaPedido");
+         //App.setRoot("TomaPedido");
+         
          circulo = (Circle) ((Pane)event.getSource()).getChildren().get(0);
+         
          if (circulo.getFill() == Color.YELLOW){
              nmesa = (Label)((Pane)event.getSource()).getChildren().get(1);
              int x = Integer.parseInt(nmesa.getText());
              Mesa mesaocup = new Mesa(0, x, mesero);
              
-             circulo.setFill(Color.GREEN);
+             circulo.setFill(Color.GREENYELLOW);
              ((Pane)event.getSource()).getChildren().set(0, circulo);
+             
+             Restaurant.mesas.add(mesaocup);
+             CrearVentana("TomaPedido"); 
+         }else if(circulo.getFill() == Color.GREENYELLOW){
+             System.out.println("Hola");
+         }else if(circulo.getFill() == Color.RED){ 
+             System.out.println("No es tu mesa");
          }
          
     }
-    
+
+    @FXML
+    private void CrearMesa(MouseEvent event) {
+        Circle nuevocirculo = new Circle(30, Color.YELLOW);
+       String n = String.valueOf(Restaurant.mesas.size()+1);
+       Label numeromesa = new Label(n);
+       StackPane st = new StackPane();
+       st.getChildren().addAll(nuevocirculo,numeromesa);
+
+       PanelMesas.getChildren().addAll(st);
+       // Falta
+    }
 }
