@@ -23,6 +23,15 @@ public class VentaStringProperties {
             if (Fecha == null) Fecha = new SimpleStringProperty(this, "fecha");
             return Fecha; 
         }
+        
+    private StringProperty numeroCuenta;
+        public void setnumeroCuenta(String value) { numeroCuentaProperty().set(value); }
+        public String getnumeroCuenta() { return numeroCuentaProperty().get(); }
+        public StringProperty numeroCuentaProperty() { 
+            if (numeroCuenta == null) numeroCuenta = new SimpleStringProperty(this, "numeroCuenta");
+            return numeroCuenta; 
+        }    
+        
  //LocalDate date, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total
      private StringProperty nombreCliente;
         public void setnombreCliente(String value) { nombreClienteProperty().set(value); }
@@ -57,8 +66,9 @@ public class VentaStringProperties {
         }
         
     public VentaStringProperties(Venta v){
-        //LocalDate date, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total
+        //LocalDate date,int numeroCuenta, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total
         setFecha(String.valueOf(v.getDate()));
+        setnumeroCuenta(String.valueOf(v.getNumeroCuenta()));
         setnombreCliente(String.valueOf(v.getNombreCliente()));
         setnumeroMesa(String.valueOf(v.getNumeroMesa().getNumero()));
         setmesero(String.valueOf(v.getMesero().getNombre()));       

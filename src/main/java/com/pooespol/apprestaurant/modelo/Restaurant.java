@@ -41,10 +41,15 @@ public class Restaurant {
     }
     
     public static LocalDate toLocalDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        LocalDate localDate = null;
+        try{DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         //String date = "16/08/2016";
         //convert String to LocalDate
-        LocalDate localDate = LocalDate.parse(date, formatter);
+        localDate = LocalDate.parse(date, formatter);
+        
+        }catch(java.time.format.DateTimeParseException ex1){
+                        System.out.println("porfavor ingrese un formato correcto");
+                    }
         return localDate ;
     }
     

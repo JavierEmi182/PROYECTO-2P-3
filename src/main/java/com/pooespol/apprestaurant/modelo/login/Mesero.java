@@ -28,5 +28,7 @@ public class Mesero extends Usuario {
         
     }
 
-    
+    public String toString(){
+        return getNombre();
+    }
 }

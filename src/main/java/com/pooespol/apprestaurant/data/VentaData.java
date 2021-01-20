@@ -43,10 +43,12 @@ public class VentaData {
                     //dividir la en partes 
                     String[] partes = linea.split(";");
                     //Convertimos parte 2 en mesa
-                    Mesa m = restaurant.buscarMesa(Integer.parseInt(partes[2]));
+                    Mesa m = restaurant.buscarMesa(Integer.parseInt(partes[3]));
                     //Convertimos parte 3 en mesero
-                    Mesero mes= restaurant.buscarMesero(partes[3]);
-                    ventas.add(new Venta(toLocalDate(partes[0]),partes[1],m,mes,Double.parseDouble(partes[4])));
+                    Mesero mes= restaurant.buscarMesero(partes[4]);
+                    //  LocalDate date, numeroCuenta ,String nombreCliente, Mesa numeroMesa, Mesero mesero, double total
+                    //10/01/2021;1;Carlos Vera;1;Javier;18.00
+                    ventas.add(new Venta(toLocalDate(partes[0]),Integer.parseInt(partes[1]),partes[2],m,mes,Double.parseDouble(partes[5])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
@@ -54,6 +56,8 @@ public class VentaData {
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
                 throw ex;
+            }catch(java.lang.NumberFormatException ex5){
+                //System.out.println();
             } 
         }catch(Exception ex){
             System.out.println(ex);
@@ -62,14 +66,20 @@ public class VentaData {
     }
     
     public static ArrayList<Venta> leerVentasPorFecha(LocalDate inicio, LocalDate fin) throws IOException{
-        ArrayList<Venta> sinfiltrar= leerVentas();
         ArrayList<Venta> filtrada= new ArrayList<Venta>();
+        try{
+        ArrayList<Venta> sinfiltrar= leerVentas();
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
         
         for(Venta v:sinfiltrar){
             if(v.getDate().isAfter(inicio)&&v.getDate().isBefore(fin)){
                 filtrada.add(v);
             }
-        }return null;
+        }return filtrada;
+        }catch(java.lang.NullPointerException ex3){
+            System.out.println("Porfavor ingrese un formato correcto");
+        }
+        return filtrada;
     }
 }

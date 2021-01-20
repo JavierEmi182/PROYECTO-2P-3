@@ -16,7 +16,8 @@ import java.time.LocalDate;
 public class Venta {
     private LocalDate date;
     private String nombreCliente;
-    //private static int numeroCuenta;
+    private static int numeroCuentaStatic=005;
+    private int numeroCuenta;
     // falta numero de cuenta (no sé si se refiere a la cuenta de cliente o es variable static de la venta)
     private Mesa numeroMesa;
     private Mesero mesero;
@@ -30,12 +31,28 @@ public class Venta {
         this.numeroMesa = numeroMesa;
         this.mesero = mesero;
         this.total = total;
+        numeroCuentaStatic+=1;
+        this.numeroCuenta=numeroCuenta;
+    }
+    
+    public Venta(LocalDate date,int numeroCuenta, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total) {
+        this.date = date;
+        this.numeroCuenta=numeroCuenta;
+        this.nombreCliente = nombreCliente;
+        this.numeroMesa = numeroMesa;
+        this.mesero = mesero;
+        this.total = total;
+        
     }
     
     //Getters and setters
 
     public LocalDate getDate() {
         return date;
+    }
+    
+    public int getNumeroCuenta(){
+        return numeroCuenta;
     }
 
     public void setDate(LocalDate date) {
