@@ -21,9 +21,7 @@ public class Comida {
         this.rutaImagen = rutaImagen;
         this.tipoComida = tipoComida;
     }
-    public Comida(){
-        
-    }
+
     public Comida(String nombre, double precio, TipoComida tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
@@ -67,10 +65,26 @@ public class Comida {
 
     @Override
     public String toString() {
-        return "Nombre: " + nombre + "\n Precio: " + precio ;
+        return  nombre  ;
     }
     
-    
+    @Override
+    public boolean equals(Object o){
+        if(o != null){
+            if (o instanceof Comida){
+                Comida other= (Comida)o;
+                if (nombre.equals(other.nombre)){
+                    return true;
+                }         
+            }
+        }return false;
+    }
+    /*
+    public static void main (String[] args){
+        Comida c1 = new Comida("pa",3,".jpf",new TipoComida("Postres"));
+        Comida c2= new Comida("pa",3,".jpf",new TipoComida("Postres"));
+        System.out.println(c1.equals(c2));
+    }*/
     
     
 }

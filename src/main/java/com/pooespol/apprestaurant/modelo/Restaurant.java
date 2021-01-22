@@ -21,8 +21,8 @@ public class Restaurant {
     public static ArrayList<Mesa> mesas ;
     public static Restaurant restaurant = new Restaurant();
     public static ArrayList<Venta> ventas;
-    public static ArrayList<Comida> comidas;
-     
+    public static ArrayList<Comida> comidas ;
+    public static ArrayList<Comida> comidasInventario;
     //Getter
 
     public static ArrayList<Usuario> getUsuarios() {
@@ -34,10 +34,15 @@ public class Restaurant {
      public static ArrayList<Comida> getComidas() {
         return comidas;
      }
+     public static ArrayList<Comida> getComidasInventario() {
+        return comidasInventario;
+     }
+     
     public Restaurant(){
         usuarios= new ArrayList<Usuario>();
         mesas = new ArrayList<Mesa>();
         comidas = new ArrayList<Comida>();
+        comidasInventario = new ArrayList<Comida>();
     }
     
     public static LocalDate toLocalDate(String date){
@@ -78,6 +83,15 @@ public class Restaurant {
     }
     public static void añadirComida (Comida c){
         comidas.add(c);
+    }
+    public static void añadirComidaInventario(Comida c){
+        comidasInventario.add(c);
+    }
+    public static void borrarComida(Comida c){
+        comidas.remove(c);
+    }
+    public static void borrarComidaInventario(Comida c){
+        comidasInventario.remove(c);
     }
 }
 

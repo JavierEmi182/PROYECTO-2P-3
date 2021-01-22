@@ -1,5 +1,6 @@
-Lasagna;5.00;lasagna.jpg;Platos
-Paella;10.00;paella.jpg;Platos
-Sushi;13.00;sushi.jpg;Platos
+Lasagna;5.0;lasagna.jpg;Platos
+Paella;10.0;paella.jpg;Platos
+Sushi;13.0;sushi.jpg;Platos
 Coca Cola;2.5;cocacola.jpg;Bebidas
 Torta de Chocolate;3.5;tortaChocolate.jpg;Postres
+Parrillada familiar;20.0;parrillada.jpg;Platos

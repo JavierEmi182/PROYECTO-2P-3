@@ -40,11 +40,12 @@ public class TipoComidaData {
                 String linea;
                 //leemos linea a linea hasta llegar la final del archivo
                 while( (linea=bf.readLine())!=null ){
+                    String partes = linea.split(";")[0];
                     //System.out.println("tets");
                     //System.out.println(linea);
                     //dividir la en partes 
                   
-                    tipocomidas.add(new TipoComida(linea));
+                    tipocomidas.add(new TipoComida(partes));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());

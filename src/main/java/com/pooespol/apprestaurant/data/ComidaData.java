@@ -18,20 +18,21 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.util.List;
 /**
  *
  * @author user
  */
 public class ComidaData {
-    static String ruta = "comida.txt";
+    //static String ruta = "comida.txt";
     /**
      * Esta funcion lee el archivo "comida.txt" que se encuentra en resources y
      * retorna una List de las comidas
      * @return 
      * @throws java.io.IOException 
      */
-    public static ArrayList<Comida> leerComida() throws IOException{
+    public static ArrayList<Comida> leerComida(String ruta) throws IOException{
         ArrayList<Comida> comidas = new ArrayList<>();
         //Usamos la clase BufferedReader para leer archivos de texto
         try(InputStream input = App.class.getResource(ruta).openStream();
@@ -69,7 +70,7 @@ public class ComidaData {
     public static ArrayList<Comida> leerComidaPorTipo(TipoComida tipo)throws IOException{
         ArrayList<Comida> comidas = new ArrayList<Comida>();
         
-            ArrayList<Comida> comidasporfiltrar = leerComida();
+            ArrayList<Comida> comidasporfiltrar = leerComida("comida.txt");
             for (Comida c :comidasporfiltrar){
                 if (c.getTipoComida().equals(tipo)){
                     comidas.add(c);
@@ -103,16 +104,33 @@ public class ComidaData {
         }
         //return comidas;
     }
-    
-    /*
-    public static void main (String[] args){
+  
+    public static void reescribirComidas(ArrayList<Comida> comidas,String ruta) 
+            throws IOException, URISyntaxException{
         
-        try {
-            //escribirComida(new Comida("pai",5,".jpeg",new TipoComida("postre")));
-            System.out.println(leerComida());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        try(BufferedWriter bw = new BufferedWriter(
+                new FileWriter(new File(App.class.getResource(ruta).toURI())))){
+            for(Comida p: comidas){
+                String linea = p.getNombre()+";"+String.valueOf(p.getPrecio())+";"+p.getRutaImagen()+";"+p.getTipoComida();
+                bw.write(linea);
+                bw.newLine();
+            }
         }
+    }
+   
+   
+   
+   
+   
+    /*
+    public static void main (String[] args) throws IOException, URISyntaxException{
+        
+        //escribirComida(new Comida("pai",5,"tortaChocolate.jpeg",new TipoComida("Postres")));
+        ArrayList <Comida> comidas = new ArrayList<>();
+        comidas.add(new Comida("pai",5,"tortaChocolate.jpeg",new TipoComida("Postres")));
+        comidas.add(new Comida("pai",5,"tortaChocolate.jpeg",new TipoComida("Postres")));
+        reescribirPeliculas(comidas);
+        //System.out.println(leerComida());
                 
     }*/
     

@@ -6,6 +6,7 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
+import static com.pooespol.apprestaurant.data.ComidaData.reescribirComidas;
 import com.pooespol.apprestaurant.data.TipoComidaData;
 import com.pooespol.apprestaurant.data.VentaData;
 import static com.pooespol.apprestaurant.data.VentaData.leerVentas;
@@ -18,6 +19,7 @@ import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -48,6 +51,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -73,12 +77,13 @@ public class IniciarAdminController implements Initializable {
     private Button btBuscar;
     private BorderPane menu;
     private TableView<VentaStringProperties> tablaVentas;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       
     }    
     
     @FXML
@@ -99,7 +104,7 @@ public class IniciarAdminController implements Initializable {
         
         try{
             //System.out.println("aqui 1 ");
-           ArrayList<Comida> comidas = ComidaData.leerComida(); 
+           ArrayList<Comida> comidas = ComidaData.leerComida("comida.txt"); 
            //System.out.println("aqui 2 ");
            for (Comida c: comidas){
                //vbox con imagen,nombre, precio, boton
@@ -126,13 +131,10 @@ public class IniciarAdminController implements Initializable {
                bteditar.setOnMouseClicked ( 
                        (MouseEvent) -> {
                    try {
-                       // System.out.println(c);
+                      
                        
-                       PantallaEditarPlato(c,true);
-                       /*
-                       c.setNombre(newComida.getNombre());
-                       c.setPrecio(newComida.getPrecio());
-                       c.setTipoComida(newComida.getTipoComida());*/
+                       PantallaEditarPlato(c);
+                       
                    } catch (IOException ex) {
                        ex.printStackTrace();
                    }
@@ -144,33 +146,30 @@ public class IniciarAdminController implements Initializable {
            btagregar.setAlignment(Pos.CENTER);
            btagregar.setOnMouseClicked(
               (MouseEvent) ->{
-               try {
-                   Comida comida = new Comida();
-                   PantallaEditarPlato(comida,false);
-                   /*
-                   Restaurant.añadirComida(newComida);
-                   ComidaData.escribirComida(newComida);
-                   System.out.println(newComida);
-                   System.out.println(Restaurant.getComidas());*/
-               } catch (IOException ex) {
-                   ex.printStackTrace();
-               }   
+                 PantallaCrearPlato();
               }
+           
            );
-           
-        }catch(IOException ex){
-            System.out.println("Problemas técnicos");
-        }
+        }catch(IOException ec){
+            
+        }   
+        
     }
-    public void PantallaEditarPlato(Comida comida, boolean editar) throws IOException {
+    public void PantallaEditarPlato(Comida comida) throws IOException {
+           System.out.println(comida);
+           System.out.println(Restaurant.getComidas());
            
-           //System.out.println(comida);
            fpPantallaAdmin.getChildren().clear();
+           fpPantallaAdmin.setAlignment(Pos.CENTER);
             //container principal
-            fpPantallaAdmin.setAlignment(Pos.CENTER);
+            
+            
             VBox vcontainer = new VBox();
             vcontainer.setAlignment(Pos.CENTER);
-            vcontainer.setSpacing(40);
+            vcontainer.setSpacing(30);
+            
+            InputStream inputImg= App.class.getResource(comida.getRutaImagen()).openStream();
+            ImageView imgv = new ImageView(new Image(inputImg));
             
             Label lnombre = new Label("Nombre:");
             TextField txtNombre =new TextField();
@@ -185,17 +184,28 @@ public class IniciarAdminController implements Initializable {
             hPrecio.setSpacing(30);
             
             Label lTipo = new Label("Tipo");
-            ComboBox<TipoComida> cbTipo = new ComboBox();
-            List<TipoComida> tipos = TipoComidaData.leerTipoComida();
-            cbTipo.getItems().addAll(tipos);
-            HBox hTipo = new HBox(lTipo,cbTipo);
+            TextField txtTipo = new TextField("Tipo de Comida");
+            HBox hTipo = new HBox(lTipo,txtTipo);
             hTipo.setAlignment(Pos.CENTER);
             hTipo.setSpacing(30);
             
-            if (editar==true){
-                txtNombre.setText(comida.getNombre());
-                txtPrecio.setText(String.valueOf(comida.getPrecio()));
-            }
+            Label cambiarTipo = new Label("Seleccione para cambiar el tipo de comida");
+            ComboBox<TipoComida> cbtTipo = new ComboBox();
+            List<TipoComida> tipos = TipoComidaData.leerTipoComida();  
+            cbtTipo.setItems(FXCollections.observableArrayList(tipos));
+            //cbtTipo.getItems().addAll(tipos);
+            HBox cambiarhbox = new HBox(cambiarTipo,cbtTipo);
+            cambiarhbox.setAlignment(Pos.CENTER);
+            cambiarhbox.setSpacing(30);
+            /*
+            cbtTipo.setOnMouseClicked((ActionEvent)->{
+            String sc=cbtTipo.getValue().toString();
+            txtTipo.setText(sc);
+            });*/
+            
+            txtNombre.setText(comida.getNombre());
+            txtPrecio.setText(String.valueOf(comida.getPrecio()));
+            txtTipo.setText(comida.getTipoComida().getNombre());
     
             Button btnRegresar = new Button("Regresar");
             Button btnLimpiar = new Button("Limpiar");
@@ -204,15 +214,26 @@ public class IniciarAdminController implements Initializable {
             hBtn.setSpacing(20);
             Label lblMessage = new Label();
             lblMessage.setAlignment(Pos.CENTER);
-            vcontainer.getChildren().addAll(hNombre,hPrecio,hTipo,hBtn,lblMessage);
+            vcontainer.getChildren().addAll(imgv,hNombre,hPrecio,hTipo,cambiarhbox,hBtn,lblMessage);
             fpPantallaAdmin.getChildren().add(vcontainer);
             //MANEJADORES PARA LOS BOTONES GUARDAR, LIMPIAR, REGRESAR
             btnGuardar.setOnMouseClicked(
             (MouseEvent)->{
             try{
+               //String sc=cbtTipo.getValue().toString();
+               //txtTipo.setText(sc);
+               Restaurant.getComidas().remove(comida);
                String nombre =txtNombre.getText();
                double precio =Double.parseDouble(txtPrecio.getText());
-               TipoComida tipo = cbTipo.getValue();
+               String tipo="";
+               if(cbtTipo.getValue()!=null){
+                   txtTipo.setText(cbtTipo.getValue().toString());
+                   tipo =cbtTipo.getValue().toString();
+               }else{
+                   tipo= txtTipo.getText();
+               }
+                      
+                
 
                if ( nombre.equals("") || tipo.equals("")){
                throw new NullPointerException();
@@ -220,18 +241,12 @@ public class IniciarAdminController implements Initializable {
                
                comida.setNombre(nombre);
                comida.setPrecio(precio);
-               comida.setTipoComida(tipo);
-               if (editar == false){
-                   //System.out.println(Restaurant.getComidas());
-                   Restaurant.añadirComida(comida);
-                   ComidaData.escribirComida(comida);
-                   //System.out.println(comida);
-                   //System.out.println(Restaurant.getComidas());
-                   //se escribe la nueva linea de comida
-               }else{
-                   //se escribe todo el contenido de nuevo o se borra la linea y se la reemplaza
-                   //System.out.println(comida);
-               }
+               comida.setTipoComida(new TipoComida(tipo));
+               Restaurant.añadirComida(comida);
+               ComidaData.reescribirComidas(Restaurant.getComidas(),"comida.txt");
+               
+               System.out.println(comida);
+               System.out.println(Restaurant.getComidas());
                
                lblMessage.setText("Cambios guardados exitosamente");
                //System.out.println(comida);
@@ -243,6 +258,10 @@ public class IniciarAdminController implements Initializable {
                }catch(NumberFormatException ex){
                    lblMessage.setText("Formato no válido. No se han guardado cambios");
 
+               } catch (IOException ex) {
+                   ex.printStackTrace();
+               } catch (URISyntaxException ex) {
+                   ex.printStackTrace();
                }    
             }
             
@@ -256,14 +275,117 @@ public class IniciarAdminController implements Initializable {
             btnLimpiar.setOnMouseClicked((MouseEvent)->{
                 txtNombre.setText("");
                 txtPrecio.setText("");
-                cbTipo.getItems().clear();
-                cbTipo.getItems().addAll(tipos);
+                txtTipo.setText("");
+                cbtTipo.getItems().clear();
+               cbtTipo.getItems().addAll(tipos);
+                
                 lblMessage.setText("");
             });
            
             
     }
-    
+    public void PantallaCrearPlato(){
+        try {
+            fpPantallaAdmin.getChildren().clear();
+            //principal container
+            fpPantallaAdmin.setAlignment(Pos.CENTER);
+            
+            VBox vcontainer = new VBox();
+            
+            vcontainer.setAlignment(Pos.CENTER);
+            vcontainer.setSpacing(40);
+            
+            Label ltitulo = new Label ("Busque la comida que desea agregar");
+            
+            ComboBox<Comida> cbComida= new ComboBox();
+            List<Comida> comidaPorAgregar = ComidaData.leerComida("comidaSinAgregar.txt");
+            //cbComida.getItems().addAll(comidaPorAgregar);
+            cbComida.setItems(FXCollections.observableArrayList(comidaPorAgregar));
+            Button bcomida = new Button("Buscar");
+            HBox hcomida = new HBox(cbComida,bcomida);
+            hcomida.setSpacing(20);
+            hcomida.setAlignment(Pos.CENTER);
+            Pane bpane = new Pane();
+            /*bpane.setMaxWidth(fpPantallaAdmin.getMaxWidth());
+            bpane.setMaxHeight(fpPantallaAdmin.getMaxHeight()-20);*/
+           Button btnRegresar = new Button("Regresar");
+            Button btnGuardar = new Button("Agregar Plato");
+            HBox btns = new HBox(btnRegresar,btnGuardar);
+            btns.setSpacing(30);
+             btns.setAlignment(Pos.BOTTOM_CENTER);
+             Label lmessage = new Label();
+            //vcontainer.getChildren().add(btns);
+            vcontainer.getChildren().addAll(ltitulo,hcomida,bpane,btns,lmessage);
+            cbComida.setOnAction((ActionEvent)->{
+               bpane.getChildren().clear();
+            });
+            bpane.getChildren().clear();
+            bcomida.setOnMouseClicked((MouseEvent)->{
+                
+                HBox hinfo = new HBox();
+                //hinfo.getChildren().clear();
+               Comida c = cbComida.getValue();
+               String ruta ="";
+               for (Comida comida: comidaPorAgregar){
+                   if (c.equals(comida)){
+                       ruta = c.getRutaImagen();
+                   }
+               }
+               InputStream inputImg;
+                try {
+                    inputImg = App.class.getResource(ruta).openStream();
+                    ImageView imgv = new ImageView(new Image(inputImg));
+                    Label linfo = new Label("Nombre: "+c.getNombre()+"\nPrecio: "+c.getPrecio()+"\nTipo de comida: "+c.getTipoComida());
+                   linfo.setAlignment(Pos.CENTER);
+                    hinfo.getChildren().addAll(imgv,linfo);
+                    hinfo.setSpacing(25);
+                    bpane.getChildren().add(hinfo);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+               
+               
+            });
+            
+            fpPantallaAdmin.getChildren().add(vcontainer);
+            btnRegresar.setOnAction((MouseEvent)->{
+                MostrarGestionMenu();
+            });
+            btnGuardar.setOnAction((MouseEvent)->{
+                //agregar al array restaurante
+                
+                Comida comidanew = cbComida.getValue();
+                if (comidanew!=null){
+                   
+                   Restaurant.añadirComida(comidanew);
+                   
+                    try {
+                        //ComidaData.escribirComida(comidanew); esta funcion da problemas, se reescribe todo nomas
+                        ComidaData.reescribirComidas(Restaurant.getComidas(),"comida.txt");
+                        //borrar del array de comidas por añadir
+                        Restaurant.borrarComidaInventario(comidanew);
+                    //reescribir el archivo "comidas sin agregar" pasarle un arraylisy
+                    ComidaData.reescribirComidas(Restaurant.getComidasInventario(),"comidaSinAgregar.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                    
+                    lmessage.setText("Nueva comida registrada");
+                    
+                }else{
+                    lmessage.setText("Debe seleccionar una comida");
+                }
+                //eliminarlo de comida sin agregar 
+            });
+            
+            
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 
     @FXML
     private void regresarPrincipalAdmin(MouseEvent event) throws IOException{

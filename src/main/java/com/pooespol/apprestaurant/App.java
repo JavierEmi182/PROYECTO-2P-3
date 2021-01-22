@@ -1,6 +1,8 @@
 package com.pooespol.apprestaurant;
 
+import com.pooespol.apprestaurant.data.ComidaData;
 import com.pooespol.apprestaurant.modelo.Restaurant;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Administrador;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import com.pooespol.apprestaurant.modelo.login.Usuario;
@@ -12,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -64,8 +67,25 @@ public class App extends Application {
         return loader.load();
     }
     
+    public static void initialize() throws IOException{
+        ArrayList<Comida> comidas = ComidaData.leerComida("comida.txt");
+        for (Comida c: comidas){
+            Restaurant.añadirComida(c);
+           
+        }
+        ArrayList<Comida> comidasInventario = ComidaData.leerComida("comidaSinAgregar.txt");
+        for (Comida c: comidasInventario){
+            Restaurant.añadirComidaInventario(c);
+        }
+    }
 
     public static void main(String[] args) {
+        try {
+            initialize();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         launch();
+        
     }
 }

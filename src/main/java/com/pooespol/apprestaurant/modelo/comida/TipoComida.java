@@ -29,5 +29,21 @@ public class TipoComida {
     public String toString() {
         return nombre ;
     }
-    
+    @Override
+    public boolean equals(Object o){
+        if (o!=null){
+            if (o instanceof TipoComida){
+                TipoComida other = (TipoComida)o;
+                if (nombre.equals(other.nombre)){
+                    return true;
+                }
+            }
+        }return false;
+    }
+    /*
+    public static void main (String[] args){
+        TipoComida t1 = new TipoComida("Postres");
+        TipoComida t2= new TipoComida("Postres");
+        System.out.println("tipo comida "+t1.equals(t2));
+    }*/
 }

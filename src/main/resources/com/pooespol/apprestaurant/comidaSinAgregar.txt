@@ -1,0 +1,6 @@
+Parrillada familiar;20;parrillada.jpg;Platos
+Arroz Marinero;13;arroMarinero.jpg;Platos
+Tarta de Limon;15;tartaLimon.jpg;Postres
+Coctel;4.5;coctel.jpg;Bebidas
+Ceviche;3.5;ceviche.jpg;Platos
+Vino;30;vino.jpg;Bebidas
