@@ -11,21 +11,27 @@ import com.pooespol.apprestaurant.data.TipoComidaData;
 import com.pooespol.apprestaurant.data.VentaData;
 import static com.pooespol.apprestaurant.data.VentaData.leerVentas;
 import static com.pooespol.apprestaurant.data.VentaData.leerVentasPorFecha;
+import com.pooespol.apprestaurant.modelo.Mesa;
 import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.toLocalDate;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.interfaces.XECKey;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -34,8 +40,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -47,12 +56,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Ellipse;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -543,9 +558,108 @@ public class IniciarAdminController implements Initializable {
                         System.out.println("porfavor ingrese un formato correcto");
                     }
                 }};
-            
+
+    @FXML
+    private void CreacionMesas(MouseEvent event) {
         
+        fpPantallaAdmin.getChildren().clear();
+        Pane pane = new Pane();
+        pane.setPrefHeight(fpPantallaAdmin.getHeight());
+        pane.setPrefWidth(fpPantallaAdmin.getWidth());
+        fpPantallaAdmin.getChildren().add(pane);    
+        
+        pane.setOnMouseClicked((MouseEvent) -> {
+            VBox cuadro1 =  new VBox();
+            
+            Stage stage = new Stage();
+            
+            try{
+            Label titulo = new Label("ELIJA DIMENSIONES DE LA MESA");
+            cuadro1.setAlignment(Pos.CENTER);
+            Label etiqueta = new Label("INGRESE VALOR PARA EL EJE X");
+            TextField ejex = new TextField("25");
+            HBox h1 = new HBox(etiqueta,ejex);
+            h1.setSpacing(30);
+            
+            Label etiqueta2 = new Label("INGRESE VALOR PARA EL EJE Y");
+            TextField ejey = new TextField("25");
+            HBox h2 = new HBox(etiqueta2,ejey);
+            h2.setSpacing(30);
+            
+            Label etiqueta3 = new Label("INGRESE CAPAIDAD");
+            TextField capacidad = new TextField("2");
+            HBox h3 = new HBox(etiqueta3,capacidad);
+            h3.setSpacing(30);
+            
+            Button boton = new Button("CREAR");
+            cuadro1.getChildren().addAll(titulo,h1,h2,h3,boton);
+            cuadro1.setSpacing(30);
+            cuadro1.setPadding(new Insets(7,7,7,7));
+            Scene ventana = new Scene(cuadro1);
+            stage.setScene(ventana);
+            stage.setWidth(400);
+            stage.setHeight(400);
+            stage.show();
+            
+            Point2D posicion = new Point2D(MouseEvent.getSceneX(), MouseEvent.getSceneY());
+            double posicionx = posicion.getX();
+            double posiciony = posicion.getY();
+            
+            boton.setOnMouseClicked((MouseEvent e)->{
+                
+                Restaurant.mesas.add(new Mesa(Integer.parseInt(capacidad.getText()), Restaurant.mesas.size()+1));
+                
+                Ellipse elipse = new Ellipse(Double.parseDouble(ejex.getText()),Double.parseDouble(ejey.getText()));
+                elipse.setFill(Color.YELLOW);
+                String n = String.valueOf(Restaurant.mesas.size()+1);
+                Label numeromesa = new Label(n);
+                StackPane st = new StackPane();
+                st.getChildren().addAll(elipse,numeromesa);                  
+                
+                Platform.runLater( ()->{
+                    
+                    pane.getChildren().add(st);
+                    st.setLayoutX(posicionx);
+                    st.setLayoutY(posiciony);
+                    
+                 });
+                
+                //Guardar los datos en el txt
+                //Saler un error
+                /*File file = new File(App.class.getResource("mesas.txt").getFile());
+                try(BufferedWriter bw = new BufferedWriter(new FileWriter(file,true))){
+                    String linea = ejex.getText()+";"+ejey.getText()+";"+n+";"+posicionx+";"+posiciony;
+                    bw.write(linea);
+                    bw.newLine();
+                    bw.close();
+                } catch (Exception ex) {
+                    System.out.println("Error");
+                    ex.printStackTrace();
+                }*/
+            
+            });
+            
+            }catch(RuntimeException e){
+                System.out.println(e.getMessage());
+            }catch(Exception e){
+                System.out.println("Error");
+            }
+
+            
+        });
+    }
+           
+    public static void Mesas(Pane pane, double x,double y,String n,double posicionx,double posiciony){
+            
+        Ellipse elipse = new Ellipse(x,y);
+        elipse.setFill(Color.YELLOW);
+        Label numeromesa = new Label(n);
+        StackPane st = new StackPane();
+        st.getChildren().addAll(elipse,numeromesa);
+        pane.getChildren().add(st);
+        st.setLayoutX(posicionx);
+        st.setLayoutY(posiciony);
         
     }
-
-
+}
+            
