@@ -92,6 +92,10 @@ public class IniciarAdminController implements Initializable {
     private Button btBuscar;
     private BorderPane menu;
     private TableView<VentaStringProperties> tablaVentas;
+    @FXML
+    private Button btmonitoreo;
+    @FXML
+    private Button btDiseñoPlano;
     
     /**
      * Initializes the controller class.
@@ -574,9 +578,9 @@ public class IniciarAdminController implements Initializable {
             Stage stage = new Stage();
             
             try{
-            Label titulo = new Label("ELIJA DIMENSIONES DE LA MESA");
+            //Label titulo = new Label("ELIJA DIMENSIONES DE LA MESA");
             cuadro1.setAlignment(Pos.CENTER);
-            Label etiqueta = new Label("INGRESE VALOR PARA EL EJE X");
+            /*Label etiqueta = new Label("INGRESE VALOR PARA EL EJE X");
             TextField ejex = new TextField("25");
             HBox h1 = new HBox(etiqueta,ejex);
             h1.setSpacing(30);
@@ -584,7 +588,7 @@ public class IniciarAdminController implements Initializable {
             Label etiqueta2 = new Label("INGRESE VALOR PARA EL EJE Y");
             TextField ejey = new TextField("25");
             HBox h2 = new HBox(etiqueta2,ejey);
-            h2.setSpacing(30);
+            h2.setSpacing(30);*/
             
             Label etiqueta3 = new Label("INGRESE CAPAIDAD");
             TextField capacidad = new TextField("2");
@@ -592,7 +596,8 @@ public class IniciarAdminController implements Initializable {
             h3.setSpacing(30);
             
             Button boton = new Button("CREAR");
-            cuadro1.getChildren().addAll(titulo,h1,h2,h3,boton);
+            //cuadro1.getChildren().addAll(titulo,h1,h2,h3,boton);
+            cuadro1.getChildren().addAll(h3,boton);
             cuadro1.setSpacing(30);
             cuadro1.setPadding(new Insets(7,7,7,7));
             Scene ventana = new Scene(cuadro1);
@@ -609,7 +614,8 @@ public class IniciarAdminController implements Initializable {
                 
                 Restaurant.mesas.add(new Mesa(Integer.parseInt(capacidad.getText()), Restaurant.mesas.size()+1));
                 
-                Ellipse elipse = new Ellipse(Double.parseDouble(ejex.getText()),Double.parseDouble(ejey.getText()));
+                //Ellipse elipse = new Ellipse(Double.parseDouble(ejex.getText()),Double.parseDouble(ejey.getText()));
+                Ellipse elipse = new Ellipse(50,50);
                 elipse.setFill(Color.YELLOW);
                 String n = String.valueOf(Restaurant.mesas.size()+1);
                 Label numeromesa = new Label(n);
@@ -619,11 +625,12 @@ public class IniciarAdminController implements Initializable {
                 Platform.runLater( ()->{
                     
                     pane.getChildren().add(st);
-                    st.setLayoutX(posicionx);
-                    st.setLayoutY(posiciony);
+                    st.setLayoutX(posicionx-25);
+                    st.setLayoutY(posiciony-65);
                     
                  });
                 
+                stage.close();
                 //Guardar los datos en el txt
                 //Saler un error
                 /*File file = new File(App.class.getResource("mesas.txt").getFile());
@@ -659,6 +666,47 @@ public class IniciarAdminController implements Initializable {
         pane.getChildren().add(st);
         st.setLayoutX(posicionx);
         st.setLayoutY(posiciony);
+        
+    }
+
+    @FXML
+   private void MostrarMonitoreo(MouseEvent event) {
+       System.out.println("Funciono");
+       
+       fpPantallaAdmin.getChildren().clear();
+        StackPane pane = new StackPane();
+        pane.setPrefHeight(fpPantallaAdmin.getHeight());
+        pane.setPrefWidth(fpPantallaAdmin.getWidth());
+        
+            
+            try{
+                for(Mesa m:Restaurant.mesas){
+                    double x= m.getX();
+                    double y= m.getY();
+                    int numeroMesa= m.getNumero();
+                    
+                    Ellipse elipse = new Ellipse(50,50);
+                    if(m.isOcupada()==true){
+                        elipse.setFill(Color.RED);
+                    }else{
+                    elipse.setFill(Color.YELLOW);}
+                    
+                    Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+                    
+                    elipse.setLayoutX(x);
+                    elipse.setLayoutY(y);
+                    
+                    pane.getChildren().addAll(elipse,lbNumMesa);
+                }
+            fpPantallaAdmin.getChildren().add(pane);
+            }catch(RuntimeException e){
+                System.out.println(e.getMessage());
+            }catch(Exception e){
+                System.out.println("Error");
+            }
+
+        System.out.println("Termino");
+        System.out.println(Restaurant.mesas);
         
     }
 }

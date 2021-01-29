@@ -77,6 +77,8 @@ public class App extends Application {
         for (Comida c: comidasInventario){
             Restaurant.añadirComidaInventario(c);
         }
+        
+        
     }
 
     public static void main(String[] args) {

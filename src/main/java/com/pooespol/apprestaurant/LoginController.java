@@ -5,6 +5,7 @@
  */
 package com.pooespol.apprestaurant;
 
+import com.pooespol.apprestaurant.data.MesasData;
 import com.pooespol.apprestaurant.modelo.Mesa;
 import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.mesas;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.fxml.LoadException;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -53,8 +55,14 @@ public class LoginController implements Initializable {
         usuarios.add(admin1);
         Mesero mesero1 = new Mesero("Javier","mesero@gmail.com","mesero");
         usuarios.add(mesero1);
-        Mesa mesa1 = new Mesa(2,1,mesero1);
-        mesas.add(mesa1);
+        //Mesa mesa1 = new Mesa(2,1,mesero1);
+        //mesas.add(mesa1);
+        try {
+            mesas= MesasData.leerMesas("mesas.txt");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            
+        }
     } 
     
     /**

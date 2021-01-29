@@ -10,6 +10,7 @@ module-info.class
 com\pooespol\apprestaurant\IniciarAdminController.class
 com\pooespol\apprestaurant\data\TipoComidaData.class
 com\pooespol\apprestaurant\data\VentaData.class
+com\pooespol\apprestaurant\data\MesasData.class
 com\pooespol\apprestaurant\VentaStringProperties.class
 com\pooespol\apprestaurant\App.class
 com\pooespol\apprestaurant\modelo\login\Administrador.class

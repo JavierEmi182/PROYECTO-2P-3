@@ -14,6 +14,8 @@ public class Mesa {
     private int capacidad;
     private Mesero mesero;
     private boolean ocupada = false;
+    private double x;
+    private double y;
     
     public Mesa (int capacidad,int numero,Mesero mesero){
         this.numero = numero;
@@ -22,6 +24,16 @@ public class Mesa {
         ocupada = true;
               
     }
+    
+    public Mesa(int numero, int capacidad, Mesero mesero, boolean ocupada, double x, double y){
+        this.numero=numero;
+        this.capacidad=capacidad;
+        this.mesero=mesero;
+        this.ocupada=ocupada;
+        this.x=x;
+        this.y=y;
+    }
+    
     public Mesa (int capacidad,int numero){
         this.numero = numero;
         this.capacidad = capacidad;
@@ -44,6 +56,15 @@ public class Mesa {
     public boolean isOcupada() {
         return ocupada;
     }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+    
     
 
     public void setNumero(int numero) {

@@ -9,8 +9,8 @@
    <top>
       <HBox alignment="TOP_CENTER" prefHeight="42.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Monitoreo" />
-            <Button mnemonicParsing="false" onMouseClicked="#CreacionMesas" text="Diseño Plano" />
+            <Button fx:id="btmonitoreo" mnemonicParsing="false" onMouseClicked="#MostrarMonitoreo" text="Monitoreo" />
+            <Button fx:id="btDiseñoPlano" mnemonicParsing="false" onMouseClicked="#CreacionMesas" text="Diseño Plano" />
             <Button fx:id="btGestionMenu" mnemonicParsing="false" onMouseClicked="#GestionMenu" text="Gestión Menú" />
             <Button fx:id="btReportesVentas" mnemonicParsing="false" onMouseClicked="#ReportesVentas" text="Reportes Ventas" />
             <Button fx:id="btnSalir" mnemonicParsing="false" onMouseClicked="#regresarPrincipalAdmin" text="Salir" />
