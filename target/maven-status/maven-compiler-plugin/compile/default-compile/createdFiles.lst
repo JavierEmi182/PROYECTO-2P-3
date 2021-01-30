@@ -1,4 +1,5 @@
 com\pooespol\apprestaurant\data\ComidaData.class
+com\pooespol\apprestaurant\FinalizarCuentaController.class
 com\pooespol\apprestaurant\modelo\Mesa.class
 com\pooespol\apprestaurant\modelo\login\Usuario.class
 com\pooespol\apprestaurant\modelo\Restaurant.class
@@ -17,4 +18,5 @@ com\pooespol\apprestaurant\modelo\login\Administrador.class
 com\pooespol\apprestaurant\modelo\comida\Comida.class
 com\pooespol\apprestaurant\IniciarMeseroController.class
 com\pooespol\apprestaurant\modelo\comida\TipoComida.class
+com\pooespol\apprestaurant\data\CredencialesData.class
 com\pooespol\apprestaurant\IniciarAdminController$1.class

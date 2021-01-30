@@ -14,12 +14,17 @@ public class Comida {
     private double precio;
     private String rutaImagen;
     private TipoComida tipoComida;
-
+    private int contador = 0;
     public Comida(String nombre, double precio, String rutaImagen,TipoComida tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
         this.rutaImagen = rutaImagen;
         this.tipoComida = tipoComida;
+    }
+    public Comida (String nombre, double precio, int contador){
+        this.nombre = nombre;
+        this.precio = precio;
+        this.contador=contador;
     }
 
     public Comida(String nombre, double precio, TipoComida tipoComida) {
@@ -45,6 +50,12 @@ public class Comida {
         return tipoComida;
     }
     
+    public int getContador (){
+        return contador;
+    }
+    public void setContador(int cont){
+        contador =cont;
+    }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -65,7 +76,7 @@ public class Comida {
 
     @Override
     public String toString() {
-        return  nombre  ;
+        return  nombre +"  "+contador ;
     }
     
     @Override

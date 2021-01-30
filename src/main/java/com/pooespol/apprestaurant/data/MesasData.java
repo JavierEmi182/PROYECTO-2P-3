@@ -44,7 +44,7 @@ public class MesasData {
                     //dividir la en partes 
                     String[] partes = linea.split(",");
                     //numero,capacidad,mesero,ocupada,x,y
-                    mesas.add(new Mesa(Integer.parseInt(partes[0]),Integer.parseInt(partes[1]),restaurant.buscarMesero(partes[2]),Boolean.parseBoolean(partes[3]),Double.parseDouble(partes[4]),Double.parseDouble(partes[4])));
+                    mesas.add(new Mesa(Integer.parseInt(partes[0]),Integer.parseInt(partes[1]),restaurant.buscarMesero(partes[2]),Boolean.parseBoolean(partes[3]),Double.parseDouble(partes[4]),Double.parseDouble(partes[5])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());

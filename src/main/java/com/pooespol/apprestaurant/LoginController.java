@@ -50,6 +50,7 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         ArrayList<Usuario> usuarios = Restaurant.getUsuarios();
         Administrador admin1 = new Administrador("admin@gmail.com","admin");
         usuarios.add(admin1);
@@ -57,12 +58,13 @@ public class LoginController implements Initializable {
         usuarios.add(mesero1);
         //Mesa mesa1 = new Mesa(2,1,mesero1);
         //mesas.add(mesa1);
+        /*
         try {
             mesas= MesasData.leerMesas("mesas.txt");
         } catch (IOException ex) {
             ex.printStackTrace();
             
-        }
+        }*/
     } 
     
     /**

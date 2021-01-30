@@ -1,7 +1,11 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
+import com.pooespol.apprestaurant.data.CredencialesData;
+import com.pooespol.apprestaurant.data.MesasData;
+import com.pooespol.apprestaurant.modelo.Mesa;
 import com.pooespol.apprestaurant.modelo.Restaurant;
+import static com.pooespol.apprestaurant.modelo.Restaurant.mesas;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Administrador;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
@@ -77,13 +81,23 @@ public class App extends Application {
         for (Comida c: comidasInventario){
             Restaurant.añadirComidaInventario(c);
         }
-        
-        
+        mesas= MesasData.leerMesas("mesas.txt");
+        /*
+        ArrayList<Usuario> admin = CredencialesData.leerAdministradores("CredencialesAdmin.txt");
+        ArrayList<Usuario> mesero = CredencialesData.leerMeseros("CredencialesMesero.txt");
+        for (Usuario u : admin){
+            Restaurant.añadirUsuario(u);
+        }
+        for (Usuario u:mesero){
+            Restaurant.añadirUsuario(u);
+        }*/
     }
 
     public static void main(String[] args) {
         try {
+            
             initialize();
+           // System.out.println(MesasData.leerMesas("mesas.txt"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }

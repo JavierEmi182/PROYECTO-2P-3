@@ -84,6 +84,12 @@ public class Restaurant {
     public static void añadirComida (Comida c){
         comidas.add(c);
     }
+    public static void añadirUsuario (Usuario c){
+        usuarios.add(c);
+    }
+    public static void añadirMesa (Mesa c){
+        mesas.add(c);
+    }
     public static void añadirComidaInventario(Comida c){
         comidasInventario.add(c);
     }

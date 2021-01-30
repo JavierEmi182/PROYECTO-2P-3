@@ -117,7 +117,46 @@ public class ComidaData {
             }
         }
     }
-   
+    
+    public static void reescribirPedido(ArrayList<Comida> comidas,String ruta) 
+            throws IOException, URISyntaxException{
+        
+        try(BufferedWriter bw = new BufferedWriter(
+                new FileWriter(new File(App.class.getResource(ruta).toURI())))){
+            for(Comida p: comidas){
+                String linea = p.getNombre()+";"+String.valueOf(p.getPrecio())+";"+String.valueOf(p.getContador());
+                bw.write(linea);
+                bw.newLine();
+            }
+        }
+    }
+    
+    public static ArrayList<Comida> leerPedido(String ruta) throws IOException{
+        ArrayList<Comida> comidas = new ArrayList<>();
+        //Usamos la clase BufferedReader para leer archivos de texto
+        try(InputStream input = App.class.getResource(ruta).openStream();
+                BufferedReader bf = new BufferedReader(
+                                    new InputStreamReader(input,"UTF-8"))){
+          
+                String linea;
+                //leemos linea a linea hasta llegar la final del archivo
+                while( (linea=bf.readLine())!=null ){
+                    //System.out.println("tets");
+                    //System.out.println(linea);
+                    //dividir la en partes 
+                    String[] partes = linea.split(";");
+                    comidas.add(new Comida(partes[0],Double.parseDouble(partes[1]),Integer.parseInt(partes[2])));
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.println(ex.getMessage());
+                throw ex;
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+                throw ex;
+            } 
+       
+        return comidas;
+    }
    
    
    
@@ -133,6 +172,27 @@ public class ComidaData {
         //System.out.println(leerComida());
                 
     }*/
-    
+    /*
+    public static void reescribirPedido(String ruta) 
+            throws IOException, URISyntaxException{
+        
+        try(BufferedWriter bw = new BufferedWriter(
+                new FileWriter(new File(App.class.getResource(ruta).toURI())))){
+            
+                bw.write("hola");
+                bw.newLine();
+            
+        }
+    }*/
+    /*
+    public static void main(String[] args){
+        try {
+            reescribirPedido("pedido1");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (URISyntaxException ex) {
+            ex.printStackTrace();
+        }
+    }*/
     
 }

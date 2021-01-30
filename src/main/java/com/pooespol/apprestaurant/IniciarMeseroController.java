@@ -87,7 +87,8 @@ public class IniciarMeseroController implements Initializable {
              ((Pane)event.getSource()).getChildren().set(0, circulo);
              
              Restaurant.mesas.add(mesaocup);
-             CrearVentana("TomaPedido"); 
+             //CrearVentana("TomaPedido"); 
+             App.setRoot("TomaPedido");
          }else if(circulo.getFill() == Color.GREENYELLOW){
              System.out.println("Hola");
          }else if(circulo.getFill() == Color.RED){ 

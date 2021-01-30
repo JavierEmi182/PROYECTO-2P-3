@@ -697,8 +697,9 @@ public class IniciarAdminController implements Initializable {
                     elipse.setLayoutY(y);
                     
                     pane.getChildren().addAll(elipse,lbNumMesa);
+                    fpPantallaAdmin.getChildren().add(pane);
                 }
-            fpPantallaAdmin.getChildren().add(pane);
+            
             }catch(RuntimeException e){
                 System.out.println(e.getMessage());
             }catch(Exception e){
