@@ -72,6 +72,13 @@ public class App extends Application {
     }
     
     public static void initialize() throws IOException{
+        
+        ArrayList<Usuario> usuarios = Restaurant.getUsuarios();
+        Administrador admin1 = new Administrador("admin@gmail.com","admin");
+        usuarios.add(admin1);
+        Mesero mesero1 = new Mesero("Javier","mesero@gmail.com","mesero");
+        usuarios.add(mesero1);
+        
         ArrayList<Comida> comidas = ComidaData.leerComida("comida.txt");
         for (Comida c: comidas){
             Restaurant.añadirComida(c);

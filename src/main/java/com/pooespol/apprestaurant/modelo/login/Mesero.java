@@ -22,6 +22,7 @@ public class Mesero extends Usuario {
 
     public String getNombre() {
         return nombre;
+        
     }
 
     public void tomaPedido(){

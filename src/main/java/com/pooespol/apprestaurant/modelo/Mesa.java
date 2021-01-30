@@ -34,6 +34,14 @@ public class Mesa {
         this.y=y;
     }
     
+    public Mesa(int numero, int capacidad, boolean ocupada, double x, double y){
+        this.numero=numero;
+        this.capacidad=capacidad;
+        this.ocupada=ocupada;
+        this.x=x;
+        this.y=y;
+    }
+    
     public Mesa (int capacidad,int numero){
         this.numero = numero;
         this.capacidad = capacidad;
@@ -50,7 +58,11 @@ public class Mesa {
     }
 
     public Mesero getMesero() {
+        try{
         return mesero;
+        }catch(NullPointerException ex){
+            return null;
+        }
     }
 
     public boolean isOcupada() {

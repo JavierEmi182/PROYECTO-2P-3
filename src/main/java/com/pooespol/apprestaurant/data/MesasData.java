@@ -8,6 +8,7 @@ package com.pooespol.apprestaurant.data;
 import com.pooespol.apprestaurant.App;
 import com.pooespol.apprestaurant.modelo.Mesa;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
+import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -44,7 +45,14 @@ public class MesasData {
                     //dividir la en partes 
                     String[] partes = linea.split(",");
                     //numero,capacidad,mesero,ocupada,x,y
-                    mesas.add(new Mesa(Integer.parseInt(partes[0]),Integer.parseInt(partes[1]),restaurant.buscarMesero(partes[2]),Boolean.parseBoolean(partes[3]),Double.parseDouble(partes[4]),Double.parseDouble(partes[5])));
+                    Mesero mesero;
+                    if(restaurant.buscarMesero(partes[2])==null){
+                        mesero=null;
+                    }else{
+                        mesero= restaurant.buscarMesero(partes[2]);
+                    }
+                    
+                    mesas.add(new Mesa(Integer.parseInt(partes[0]),Integer.parseInt(partes[1]),mesero,Boolean.parseBoolean(partes[3]),Double.parseDouble(partes[4]),Double.parseDouble(partes[5])));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
@@ -62,8 +70,13 @@ public class MesasData {
         
         try(BufferedWriter bw = new BufferedWriter(
                 new FileWriter(new File(App.class.getResource(ruta).toURI())))){
+            
             for(Mesa m: mesas){
-                String linea = String.valueOf(m.getNumero())+","+String.valueOf(m.getCapacidad())+","+String.valueOf(m.getMesero().getNombre())+","+String.valueOf(m.isOcupada())+","+String.valueOf(m.getX())+","+String.valueOf(m.getY());
+                String StringMesero ="null";
+                if(m.getMesero()!=null){
+                    StringMesero=String.valueOf(m.getMesero().getNombre());
+                }
+                String linea = String.valueOf(m.getNumero())+","+String.valueOf(m.getCapacidad())+","+StringMesero+","+String.valueOf(m.isOcupada())+","+String.valueOf(m.getX())+","+String.valueOf(m.getY());
                 bw.write(linea);
                 bw.newLine();
             }
