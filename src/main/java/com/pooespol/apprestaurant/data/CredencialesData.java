@@ -23,7 +23,7 @@ import java.util.ArrayList;
  */
 public class CredencialesData {
     
-    public static ArrayList<Usuario> leerAdministradores(String ruta) throws IOException{
+    public static ArrayList<Usuario> leerAdministradores(String ruta) {
         ArrayList<Usuario> admin = new ArrayList<>();
         try(InputStream input = App.class.getResource(ruta).openStream();
                 BufferedReader bf = new BufferedReader(
@@ -33,19 +33,21 @@ public class CredencialesData {
                 while( (linea=bf.readLine())!=null ){
                     
                     String[] partes = linea.split(";");
+                    System.out.println(partes[0]+" "+partes[1]);
+                    //Usuario a = new Administrador(partes[0],partes[1]);
                     admin.add(new Administrador(partes[0],partes[1]));
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
-                throw ex;
+               
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
-                throw ex;
+               
             } 
        
         return admin;
     }
-    public static ArrayList<Usuario> leerMeseros(String ruta) throws IOException{
+    public static ArrayList<Usuario> leerMeseros(String ruta) {
         ArrayList<Usuario> meseros = new ArrayList<>();
         try(InputStream input = App.class.getResource(ruta).openStream();
                 BufferedReader bf = new BufferedReader(
@@ -55,14 +57,15 @@ public class CredencialesData {
                 while( (linea=bf.readLine())!=null ){
                     
                     String[] partes = linea.split(";");
-                    meseros.add(new Mesero(partes[0],partes[1],partes[2]));
+                    Usuario p1 = new Mesero(partes[0],partes[1],partes[2]);
+                    meseros.add(p1);
                 }
             } catch (FileNotFoundException ex) {
                 System.out.println(ex.getMessage());
-                throw ex;
+                
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
-                throw ex;
+              
             } 
        
         return meseros;

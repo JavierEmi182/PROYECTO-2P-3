@@ -181,7 +181,7 @@ public class IniciarMeseroController implements Initializable {
                             for (Pedido p:pedidos){
                                 if(p.getMesa().equals(m)){
                                     if(p.getComidas().size()>0){
-                                      TomaPedidoController.CrearPanelPedido(p);
+                                    //  TomaPedidoController.CrearPanelPedido(p);
                                   }else{
                                         try {
                                             TomaPedidoController.mesapedido=m;

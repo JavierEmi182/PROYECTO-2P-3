@@ -40,6 +40,7 @@ public class FinalizarCuentaController implements Initializable {
 
     @FXML
     private void Accept(ActionEvent event) {
+        
     }
 
 }

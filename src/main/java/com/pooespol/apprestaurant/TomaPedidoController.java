@@ -35,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 /**
  * FXML Controller class
@@ -53,7 +54,7 @@ public class TomaPedidoController implements Initializable {
     @FXML
     private Button btnFinalizarOrden;
     @FXML
-    private static VBox vboxPedido;
+    private VBox vboxPedido = new VBox();
     @FXML
     private Label lblTotal;
     static Mesa mesapedido;
@@ -321,7 +322,7 @@ public class TomaPedidoController implements Initializable {
         }
     }
     
-    public static void CrearPanelPedido(Pedido p){
+    public void CrearPanelPedido(Pedido p){
        for(Comida c: p.getComidas()){
            HBox hcomida = new HBox();
            Label nombre = new Label(c.getNombre()+"\nCantidad: "+c.getContador());
