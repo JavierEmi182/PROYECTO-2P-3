@@ -18,6 +18,7 @@ import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.mesas;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.toLocalDate;
+import static com.pooespol.apprestaurant.modelo.Restaurant.ventas;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
@@ -100,17 +101,34 @@ public class IniciarAdminController implements Initializable {
     @FXML
     private Button btDiseñoPlano;
     
+    public static boolean pausarHilo=false;
+    public static boolean detenerHilo;
+    @FXML
+    private VBox vb1;
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fpPantallaAdmin.getChildren().clear();
-        CargarMesasSinEventos();
-        //CargarMesas(fpPantallaAdmin);
         
-        //Thread t = new Thread(new cargarMesasRunnable());
-        //t.start();
+        try {
+            CargarMesasSinEventos();
+            //CargarMesas(fpPantallaAdmin);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        
+        Thread t = new Thread(new cargarMesasRunnable());
+        t.start();
+        if(pausarHilo){
+            t.stop();
+        }else{
+            t.resume();
+            //t.notify();
+        }
     }    
     
     @FXML
@@ -128,7 +146,7 @@ public class IniciarAdminController implements Initializable {
     public void MostrarGestionMenu(){
        
        fpPantallaAdmin.getChildren().clear();
-        
+       pausarHilo=true;
         try{
             //System.out.println("aqui 1 ");
            ArrayList<Comida> comidas = ComidaData.leerComida("comida.txt"); 
@@ -180,9 +198,10 @@ public class IniciarAdminController implements Initializable {
         }catch(IOException ec){
             
         }   
-        
+        //pausarHilo=false;
     }
     public void PantallaEditarPlato(Comida comida) throws IOException {
+        pausarHilo=true;
            System.out.println(comida);
            System.out.println(Restaurant.getComidas());
            
@@ -309,10 +328,11 @@ public class IniciarAdminController implements Initializable {
                 lblMessage.setText("");
             });
            
-            
+         //pausarHilo=false;   
     }
     public void PantallaCrearPlato(){
         try {
+            pausarHilo=true;
             fpPantallaAdmin.getChildren().clear();
             //principal container
             fpPantallaAdmin.setAlignment(Pos.CENTER);
@@ -411,7 +431,7 @@ public class IniciarAdminController implements Initializable {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
+        //pausarHilo=false;
     }
 
     @FXML
@@ -421,6 +441,7 @@ public class IniciarAdminController implements Initializable {
 
     @FXML
     private void ReportesVentas(MouseEvent event) {
+        pausarHilo=true;
         fpPantallaAdmin.getChildren().clear();
         
         
@@ -495,9 +516,11 @@ public class IniciarAdminController implements Initializable {
         }catch(java.lang.NumberFormatException ex4){
             
         }
+        //pausarHilo=false;
     }
         EventHandler<MouseEvent> FiltrarVentas = new EventHandler<MouseEvent>(){  
         public void handle(MouseEvent event){
+            
             fpPantallaAdmin.getChildren().clear();
             
             HBox barraSuperior= new HBox();
@@ -569,12 +592,15 @@ public class IniciarAdminController implements Initializable {
                     }catch(java.time.format.DateTimeParseException ex1){
                         System.out.println("porfavor ingrese un formato correcto");
                     }
-                }};
+                }
+        ;
+        };
 
     @FXML
     private void CreacionMesas(MouseEvent event) {
+        vb1.getChildren().clear();
         
-        
+        pausarHilo=true;
         fpPantallaAdmin.getChildren().clear();
         //Pane pane =CargarMesas(fpPantallaAdmin);
         Pane pane =CargarMesas();
@@ -683,6 +709,7 @@ public class IniciarAdminController implements Initializable {
             }
             
         });
+    //pausarHilo=false;
     }   
     //Evento Arrastrar
     public void ArrastrarMesas(StackPane sp, int nmesa){
@@ -758,12 +785,21 @@ public class IniciarAdminController implements Initializable {
         @Override
         public void run(){
             try{
+                while(!pausarHilo){
         Platform.runLater(()->{
                 fpPantallaAdmin.getChildren().clear();
-               CargarMesasSinEventos();
+            try {
+                CargarMesasSinEventos();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             });
-        
-        Thread.sleep(12000);
+        System.out.println("Inicie");
+        Thread.sleep(2000);
+        System.out.println("Me levante");
+        if(pausarHilo){
+            
+        }}
         }catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
@@ -771,9 +807,10 @@ public class IniciarAdminController implements Initializable {
     }}
     
     //public Pane CargarMesasSinEventos(Pane fp){
-    public Pane CargarMesasSinEventos(){
+    public Pane CargarMesasSinEventos() throws IOException{
         
-        fpPantallaAdmin.getChildren().clear();
+        vb1.getChildren().clear();
+        /*fpPantallaAdmin.getChildren().clear();
         //fp.getChildren().clear();
         //fpPantallaAdmin.setAlignment(Pos.CENTER);
         Pane pane = new Pane();
@@ -813,18 +850,8 @@ public class IniciarAdminController implements Initializable {
                     System.out.println(e.getMessage());
                 }catch(Exception e){
                     System.out.println("Error");
-                }
-                return pane;
-        }
-    @FXML
-   private void MostrarMonitoreo(MouseEvent event) {
-       fpPantallaAdmin.getChildren().clear();
-       //CargarMesasSinEventos(fpPantallaAdmin);
-       CargarMesasSinEventos();
-       /*System.out.println("Funciono");
-       
-       
-       fpPantallaAdmin.getChildren().clear();
+                }*/
+        fpPantallaAdmin.getChildren().clear();
         Pane pane = new Pane();
         pane.setPrefHeight(fpPantallaAdmin.getHeight());
         pane.setPrefWidth(fpPantallaAdmin.getWidth());
@@ -859,11 +886,171 @@ public class IniciarAdminController implements Initializable {
             }catch(Exception e){
                 System.out.println("Error");
             }
-
-        System.out.println("Termino");
-        System.out.println(Restaurant.mesas);
-        System.out.println(Restaurant.mesas.get(0).getMesero().getNombre());
-        */
+            
+       HBox hbNumComensales = new HBox();
+       HBox hbTotalFacturado = new HBox();
+       
+       Label lbText1 = new Label("Número de Comensales: ");
+       Label lbNumComensales= new Label();
+       
+       Label lbText2 = new Label("Total Facturado: $");
+       Label lbTotalFacturado= new Label();
+       
+       
+       int contadorComensales=0;
+       
+       
+       int totalVentas=0;
+       
+       //vb1.getChildren().add(hbNumComensales);
+       //vb1.getChildren().add(hbTotalFacturado);
+       
+        try {
+            mesas= MesasData.leerMesas("mesas.txt");
+            } catch (IOException ex) {
+            System.out.println("Archivo no encontrado");
+        }
+        
+        //try {
+        ArrayList<Venta> ventas= VentaData.leerVentasPorFecha(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
+           // } catch (IOException ex) {
+           // System.out.println("Archivo no encontrado");
+        //}
+        
+        for(Mesa m:mesas){
+            contadorComensales+=m.getCapacidad();           
+        }
+        
+        for(Venta v:ventas){
+            totalVentas+=v.getTotal();
+        }
+        
+        lbNumComensales.setText(String.valueOf(contadorComensales));
+        lbTotalFacturado.setText(String.valueOf(totalVentas));
+        
+        hbTotalFacturado.getChildren().add(lbText2);
+        hbTotalFacturado.getChildren().add(lbTotalFacturado);
+        hbNumComensales.getChildren().add(lbText1);
+        hbNumComensales.getChildren().add(lbNumComensales);
+        vb1.getChildren().add(hbNumComensales);
+        vb1.getChildren().add(hbTotalFacturado);
+            
+                return pane;
+        }
+    @FXML
+   private void MostrarMonitoreo(MouseEvent event) throws IOException {
+       pausarHilo=false;
+       vb1.getChildren().clear();
+       Thread t = new Thread(new cargarMesasRunnable());
+        t.start();
+        if(pausarHilo){
+            t.stop();
+        }else{
+            t.resume();
+            //t.notify();
+        }
+       
+       fpPantallaAdmin.getChildren().clear();
+       //CargarMesasSinEventos(fpPantallaAdmin);
+       CargarMesasSinEventos();
+       
+       //VBox vb = new VBox();
+       /*HBox hbNumComensales = new HBox();
+       HBox hbTotalFacturado = new HBox();
+       
+       Label lbText1 = new Label("Número de Comensales: ");
+       Label lbNumComensales= new Label();
+       
+       Label lbText2 = new Label("Total Facturado: $");
+       Label lbTotalFacturado= new Label();
+       
+       
+       int contadorComensales=0;
+       
+       
+       int totalVentas=0;
+       
+       vb1.getChildren().add(hbNumComensales);
+       vb1.getChildren().add(hbTotalFacturado);
+       
+        try {
+            mesas= MesasData.leerMesas("mesas.txt");
+            } catch (IOException ex) {
+            System.out.println("Archivo no encontrado");
+        }
+        
+        //try {
+        ArrayList<Venta> ventas= VentaData.leerVentasPorFecha(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
+           // } catch (IOException ex) {
+           // System.out.println("Archivo no encontrado");
+        //}
+        
+        for(Mesa m:mesas){
+            contadorComensales+=m.getCapacidad();           
+        }
+        
+        for(Venta v:ventas){
+            totalVentas+=v.getTotal();
+        }
+        
+        lbNumComensales.setText(String.valueOf(contadorComensales));
+        lbTotalFacturado.setText(String.valueOf(totalVentas));
+        
+        hbTotalFacturado.getChildren().add(lbText2);
+        hbTotalFacturado.getChildren().add(lbTotalFacturado);
+        hbNumComensales.getChildren().add(lbText1);
+        hbNumComensales.getChildren().add(lbNumComensales);
+        vb1.getChildren().add(hbNumComensales);
+        vb1.getChildren().add(hbTotalFacturado);*/
+        //menu.getChildren().add(vb);
+        //menu.setBottom(vb1);
+            
+            //pausarHilo=false;
+            /*System.out.println("Funciono");
+            
+            
+            fpPantallaAdmin.getChildren().clear();
+            Pane pane = new Pane();
+            pane.setPrefHeight(fpPantallaAdmin.getHeight());
+            pane.setPrefWidth(fpPantallaAdmin.getWidth());
+            
+            
+            try{
+            for(Mesa m:Restaurant.mesas){
+            StackPane sp = new StackPane();
+            double x= m.getX();
+            double y= m.getY();
+            int numeroMesa= m.getNumero();
+            
+            Ellipse elipse = new Ellipse(50,50);
+            if(m.isOcupada()==true){
+            elipse.setFill(Color.RED);
+            }else{
+            elipse.setFill(Color.YELLOW);}
+            
+            Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+            
+            sp.setLayoutX(x);
+            sp.setLayoutY(y);
+            
+            sp.getChildren().addAll(elipse,lbNumMesa);
+            pane.getChildren().add(sp);
+            
+            }
+            fpPantallaAdmin.getChildren().add(pane);
+            
+            }catch(RuntimeException e){
+            System.out.println(e.getMessage());
+            }catch(Exception e){
+            System.out.println("Error");
+            }
+            
+            System.out.println("Termino");
+            System.out.println(Restaurant.mesas);
+            System.out.println(Restaurant.mesas.get(0).getMesero().getNombre());
+            */
+            //pausarHilo=false;
+        
     }}
 
 

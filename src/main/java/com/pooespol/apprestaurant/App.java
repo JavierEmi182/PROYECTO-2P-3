@@ -115,4 +115,9 @@ public class App extends Application {
         launch();
         
     }
+    
+    public void stop(){
+        IniciarAdminController.pausarHilo=true;
+    }
+    
 }
