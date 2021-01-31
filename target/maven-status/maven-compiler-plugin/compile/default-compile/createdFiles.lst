@@ -22,4 +22,5 @@ com\pooespol\apprestaurant\IniciarAdminController.class
 com\pooespol\apprestaurant\data\TipoComidaData.class
 com\pooespol\apprestaurant\modelo\Pedido.class
 com\pooespol\apprestaurant\ValidacionMesaController.class
+com\pooespol\apprestaurant\IniciarAdminController$cargarMesasRunnable.class
 com\pooespol\apprestaurant\modelo\login\Administrador.class

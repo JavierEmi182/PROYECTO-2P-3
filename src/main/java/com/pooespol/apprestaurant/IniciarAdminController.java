@@ -6,6 +6,7 @@
 package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
+import com.pooespol.apprestaurant.IniciarAdminController.cargarMesasRunnable;
 import static com.pooespol.apprestaurant.data.ComidaData.reescribirComidas;
 import com.pooespol.apprestaurant.data.MesasData;
 import com.pooespol.apprestaurant.data.TipoComidaData;
@@ -104,7 +105,12 @@ public class IniciarAdminController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       CargarMesas(fpPantallaAdmin);
+        fpPantallaAdmin.getChildren().clear();
+        CargarMesasSinEventos();
+        //CargarMesas(fpPantallaAdmin);
+        
+        //Thread t = new Thread(new cargarMesasRunnable());
+        //t.start();
     }    
     
     @FXML
@@ -570,7 +576,8 @@ public class IniciarAdminController implements Initializable {
         
         
         fpPantallaAdmin.getChildren().clear();
-        Pane pane =CargarMesas(fpPantallaAdmin);
+        //Pane pane =CargarMesas(fpPantallaAdmin);
+        Pane pane =CargarMesas();
         pane.setPrefHeight(fpPantallaAdmin.getHeight());
         pane.setPrefWidth(fpPantallaAdmin.getWidth());
   
@@ -637,7 +644,7 @@ public class IniciarAdminController implements Initializable {
                         
                 Ellipse elipse = new Ellipse(50,50);
                 elipse.setFill(Color.YELLOW);
-                String n = String.valueOf(Restaurant.mesas.size()+1);
+                String n = String.valueOf(Restaurant.mesas.size());
                 Label numeromesa = new Label(n);
                 StackPane st = new StackPane();
                 st.getChildren().addAll(elipse,numeromesa);                  
@@ -699,11 +706,17 @@ public class IniciarAdminController implements Initializable {
             }
         });
     }
-    public Pane CargarMesas(Pane fp){
-        fp.getChildren().clear();
+    //public Pane CargarMesas(Pane fp){
+    public Pane CargarMesas(){
+        fpPantallaAdmin.getChildren().clear();
+        //fpPantallaAdmin.setAlignment(Pos.CENTER);
+        
+        //fp.getChildren().clear();
         Pane pane = new Pane();
-        pane.setPrefHeight(fp.getHeight());
-        pane.setPrefWidth(fp.getWidth());
+        //pane.setPrefHeight(fp.getHeight());
+        pane.setPrefHeight(fpPantallaAdmin.getHeight());
+        //pane.setPrefWidth(fp.getWidth());
+        pane.setPrefHeight(fpPantallaAdmin.getWidth());
         
             
             try{
@@ -729,7 +742,8 @@ public class IniciarAdminController implements Initializable {
                     pane.getChildren().add(sp);
                     
                 }
-                fp.getChildren().add(pane);
+                //fp.getChildren().add(pane);
+                fpPantallaAdmin.getChildren().add(pane);
             
             }catch(RuntimeException e){
                 System.out.println(e.getMessage());
@@ -738,12 +752,37 @@ public class IniciarAdminController implements Initializable {
             }
             return pane;
     }
-    public Pane CargarMesasSinEventos(Pane fp){
-            fp.getChildren().clear();
-            Pane pane = new Pane();
-            pane.setPrefHeight(fp.getHeight());
-            pane.setPrefWidth(fp.getWidth());
 
+    class cargarMesasRunnable implements Runnable{
+        
+        @Override
+        public void run(){
+            try{
+        Platform.runLater(()->{
+                fpPantallaAdmin.getChildren().clear();
+               CargarMesasSinEventos();
+            });
+        
+        Thread.sleep(12000);
+        }catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+        //cargarMesasSinEventos();
+    }}
+    
+    //public Pane CargarMesasSinEventos(Pane fp){
+    public Pane CargarMesasSinEventos(){
+        
+        fpPantallaAdmin.getChildren().clear();
+        //fp.getChildren().clear();
+        //fpPantallaAdmin.setAlignment(Pos.CENTER);
+        Pane pane = new Pane();
+        //pane.setPrefHeight(fp.getHeight());
+        pane.setPrefHeight(fpPantallaAdmin.getHeight());
+        //pane.setPrefWidth(fp.getWidth());
+        pane.setPrefHeight(fpPantallaAdmin.getWidth());
+        
+        
 
                 try{
                     for(Mesa m:Restaurant.mesas){
@@ -767,7 +806,8 @@ public class IniciarAdminController implements Initializable {
                         pane.getChildren().add(sp);
 
                     }
-                    fp.getChildren().add(pane);
+                    //fp.getChildren().add(pane);
+                    fpPantallaAdmin.getChildren().add(pane);
 
                 }catch(RuntimeException e){
                     System.out.println(e.getMessage());
@@ -779,7 +819,8 @@ public class IniciarAdminController implements Initializable {
     @FXML
    private void MostrarMonitoreo(MouseEvent event) {
        fpPantallaAdmin.getChildren().clear();
-       CargarMesasSinEventos(fpPantallaAdmin);
+       //CargarMesasSinEventos(fpPantallaAdmin);
+       CargarMesasSinEventos();
        /*System.out.println("Funciono");
        
        

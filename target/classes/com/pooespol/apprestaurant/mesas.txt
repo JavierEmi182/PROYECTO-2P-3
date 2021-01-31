@@ -1,7 +1,7 @@
-1,2,Javier,true,50.0,25.0
-2,4,null,false,203.6,123.80000000000001
-3,4,null,false,350.0,25.0
-4,4,null,false,500.0,25.0
-5,4,Javier,true,125.0,200.0
-6,4,null,false,275.0,200.0
-7,4,Josseline,true,425.0,200.0
+1,2,Javier,True,50,25
+2,4,null,False,200,25
+3,4,null,False,350,25
+4,4,null,False,500,25
+5,4,Javier,True,125,200
+6,4,null,False,275,200
+7,4,Josseline,True,425,200
