@@ -571,37 +571,27 @@ public class IniciarAdminController implements Initializable {
         
         fpPantallaAdmin.getChildren().clear();
         Pane pane =CargarMesas(fpPantallaAdmin);
-        //Pane pane = new Pane();
         pane.setPrefHeight(fpPantallaAdmin.getHeight());
         pane.setPrefWidth(fpPantallaAdmin.getWidth());
-        //fpPantallaAdmin.getChildren().add(pane);    
+  
         
         pane.setOnMouseClicked((MouseEvent) -> {
             VBox cuadro1 =  new VBox();
             
             Stage stage = new Stage();
             
-            try{
-            //Label titulo = new Label("ELIJA DIMENSIONES DE LA MESA");
+            try{ 
             cuadro1.setAlignment(Pos.CENTER);
-            /*Label etiqueta = new Label("INGRESE VALOR PARA EL EJE X");
-            TextField ejex = new TextField("25");
-            HBox h1 = new HBox(etiqueta,ejex);
-            h1.setSpacing(30);
-            
-            Label etiqueta2 = new Label("INGRESE VALOR PARA EL EJE Y");
-            TextField ejey = new TextField("25");
-            HBox h2 = new HBox(etiqueta2,ejey);
-            h2.setSpacing(30);*/
+
             
             Label etiqueta3 = new Label("INGRESE CAPACIDAD");
             TextField capacidad = new TextField("2");
             HBox h3 = new HBox(etiqueta3,capacidad);
             h3.setSpacing(30);
             Label lbMensaje= new Label();
+            Label lbMensaje1= new Label();
             
             Button boton = new Button("CREAR");
-            //cuadro1.getChildren().addAll(titulo,h1,h2,h3,boton);
             cuadro1.getChildren().addAll(h3,boton);
             cuadro1.setSpacing(30);
             cuadro1.setPadding(new Insets(7,7,7,7));
@@ -616,8 +606,12 @@ public class IniciarAdminController implements Initializable {
             double posiciony = posicion.getY();
             
             boton.setOnMouseClicked((MouseEvent e)->{
-                //int numero, int capacidad, boolean ocupada, double x, double y
-                boolean condicionDistancia=false;
+                lbMensaje1.setText("");
+                try {
+                        if(Integer.parseInt(capacidad.getText())<=0){
+                            throw new NumberFormatException();  
+                        }
+                        boolean condicionDistancia=false;
                 int contador=0;
                 for(Mesa m:mesas){
                     Point2D posm= new Point2D(m.getX()+50,m.getY()+92);
@@ -630,8 +624,8 @@ public class IniciarAdminController implements Initializable {
                     }}
                     System.out.println(contador);
                     System.out.println(mesas.size());
-                    System.out.println(posicion);
-                if(condicionDistancia&&(contador==mesas.size())){
+                    System.out.println(posicion);          
+                if(condicionDistancia&&(contador==mesas.size())){   
                 Restaurant.mesas.add(new Mesa(Restaurant.mesas.size()+1,Integer.parseInt(capacidad.getText()), false, posicionx-50,posiciony-85));
                         try {
                             MesasData.escribirMesas(mesas, "mesas.txt");
@@ -640,7 +634,7 @@ public class IniciarAdminController implements Initializable {
                         } catch (URISyntaxException ex) {
                             ex.printStackTrace();
                         }
-                //Ellipse elipse = new Ellipse(Double.parseDouble(ejex.getText()),Double.parseDouble(ejey.getText()));
+                        
                 Ellipse elipse = new Ellipse(50,50);
                 elipse.setFill(Color.YELLOW);
                 String n = String.valueOf(Restaurant.mesas.size()+1);
@@ -653,27 +647,25 @@ public class IniciarAdminController implements Initializable {
                     pane.getChildren().add(st);
                     st.setLayoutX(posicionx-50);
                     st.setLayoutY(posiciony-85);
+                    
+                    ArrastrarMesas(st,Restaurant.mesas.size()+1);
                     fpPantallaAdmin.getChildren().add(pane);
+                    
                     
                  });
                 
                 stage.close();
-                //Guardar los datos en el txt
-                //Saler un error
-                /*File file = new File(App.class.getResource("mesas.txt").getFile());
-                try(BufferedWriter bw = new BufferedWriter(new FileWriter(file,true))){
-                    String linea = ejex.getText()+";"+ejey.getText()+";"+n+";"+posicionx+";"+posiciony;
-                    bw.write(linea);
-                    bw.newLine();
-                    bw.close();
-                } catch (Exception ex) {
-                    System.out.println("Error");
-                    ex.printStackTrace();
-                }*/
                 }else{
                         lbMensaje.setText("Porfavor ingrese la mesa mas distanciada de las otras");
                         cuadro1.getChildren().add(lbMensaje);
-                    } //Añadido for
+                    }
+                    }catch (NumberFormatException ex) {
+                        
+                            lbMensaje1.setText("Ingrese un Valor Adecuado");
+                            cuadro1.getChildren().add(lbMensaje1);
+                        }
+                
+                 //Añadido for
             });
             mesas=MesasData.leerMesas("mesas.txt");
             }catch(RuntimeException e){
@@ -684,21 +676,29 @@ public class IniciarAdminController implements Initializable {
             }
             
         });
+    }   
+    //Evento Arrastrar
+    public void ArrastrarMesas(StackPane sp, int nmesa){
+        sp.setOnMouseDragged((MouseEvent ev) -> {
+            double x = ev.getSceneX()-50;
+            double y = ev.getSceneY()-85;
+            sp.setLayoutX(x);
+            sp.setLayoutY(y);
+            for(Mesa m : Restaurant.getMesas()){
+                if(m.getNumero()==nmesa){
+                    m.setX(x);
+                    m.setY(y);
+                    try {
+                            MesasData.escribirMesas(Restaurant.getMesas(), "mesas.txt");
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }catch (URISyntaxException ex) {
+                            ex.printStackTrace();
+                    }
+            }
+            }
+        });
     }
-           
-    public static void Mesas(Pane pane, double x,double y,String n,double posicionx,double posiciony){
-            
-        Ellipse elipse = new Ellipse(x,y);
-        elipse.setFill(Color.YELLOW);
-        Label numeromesa = new Label(n);
-        StackPane st = new StackPane();
-        st.getChildren().addAll(elipse,numeromesa);
-        pane.getChildren().add(st);
-        st.setLayoutX(posicionx);
-        st.setLayoutY(posiciony);
-        
-    }
-    
     public Pane CargarMesas(Pane fp){
         fp.getChildren().clear();
         Pane pane = new Pane();
@@ -725,6 +725,7 @@ public class IniciarAdminController implements Initializable {
                     sp.setLayoutY(y);
                     
                     sp.getChildren().addAll(elipse,lbNumMesa);
+                    ArrastrarMesas(sp, numeroMesa);
                     pane.getChildren().add(sp);
                     
                 }
@@ -737,11 +738,48 @@ public class IniciarAdminController implements Initializable {
             }
             return pane;
     }
+    public Pane CargarMesasSinEventos(Pane fp){
+            fp.getChildren().clear();
+            Pane pane = new Pane();
+            pane.setPrefHeight(fp.getHeight());
+            pane.setPrefWidth(fp.getWidth());
 
+
+                try{
+                    for(Mesa m:Restaurant.mesas){
+                        StackPane sp = new StackPane();
+                        double x= m.getX();
+                        double y= m.getY();
+                        int numeroMesa= m.getNumero();
+
+                        Ellipse elipse = new Ellipse(50,50);
+                        if(m.isOcupada()==true){
+                            elipse.setFill(Color.RED);
+                        }else{
+                        elipse.setFill(Color.YELLOW);}
+
+                        Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+
+                        sp.setLayoutX(x);
+                        sp.setLayoutY(y);
+
+                        sp.getChildren().addAll(elipse,lbNumMesa);                       
+                        pane.getChildren().add(sp);
+
+                    }
+                    fp.getChildren().add(pane);
+
+                }catch(RuntimeException e){
+                    System.out.println(e.getMessage());
+                }catch(Exception e){
+                    System.out.println("Error");
+                }
+                return pane;
+        }
     @FXML
    private void MostrarMonitoreo(MouseEvent event) {
        fpPantallaAdmin.getChildren().clear();
-       CargarMesas(fpPantallaAdmin);
+       CargarMesasSinEventos(fpPantallaAdmin);
        /*System.out.println("Funciono");
        
        

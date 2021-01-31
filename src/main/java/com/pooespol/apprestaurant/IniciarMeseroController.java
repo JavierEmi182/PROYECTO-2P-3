@@ -211,52 +211,6 @@ public class IniciarMeseroController implements Initializable {
             return pane;
     }
     
-    
-
-
-
-
-
-
-
-
-
-
 
     
-
-    private void disponibilidad(MouseEvent event) throws IOException {
-         //App.setRoot("TomaPedido");
-         
-         circulo = (Circle) ((Pane)event.getSource()).getChildren().get(0);
-         
-         if (circulo.getFill() == Color.YELLOW){
-             nmesa = (Label)((Pane)event.getSource()).getChildren().get(1);
-             int x = Integer.parseInt(nmesa.getText());
-             Mesa mesaocup = new Mesa(0, x, mesero);
-             
-             circulo.setFill(Color.GREENYELLOW);
-             ((Pane)event.getSource()).getChildren().set(0, circulo);
-             
-             Restaurant.mesas.add(mesaocup);
-             //CrearVentana("TomaPedido"); 
-             App.setRoot("TomaPedido");
-         }else if(circulo.getFill() == Color.GREENYELLOW){
-             System.out.println("Hola");
-         }else if(circulo.getFill() == Color.RED){ 
-             System.out.println("No es tu mesa");
-         }
-         
-    }
-
-    private void CrearMesa(MouseEvent event) {
-        Circle nuevocirculo = new Circle(30, Color.YELLOW);
-       String n = String.valueOf(Restaurant.mesas.size()+1);
-       Label numeromesa = new Label(n);
-       StackPane st = new StackPane();
-       st.getChildren().addAll(nuevocirculo,numeromesa);
-
-       PanelMesas.getChildren().addAll(st);
-       // Falta
-    }
 }
