@@ -97,8 +97,17 @@ public class Mesa {
 
     @Override
     public String toString() {
-        return "Mesa{" + "numero=" + numero + ", capacidad=" + capacidad + ", mesero=" + mesero + '}';
+        return "Mesa{" + "numero=" + numero + ", capacidad=" + capacidad + ", mesero=" + mesero + '}'+ocupada;
     }
-    
+    public boolean equals(Object o){
+        if (o!=null){
+            if (o instanceof Mesa){
+                Mesa other = (Mesa)o;
+                if(String.valueOf(numero).equals(String.valueOf(other.numero))){
+                    return true;
+                }
+            }
+        }return false;
+    }
     
 }

@@ -1,7 +1,7 @@
 1,2,Javier,True,50,25
-2,4,Javier,False,200,25
-3,4,Javier,False,350,25
-4,4,Javier,False,500,25
+2,4,null,False,200,25
+3,4,null,False,350,25
+4,4,null,False,500,25
 5,4,Javier,True,125,200
-6,4,Javier,False,275,200
-7,4,Javier,True,425,200
+6,4,null,False,275,200
+7,4,Josseline,True,425,200

@@ -1,1 +1,2 @@
-Javier;meserogmail.com;mesero
+Javier;mesero@gmail.com;mesero
+Josseline;mesero2@gmail.com;mesero2

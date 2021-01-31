@@ -77,7 +77,10 @@ public class App extends Application {
         Administrador admin1 = new Administrador("admin@gmail.com","admin");
         usuarios.add(admin1);
         Mesero mesero1 = new Mesero("Javier","mesero@gmail.com","mesero");
+        
         usuarios.add(mesero1);
+        Mesero mesero2 = new Mesero ("Josseline","mesero2@gmail.com","mesero2");
+        usuarios.add(mesero2);
         
         ArrayList<Comida> comidas = ComidaData.leerComida("comida.txt");
         for (Comida c: comidas){
@@ -99,6 +102,7 @@ public class App extends Application {
             Restaurant.añadirUsuario(u);
         }*/
     }
+    
 
     public static void main(String[] args) {
         try {

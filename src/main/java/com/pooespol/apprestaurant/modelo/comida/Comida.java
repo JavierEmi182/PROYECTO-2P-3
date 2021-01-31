@@ -14,7 +14,7 @@ public class Comida {
     private double precio;
     private String rutaImagen;
     private TipoComida tipoComida;
-    private int contador = 0;
+    private int contador = 1;
     public Comida(String nombre, double precio, String rutaImagen,TipoComida tipoComida) {
         this.nombre = nombre;
         this.precio = precio;
@@ -53,8 +53,8 @@ public class Comida {
     public int getContador (){
         return contador;
     }
-    public void setContador(int cont){
-        contador =cont;
+    public void setContador(){
+        contador +=1;
     }
 
     public void setNombre(String nombre) {

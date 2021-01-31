@@ -32,4 +32,14 @@ public class Mesero extends Usuario {
     public String toString(){
         return getNombre();
     }
+    public boolean equals(Object o){
+        if (o!= null){
+            if (o instanceof Mesero){
+            Mesero other = (Mesero)o;
+            if(nombre.equals(other.nombre)){
+                return true;
+            }
+        }
+        }return false;
+    }
 }

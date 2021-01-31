@@ -104,7 +104,7 @@ public class IniciarAdminController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       CargarMesas();
+       CargarMesas(fpPantallaAdmin);
     }    
     
     @FXML
@@ -570,7 +570,7 @@ public class IniciarAdminController implements Initializable {
         
         
         fpPantallaAdmin.getChildren().clear();
-        Pane pane =CargarMesas();
+        Pane pane =CargarMesas(fpPantallaAdmin);
         //Pane pane = new Pane();
         pane.setPrefHeight(fpPantallaAdmin.getHeight());
         pane.setPrefWidth(fpPantallaAdmin.getWidth());
@@ -699,11 +699,11 @@ public class IniciarAdminController implements Initializable {
         
     }
     
-    public Pane CargarMesas(){
-        fpPantallaAdmin.getChildren().clear();
+    public Pane CargarMesas(Pane fp){
+        fp.getChildren().clear();
         Pane pane = new Pane();
-        pane.setPrefHeight(fpPantallaAdmin.getHeight());
-        pane.setPrefWidth(fpPantallaAdmin.getWidth());
+        pane.setPrefHeight(fp.getHeight());
+        pane.setPrefWidth(fp.getWidth());
         
             
             try{
@@ -728,7 +728,7 @@ public class IniciarAdminController implements Initializable {
                     pane.getChildren().add(sp);
                     
                 }
-                fpPantallaAdmin.getChildren().add(pane);
+                fp.getChildren().add(pane);
             
             }catch(RuntimeException e){
                 System.out.println(e.getMessage());
@@ -741,7 +741,7 @@ public class IniciarAdminController implements Initializable {
     @FXML
    private void MostrarMonitoreo(MouseEvent event) {
        fpPantallaAdmin.getChildren().clear();
-       CargarMesas();
+       CargarMesas(fpPantallaAdmin);
        /*System.out.println("Funciono");
        
        
