@@ -37,12 +37,16 @@ public class Restaurant {
      public static ArrayList<Comida> getComidasInventario() {
         return comidasInventario;
      }
+     public static ArrayList<Venta> getVentas(){
+         return ventas;
+     }
      
     public Restaurant(){
         usuarios= new ArrayList<Usuario>();
         mesas = new ArrayList<Mesa>();
         comidas = new ArrayList<Comida>();
         comidasInventario = new ArrayList<Comida>();
+        ventas = new ArrayList<Venta>();
     }
     
     public static LocalDate toLocalDate(String date){
@@ -99,5 +103,9 @@ public class Restaurant {
     public static void borrarComidaInventario(Comida c){
         comidasInventario.remove(c);
     }
+    public static void añadirVenta(Venta v){
+        ventas.add(v);
+    } 
+    
 }
 

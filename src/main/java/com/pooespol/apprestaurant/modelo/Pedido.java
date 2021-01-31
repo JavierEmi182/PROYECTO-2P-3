@@ -32,12 +32,16 @@ public class Pedido {
     public Mesa getMesa(){
         return mesa;
     }
+    public String getCliente(){
+        return cliente;
+    }
    
     public double getTotal(){
         double monto =0;
         if(comidas.size()>0){
             for(Comida c:comidas){
-                monto+=c.getPrecio();
+                double total = c.getPrecio()*c.getContador();
+                monto+=total;
             }
         }return monto;
     }

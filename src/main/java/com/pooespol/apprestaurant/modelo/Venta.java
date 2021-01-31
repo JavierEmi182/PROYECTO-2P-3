@@ -32,12 +32,13 @@ public class Venta {
         this.mesero = mesero;
         this.total = total;
         numeroCuentaStatic+=1;
-        this.numeroCuenta=numeroCuenta;
+        this.numeroCuenta=numeroCuentaStatic;
     }
     
     public Venta(LocalDate date,int numeroCuenta, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total) {
         this.date = date;
-        this.numeroCuenta=numeroCuenta;
+        numeroCuentaStatic+=1;
+        this.numeroCuenta=numeroCuentaStatic;
         this.nombreCliente = nombreCliente;
         this.numeroMesa = numeroMesa;
         this.mesero = mesero;
@@ -78,7 +79,7 @@ public class Venta {
     public Mesero getMesero() {
         return mesero;
     }
-
+    
     public void setMesero(Mesero mesero) {
         this.mesero = mesero;
     }

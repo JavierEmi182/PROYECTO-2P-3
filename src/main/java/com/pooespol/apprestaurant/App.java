@@ -3,9 +3,12 @@ package com.pooespol.apprestaurant;
 import com.pooespol.apprestaurant.data.ComidaData;
 import com.pooespol.apprestaurant.data.CredencialesData;
 import com.pooespol.apprestaurant.data.MesasData;
+import com.pooespol.apprestaurant.data.VentaData;
 import com.pooespol.apprestaurant.modelo.Mesa;
+import com.pooespol.apprestaurant.modelo.Pedido;
 import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.mesas;
+import static com.pooespol.apprestaurant.modelo.Restaurant.ventas;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Administrador;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
@@ -92,6 +95,16 @@ public class App extends Application {
             Restaurant.añadirComidaInventario(c);
         }
         mesas= MesasData.leerMesas("mesas.txt");
+        ventas = VentaData.leerVentas();
+        for (Mesa m : mesas){
+            int cliente =0;
+            Pedido p;
+            if(m.isOcupada()==true){
+                p= new Pedido(m,"Cliente"+cliente);
+                IniciarMeseroController.añadirPedido(p);
+                cliente+=1;
+            }
+        }
         /*
         ArrayList<Usuario> admin = CredencialesData.leerAdministradores("CredencialesAdmin.txt");
         ArrayList<Usuario> mesero = CredencialesData.leerMeseros("CredencialesMesero.txt");

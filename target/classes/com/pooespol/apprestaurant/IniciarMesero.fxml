@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="613.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pooespol.apprestaurant.IniciarMeseroController">
    <children>
-      <HBox alignment="CENTER" prefHeight="43.0" prefWidth="600.0" spacing="20.0">
+      <HBox alignment="CENTER" prefHeight="43.0" prefWidth="600.0" spacing="5.0">
          <children>
             <Label text="Mesero" />
-            <Label fx:id="lblMesero" alignment="CENTER" prefHeight="11.0" prefWidth="146.0" />
+            <Label fx:id="lblMesero" alignment="CENTER" prefHeight="17.0" prefWidth="133.0" />
          </children>
          <opaqueInsets>
             <Insets />
@@ -25,5 +25,10 @@
          </VBox.margin>
       </HBox>
       <Pane fx:id="paneMesero" prefHeight="374.0" prefWidth="613.0" />
+      <Button fx:id="btnsesion" mnemonicParsing="false" onMouseClicked="#CerrarSesión" text=" Cerrar Sesión">
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </Button>
    </children>
 </VBox>

@@ -12,6 +12,7 @@ import com.pooespol.apprestaurant.modelo.Restaurant;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -19,14 +20,18 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Ellipse;
@@ -51,6 +56,8 @@ public class IniciarMeseroController implements Initializable {
     private Pane paneMesero;
     static ArrayList<Pedido> pedidos = new ArrayList<>();
     String cliente;
+    @FXML
+    private Button btnsesion;
     
     /**
      * Initializes the controller class.
@@ -74,11 +81,12 @@ public class IniciarMeseroController implements Initializable {
         }
         
     }    
-    public void setCliente(String s){
-        cliente = s;
-    }
+  
     public static void añadirPedido(Pedido p){
         pedidos.add(p);
+    }
+    public static void borrarPedido (Pedido p){
+        pedidos.remove(p);
     }
     public static ArrayList<Pedido> getPedidos(){
         return pedidos;
@@ -151,8 +159,18 @@ public class IniciarMeseroController implements Initializable {
                         
                         
                         if (color.equals("0xff0000ff")){//color rojo
-                             ValidacionMesaController.meseroAtendiendo=m.getMesero();
-                            CrearVentana("ValidacionMesa");
+                             //ValidacionMesaController.meseroAtendiendo=m.getMesero();
+                            
+                             //CrearVentana("ValidacionMesa");
+                             VBox root = new VBox(new Label("Esta mesa está siendo atendida por: "+m.getMesero()));
+                             root.setAlignment(Pos.CENTER);
+                             Scene sc = new Scene(root);  
+                             Stage st = new Stage ();
+                             st.setHeight(100);
+                             st.setWidth(300);
+                             st.setScene(sc);
+                             st.show();
+                             
                            
                         }else if (color.equals("0xffff00ff")){//amarillo(disponible para crear cuentas)
                            
@@ -166,33 +184,90 @@ public class IniciarMeseroController implements Initializable {
                           // m.setMesero((Mesero)LoginController.usuario1);
                           //  elipse.setFill(Color.GREEN);
                             //m.setOcupada(true);
+                            VBox vcontain = new VBox();
+                            vcontain.setAlignment(Pos.CENTER);
+                            vcontain.setSpacing(10);
                             
-                            AbrirCuentaController.mesa=m;
-                            AbrirCuentaController.e=elipse;
-                            //jc.setMesa(m);
-                            //luego cambiar
-                            CrearVentana("AbrirCuenta");
+                            HBox hcon = new HBox();
+                            hcon.setSpacing(5);
+                            TextField txtCliente = new TextField();
+                            hcon.getChildren().addAll(new Label("Ingrese nombre del cliente"),txtCliente);
+                            Button btnCrearCuenta = new Button("Crear Cuenta");
+                            Label lblMessage = new Label();
+                            vcontain.getChildren().addAll(hcon,btnCrearCuenta,lblMessage);
+                            Scene sc = new Scene(vcontain);
+                            Stage st = new Stage();
+                            st.setHeight(300);
+                            st.setWidth(400);
+                            st.setScene(sc);
+                            st.show();
+                            btnCrearCuenta.setOnMouseClicked((ActionEvent)->{
+                                String clienteCuenta = txtCliente.getText();
+                                if (!(clienteCuenta.equals(""))&& clienteCuenta!=null){
+                                    try {
+                                        cliente = clienteCuenta;
+                                        
+                                        elipse.setFill(Color.GREEN);
+                                        m.setMesero((Mesero)LoginController.usuario1);
+                                        boolean oc = true;
+                                        m.setOcupada(oc);
+                                        System.out.println(Restaurant.mesas);
+                                        MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
+                                        Pedido p = new Pedido(m,cliente);
+                                        pedidos.add(p);
+                                        st.close();
+                                    } catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    } catch (URISyntaxException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }else{
+                                    lblMessage.setText("Nombre Inválido");
+                                }
+                                
+                            });
+                            
+                            //AbrirCuentaController.mesa=m;
+                           // AbrirCuentaController.e=elipse;
+                          
+                            //CrearVentana("AbrirCuenta");
                           //  System.out.println(m.getMesero());
                              //color verde deberia buscar en el array de pedidos por el numero de mesa 
                             
-                        }else {//verde
+                        }else {try {
+                            //verde
                             //buscar en el array la mesa
                             // si tiene comida cargarla en pantalla
+                            
+                            //busco la mesa y le paso a tomapedido el pedido de esa mesa
                             for (Pedido p:pedidos){
                                 if(p.getMesa().equals(m)){
-                                    if(p.getComidas().size()>0){
-                                    //  TomaPedidoController.CrearPanelPedido(p);
-                                  }else{
-                                        try {
-                                            TomaPedidoController.mesapedido=m;
-                                            App.setRoot("TomaPedido");
-                                        } catch (IOException ex) {
-                                            ex.printStackTrace();
-                                        }
-                                  }
+                                    TomaPedidoController.pedidoMesa=p;
+                                    TomaPedidoController.e=elipse;
                                 }
-                              
+                            }
                             
+                            App.setRoot("TomaPedido");
+                            //      code
+                            /*
+                            for (Pedido p:pedidos){
+                            if(p.getMesa().equals(m)){
+                            if(p.getComidas().size()>0){
+                            //  TomaPedidoController.CrearPanelPedido(p);
+                            }else{
+                            try {
+                            TomaPedidoController.mesapedido=m;
+                            App.setRoot("TomaPedido");
+                            } catch (IOException ex) {
+                            ex.printStackTrace();
+                            }
+                            }
+                            }
+                            
+                            
+                            }*/
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
                             }
                             
                         }
@@ -209,6 +284,11 @@ public class IniciarMeseroController implements Initializable {
                 System.out.println("Error");
             }
             return pane;
+    }
+
+    @FXML
+    private void CerrarSesión(MouseEvent event) throws IOException {
+        App.setRoot("Login");
     }
     
 

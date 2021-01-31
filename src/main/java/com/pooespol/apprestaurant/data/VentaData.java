@@ -7,15 +7,20 @@ package com.pooespol.apprestaurant.data;
 
 import com.pooespol.apprestaurant.App;
 import com.pooespol.apprestaurant.modelo.Mesa;
+import com.pooespol.apprestaurant.modelo.Restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.restaurant;
 import static com.pooespol.apprestaurant.modelo.Restaurant.toLocalDate;
 import com.pooespol.apprestaurant.modelo.Venta;
+import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -82,4 +87,29 @@ public class VentaData {
         }
         return filtrada;
     }
+    
+    public static void escribirVentas(ArrayList<Venta> ventas,String ruta)     throws IOException, URISyntaxException{
+        
+        try(BufferedWriter bw = new BufferedWriter(
+                new FileWriter(new File(App.class.getResource(ruta).toURI())))){
+            for(Venta v:ventas){
+                //15/01/2021;5;Pedro Carvo;1;Javier;2.00
+                
+                String linea = v.getDate().toString()+";"+v.getNumeroCuenta()+";"+v.getNombreCliente()+";"+v.getNumeroMesa().getNumero()+";"+v.getMesero()+";"+v.getTotal();
+                bw.write(linea);
+                bw.newLine();
+            }
+        }
+    }
+    /*
+    
+    public static void main (String[] args) throws IOException, URISyntaxException{
+        Venta sd = new Venta (LocalDate.now(),"fw",new Mesa(5,5,new Mesero("hola","","")),new Mesero("hola","",""),654);
+        System.out.println(Restaurant.getVentas());
+        Restaurant.añadirVenta(sd);
+        System.out.println(Restaurant.getVentas());
+        escribirVentas(Restaurant.getVentas(),"ventas.txt");
+    }*/
+    
+    
 }

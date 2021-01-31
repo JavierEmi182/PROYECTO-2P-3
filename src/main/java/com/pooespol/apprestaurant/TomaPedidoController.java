@@ -9,14 +9,18 @@ package com.pooespol.apprestaurant;
 
 import com.pooespol.apprestaurant.data.ComidaData;
 import com.pooespol.apprestaurant.data.TipoComidaData;
+import com.pooespol.apprestaurant.data.VentaData;
 import com.pooespol.apprestaurant.modelo.Mesa;
 import com.pooespol.apprestaurant.modelo.Pedido;
+import com.pooespol.apprestaurant.modelo.Restaurant;
+import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -26,6 +30,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.ComboBox;
@@ -37,6 +42,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Ellipse;
+import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
@@ -57,7 +65,9 @@ public class TomaPedidoController implements Initializable {
     private VBox vboxPedido = new VBox();
     @FXML
     private Label lblTotal;
-    static Mesa mesapedido;
+    
+    static Pedido pedidoMesa;
+    static Ellipse e;
     //ArrayList<Pedido> pedidos ;
     /**
      * Initializes the controller class.
@@ -69,6 +79,14 @@ public class TomaPedidoController implements Initializable {
             cbComida.getItems().addAll(tipos);   
         }catch(IOException ex){
             ex.printStackTrace();
+        }
+        if(pedidoMesa.getComidas().size()>0){
+            for (Comida c: pedidoMesa.getComidas()){
+                CrearPanelPedido(c);
+                lblTotal.setText(String.valueOf(pedidoMesa.getTotal()));
+            }
+            
+            System.out.println(pedidoMesa.getComidas());
         }
         
         //si el archivo de pedido es diferente de null se lo carga
@@ -300,13 +318,20 @@ public class TomaPedidoController implements Initializable {
                //List<Comida> pedido = new ArrayList<>();
                imgv.setOnMouseClicked((MouseEvent)->{
                   for(Pedido p:IniciarMeseroController.getPedidos()){
-                      if(p.getMesa().equals(mesapedido)){
+                      if(p.getMesa().equals(pedidoMesa.getMesa())){
                           if(!(p.getComidas().contains(c))){
                               p.añadirComidaPedido(c);
+                              CrearPanelPedido(c);
+                              
                           }else{
-                              IniciarMeseroController.setContadorComida(c, mesapedido);
+                              IniciarMeseroController.setContadorComida(c, pedidoMesa.getMesa());
+                              vboxPedido.getChildren().clear();
+                              for (Comida com: pedidoMesa.getComidas()){
+                                  CrearPanelPedido(com);
+                              }
+                              
                           }
-                          
+                          lblTotal.setText(String.valueOf(Double.parseDouble(lblTotal.getText())+c.getPrecio()));
                           System.out.println(p.getComidas());
                       }
                   }
@@ -322,9 +347,9 @@ public class TomaPedidoController implements Initializable {
         }
     }
     
-    public void CrearPanelPedido(Pedido p){
-       for(Comida c: p.getComidas()){
-           HBox hcomida = new HBox();
+    public void CrearPanelPedido(Comida c){
+      
+       HBox hcomida = new HBox();
            Label nombre = new Label(c.getNombre()+"\nCantidad: "+c.getContador());
            nombre.setPadding(new Insets(0,0,5,5));
 
@@ -334,13 +359,60 @@ public class TomaPedidoController implements Initializable {
            hcomida.getChildren().addAll(nombre,precio);
 
            vboxPedido.getChildren().add(hcomida);
-       }
+       
     }
     
     
     @FXML
     private void FinalizarOrden(ActionEvent event) {
-        IniciarMeseroController.CrearVentana("FinalizarCuenta");
+        VBox vc = new VBox();
+        HBox hb = new HBox();
+        Button bt1 = new Button("Cancel");
+        Button bt2 = new Button("Accept");
+        vc.setAlignment(Pos.CENTER);
+        hb.setAlignment(Pos.CENTER);
+        vc.setSpacing(25);
+        hb.setSpacing(20);
+        hb.getChildren().addAll(bt1,bt2);
+        vc.getChildren().addAll(new Label("Desea Finalizar la orden?"),hb);
+        Scene sc = new Scene(vc);
+        Stage st = new Stage ();
+        st.setScene(sc);
+        st.setWidth(300);
+        st.setHeight(200);
+        st.show();
+        bt1.setOnMouseClicked((MouseEvent)->{
+            st.close();
+        });
+        bt2.setOnMouseClicked((MouseEvent)->{
+            try {
+                //crear la venta añadirla al array mandarla a escribir
+                //Venta(LocalDate date, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total)
+                System.out.println(pedidoMesa.getTotal());
+                System.out.println(pedidoMesa.getMesa());
+                System.out.println(pedidoMesa.getCliente());
+                System.out.println(pedidoMesa.getMesa().getMesero());
+                Venta venta = new Venta (LocalDate.now(),pedidoMesa.getCliente(),pedidoMesa.getMesa(),pedidoMesa.getMesa().getMesero(),pedidoMesa.getTotal());
+                Restaurant.añadirVenta(venta);
+                // 10/01/2021;1;Carlos Vera;1;Javier;18.00
+                //desocupar la mesa (amarillo)
+                boolean z = false;
+                pedidoMesa.getMesa().setOcupada(z);
+                pedidoMesa.getMesa().setMesero(null);
+                IniciarMeseroController.borrarPedido(pedidoMesa);
+                try {
+                    VentaData.escribirVentas(Restaurant.getVentas(), "ventas.txt");
+                } catch (URISyntaxException ex) {
+                    ex.printStackTrace();
+                }
+                st.close();
+                App.setRoot("IniciarMesero");
+                
+                
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     @FXML
