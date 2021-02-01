@@ -55,6 +55,7 @@ public class App extends Application {
         stage.setScene(scene);
         
         //muestre la aplicacion
+        stage.setResizable(false);
         stage.show();
 
     }

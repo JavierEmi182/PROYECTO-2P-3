@@ -24,6 +24,9 @@ public class Mesero extends Usuario {
         return nombre;
         
     }
+    public void setNombre(String s){
+        nombre=s;
+    }
 
     public void tomaPedido(){
         

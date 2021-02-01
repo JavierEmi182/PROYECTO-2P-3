@@ -47,7 +47,7 @@ public class IniciarMeseroController implements Initializable {
    
 
     private Circle circulo;
-    private Mesero mesero;
+  //  static Mesero mesero;
     private Label nmesa;
     private Pane PanelMesas;
     @FXML
@@ -69,7 +69,7 @@ public class IniciarMeseroController implements Initializable {
             // nombre del mesero al lbl lblMesero.setText()
             
             if (LoginController.usuario1 instanceof Mesero){
-                mesero = (Mesero)LoginController.usuario1;
+                Mesero mesero = (Mesero)LoginController.usuario1;
                 lblMesero.setText(mesero.getNombre() );
                 
             }
@@ -81,7 +81,16 @@ public class IniciarMeseroController implements Initializable {
         }
         
     }    
-  
+   public static void setMesayMeseroOcupada(Pedido p){
+       for(Pedido ped:pedidos){
+           if (p.equals(ped)){
+               ped.setMesaOcupada();
+               ped.setMesero("null");
+           }
+       }
+   }
+   
+   
     public static void añadirPedido(Pedido p){
         pedidos.add(p);
     }
@@ -121,7 +130,8 @@ public class IniciarMeseroController implements Initializable {
         Pane pane = new Pane();
         pane.setPrefHeight(paneMesero.getHeight());
         pane.setPrefWidth(paneMesero.getWidth());
-        
+        Mesero mesero = (Mesero)LoginController.usuario1;
+                
             
             try{
                 System.out.println(Restaurant.mesas);

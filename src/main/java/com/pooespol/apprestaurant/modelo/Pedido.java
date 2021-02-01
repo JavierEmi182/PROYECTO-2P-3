@@ -6,6 +6,7 @@
 package com.pooespol.apprestaurant.modelo;
 
 import com.pooespol.apprestaurant.modelo.comida.Comida;
+import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.util.ArrayList;
 
 /**
@@ -34,6 +35,14 @@ public class Pedido {
     }
     public String getCliente(){
         return cliente;
+    }
+    public void setMesaOcupada(){
+        boolean x = false;
+        mesa.setOcupada(x);
+    }
+    public void setMesero(String nombre){
+        Mesero m =(Mesero)mesa.getMesero();
+        m.setNombre(nombre);
     }
    
     public double getTotal(){

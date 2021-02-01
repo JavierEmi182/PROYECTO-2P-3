@@ -8,6 +8,7 @@ package com.pooespol.apprestaurant;
 
 
 import com.pooespol.apprestaurant.data.ComidaData;
+import com.pooespol.apprestaurant.data.MesasData;
 import com.pooespol.apprestaurant.data.TipoComidaData;
 import com.pooespol.apprestaurant.data.VentaData;
 import com.pooespol.apprestaurant.modelo.Mesa;
@@ -16,6 +17,7 @@ import com.pooespol.apprestaurant.modelo.Restaurant;
 import com.pooespol.apprestaurant.modelo.Venta;
 import com.pooespol.apprestaurant.modelo.comida.Comida;
 import com.pooespol.apprestaurant.modelo.comida.TipoComida;
+import com.pooespol.apprestaurant.modelo.login.Mesero;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -389,26 +391,30 @@ public class TomaPedidoController implements Initializable {
             try {
                 //crear la venta añadirla al array mandarla a escribir
                 //Venta(LocalDate date, String nombreCliente, Mesa numeroMesa, Mesero mesero, double total)
-                System.out.println(pedidoMesa.getTotal());
-                System.out.println(pedidoMesa.getMesa());
-                System.out.println(pedidoMesa.getCliente());
-                System.out.println(pedidoMesa.getMesa().getMesero());
+               // System.out.println(pedidoMesa.getTotal());
+               // System.out.println(pedidoMesa.getMesa());
+               // System.out.println(pedidoMesa.getCliente());
+              //  System.out.println(pedidoMesa.getMesa().getMesero());
                 //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
                 //LocalDate localDate = LocalDate.parse(LocalDate.now().toString(), formatter);
                 Venta venta = new Venta (LocalDate.now(),pedidoMesa.getCliente(),pedidoMesa.getMesa(),pedidoMesa.getMesa().getMesero(),pedidoMesa.getTotal());
                 Restaurant.añadirVenta(venta);
                 // 10/01/2021;1;Carlos Vera;1;Javier;18.00
                 //desocupar la mesa (amarillo)
-                boolean z = false;
-                pedidoMesa.getMesa().setOcupada(z);
-                pedidoMesa.getMesa().setMesero(null);
+               
+             //   pedidoMesa.getMesa().setOcupada(z);
+                IniciarMeseroController.setMesayMeseroOcupada(pedidoMesa);
+               // pedidoMesa.getMesa().setMesero(null);
                 IniciarMeseroController.borrarPedido(pedidoMesa);
                 try {
+                   MesasData.escribirMesas(Restaurant.getMesas(), "mesas.txt");
                     VentaData.escribirVentas(Restaurant.getVentas(), "ventas.txt");
                 } catch (URISyntaxException ex) {
                     ex.printStackTrace();
                 }
+                System.out.println(Restaurant.getMesas());
                 st.close();
+                //IniciarMeseroController.meserolbl = (Mesero)LoginController.usuario1;
                 App.setRoot("IniciarMesero");
                 
                 
