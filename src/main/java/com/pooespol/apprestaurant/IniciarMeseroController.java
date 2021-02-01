@@ -85,7 +85,7 @@ public class IniciarMeseroController implements Initializable {
        for(Pedido ped:pedidos){
            if (p.equals(ped)){
                ped.setMesaOcupada();
-               ped.setMesero("null");
+              // ped.setMesero("null");
            }
        }
    }
@@ -221,7 +221,7 @@ public class IniciarMeseroController implements Initializable {
                                         m.setMesero((Mesero)LoginController.usuario1);
                                         boolean oc = true;
                                         m.setOcupada(oc);
-                                        System.out.println(Restaurant.mesas);
+                                 //       System.out.println(Restaurant.mesas);
                                         MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
                                         Pedido p = new Pedido(m,cliente);
                                         pedidos.add(p);

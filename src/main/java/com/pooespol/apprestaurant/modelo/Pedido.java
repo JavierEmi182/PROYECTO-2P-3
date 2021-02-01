@@ -40,10 +40,7 @@ public class Pedido {
         boolean x = false;
         mesa.setOcupada(x);
     }
-    public void setMesero(String nombre){
-        Mesero m =(Mesero)mesa.getMesero();
-        m.setNombre(nombre);
-    }
+   
    
     public double getTotal(){
         double monto =0;
