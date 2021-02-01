@@ -103,6 +103,7 @@ public class IniciarAdminController implements Initializable {
     
     public static boolean pausarHilo=false;
     public static boolean detenerHilo;
+    public static boolean click=true;
     @FXML
     private VBox vb1;
     
@@ -112,13 +113,19 @@ public class IniciarAdminController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         fpPantallaAdmin.getChildren().clear();
+        cargarVentas();
+        //fpPantallaAdmin.getChildren().clear();
         
-        try {
+        //fpPantallaAdmin.setPadding(new Insets(0,0,50,0));
+        
+        //BorderPane.setMargin(fpPantallaAdmin,new Insets(0,0,25,0)); //480
+        
+       /* try {
             CargarMesasSinEventos();
             //CargarMesas(fpPantallaAdmin);
         } catch (IOException ex) {
             ex.printStackTrace();
-        }
+        }*/
         
         
         Thread t = new Thread(new cargarMesasRunnable());
@@ -146,6 +153,7 @@ public class IniciarAdminController implements Initializable {
     public void MostrarGestionMenu(){
        
        fpPantallaAdmin.getChildren().clear();
+       vb1.getChildren().clear();
        pausarHilo=true;
         try{
             //System.out.println("aqui 1 ");
@@ -206,6 +214,7 @@ public class IniciarAdminController implements Initializable {
            System.out.println(Restaurant.getComidas());
            
            fpPantallaAdmin.getChildren().clear();
+           vb1.getChildren().clear();
            fpPantallaAdmin.setAlignment(Pos.CENTER);
             //container principal
             
@@ -334,6 +343,7 @@ public class IniciarAdminController implements Initializable {
         try {
             pausarHilo=true;
             fpPantallaAdmin.getChildren().clear();
+            vb1.getChildren().clear();
             //principal container
             fpPantallaAdmin.setAlignment(Pos.CENTER);
             
@@ -441,14 +451,17 @@ public class IniciarAdminController implements Initializable {
 
     @FXML
     private void ReportesVentas(MouseEvent event) {
+        cargarVentas();
+    }
+        public void cargarVentas(){
         pausarHilo=true;
         fpPantallaAdmin.getChildren().clear();
-        
+        vb1.getChildren().clear();
         
         try{
             HBox barraSuperior= new HBox();
             barraSuperior.setAlignment(Pos.CENTER);
-            BorderPane.setMargin(barraSuperior, new Insets(12,0,20,30));
+            //BorderPane.setMargin(barraSuperior, new Insets(60,0,20,30));  //12    47   
             
             Label fechai = new Label("Fecha Inicio: ");
             fechai.setPadding(new Insets(0,10,0,30));
@@ -520,12 +533,14 @@ public class IniciarAdminController implements Initializable {
     }
         EventHandler<MouseEvent> FiltrarVentas = new EventHandler<MouseEvent>(){  
         public void handle(MouseEvent event){
-            
+            vb1.getChildren().clear();
             fpPantallaAdmin.getChildren().clear();
             
             HBox barraSuperior= new HBox();
             barraSuperior.setAlignment(Pos.CENTER);
-            BorderPane.setMargin(barraSuperior, new Insets(12,0,20,30));
+            //BorderPane.setMargin(barraSuperior, new Insets(35,0,20,30));
+            //barraSuperior.setPadding(new Insets(25,0,0,0));
+            fpPantallaAdmin.setPadding(new Insets(0,0,25,0));
             
             Label fechai = new Label("Fecha Inicio: ");
             fechai.setPadding(new Insets(0,10,0,30));
@@ -614,6 +629,7 @@ public class IniciarAdminController implements Initializable {
             Stage stage = new Stage();
             
             try{ 
+            
             cuadro1.setAlignment(Pos.CENTER);
 
             
@@ -632,8 +648,13 @@ public class IniciarAdminController implements Initializable {
             stage.setScene(ventana);
             stage.setWidth(400);
             stage.setHeight(400);
-            stage.show();
             
+                        
+            
+            
+            if (click){
+                stage.show();
+            }
             Point2D posicion = new Point2D(MouseEvent.getSceneX(), MouseEvent.getSceneY());
             double posicionx = posicion.getX();
             double posiciony = posicion.getY();
@@ -645,20 +666,30 @@ public class IniciarAdminController implements Initializable {
                             throw new NumberFormatException();  
                         }
                         boolean condicionDistancia=false;
+                        boolean condicionClickMesa=false;
                 int contador=0;
                 for(Mesa m:mesas){
                     Point2D posm= new Point2D(m.getX()+50,m.getY()+92);
                     posicion.add(-50, -85);
-                    if(posm.distance(posicion)>125){
+                    
+                    if(posm.distance(posicion)<=25){
+                        condicionClickMesa=true;
+                    }
+                    
+                    else if(posm.distance(posicion)>125){
                      condicionDistancia=true;
                      contador+=1;
                      System.out.println(posm);
                      System.out.println(posm.distance(posicion));
-                    }}
+                     
+                    }
+                    
+                    }
                     System.out.println(contador);
                     System.out.println(mesas.size());
                     System.out.println(posicion);          
-                if(condicionDistancia&&(contador==mesas.size())){   
+                if(condicionDistancia&&(contador==mesas.size())){
+                    
                 Restaurant.mesas.add(new Mesa(Restaurant.mesas.size()+1,Integer.parseInt(capacidad.getText()), false, posicionx-50,posiciony-85));
                         try {
                             MesasData.escribirMesas(mesas, "mesas.txt");
@@ -676,12 +707,14 @@ public class IniciarAdminController implements Initializable {
                 st.getChildren().addAll(elipse,numeromesa);                  
                 
                 Platform.runLater( ()->{
+                    
                     fpPantallaAdmin.getChildren().clear();
                     pane.getChildren().add(st);
                     st.setLayoutX(posicionx-50);
                     st.setLayoutY(posiciony-85);
                     
                     ArrastrarMesas(st,Restaurant.mesas.size()+1);
+                    
                     fpPantallaAdmin.getChildren().add(pane);
                     
                     
@@ -692,6 +725,110 @@ public class IniciarAdminController implements Initializable {
                         lbMensaje.setText("Porfavor ingrese la mesa mas distanciada de las otras");
                         cuadro1.getChildren().add(lbMensaje);
                     }
+                //stage.close();
+                if(condicionClickMesa){
+                stage.close();
+                VBox vb=new VBox();
+                Stage stageEditar = new Stage();
+                
+                Label lbNuevaCapacidad= new Label("Ingrese nueva capacidad");
+                TextField tfEditarCapacidad= new TextField();
+                HBox hb = new HBox();
+                Button btEditar= new Button("Editar");
+                Button btEliminar = new Button("Eliminar");
+                hb.getChildren().add(btEditar);
+                hb.getChildren().add(btEliminar);
+                vb.getChildren().add(lbNuevaCapacidad);
+                vb.getChildren().add(tfEditarCapacidad);
+                vb.getChildren().add(hb);
+                vb.setAlignment(Pos.CENTER);
+                hb.setAlignment(Pos.CENTER);
+                
+                vb.setSpacing(30);
+                vb.setPadding(new Insets(7,7,7,7));
+                Scene vtEditar = new Scene(vb);
+                stageEditar.setScene(vtEditar);
+                stageEditar.setWidth(400);
+                stageEditar.setHeight(400);
+                stageEditar.show();
+                
+                btEditar.setOnMouseClicked((MouseEvent e2)->{
+                    int capacidadNueva= Integer.parseInt(tfEditarCapacidad.getText());
+                    for(Mesa m:mesas){
+                        double x = m.getX()+50;
+                        double y = m.getY()+92;
+                        Point2D ptmesa= new Point2D(x,y);
+                        if(ptmesa.distance(posicion)<25){
+                            System.out.println(m);
+                            System.out.println(mesas);
+                            m.setCapacidad(capacidadNueva);
+                            System.out.println(m);
+                            System.out.println(mesas);
+                        }
+                        stageEditar.close();
+                    }
+                    try {
+                        MesasData.escribirMesas(mesas, "mesas.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                
+                btEliminar.setOnMouseClicked((MouseEvent e3)->{
+                    boolean borrar=false;
+                    Mesa mesaBorrar=null;
+                    for(Mesa m:mesas){
+                        double x = m.getX()+50;
+                        double y = m.getY()+92;
+                        Point2D ptmesa= new Point2D(x,y);
+                        if(ptmesa.distance(posicion)<25){
+                            
+                            
+                                //Platform.runLater( ()->{
+                                    //try{
+                                    borrar=true;
+                                    mesaBorrar=m;
+                                    //MesasData.escribirMesas(mesas, "mesas.txt");
+                                    //CargarMesas();
+                                    //}catch(IOException ex){
+                                    //    System.out.println("Problemas tecnicos");
+                                    //}catch(URISyntaxException ex2){
+                                //        System.out.println("Problemas tecnicos");
+                                    //}
+                                //});
+                                
+                        }
+                        stageEditar.close();
+                    }
+                    if(borrar&&(mesaBorrar!=null)){
+                    mesas.remove(mesaBorrar);
+                    }
+                    try {
+                        MesasData.escribirMesas(mesas, "mesas.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Aqui1");
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Aqui2");
+                    }
+                    
+                    Platform.runLater( ()->{
+                    fpPantallaAdmin.getChildren().clear();
+                        try {
+                            CargarMesasSinEventos();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+});
+                    
+                });
+                
+                
+                }
+                
                     }catch (NumberFormatException ex) {
                         
                             lbMensaje1.setText("Ingrese un Valor Adecuado");
@@ -708,13 +845,15 @@ public class IniciarAdminController implements Initializable {
                 System.out.println("Error");
             }
             
-        });
+            });
     //pausarHilo=false;
     }   
     //Evento Arrastrar
     public void ArrastrarMesas(StackPane sp, int nmesa){
+        
         sp.setOnMouseDragged((MouseEvent ev) -> {
             double x = ev.getSceneX()-50;
+            click=false;
             double y = ev.getSceneY()-85;
             sp.setLayoutX(x);
             sp.setLayoutY(y);
@@ -731,13 +870,18 @@ public class IniciarAdminController implements Initializable {
                     }
             }
             }
+           click=true;
+            
         });
+        //click=true;
     }
     //public Pane CargarMesas(Pane fp){
     public Pane CargarMesas(){
+        //fpPantallaAdmin.setPadding(new Insets(0,0,25,0));
         fpPantallaAdmin.getChildren().clear();
+        vb1.getChildren().clear();
         //fpPantallaAdmin.setAlignment(Pos.CENTER);
-        
+        Stage stage = new Stage();
         //fp.getChildren().clear();
         Pane pane = new Pane();
         //pane.setPrefHeight(fp.getHeight());
@@ -789,7 +933,9 @@ public class IniciarAdminController implements Initializable {
         Platform.runLater(()->{
                 fpPantallaAdmin.getChildren().clear();
             try {
+                mesas=MesasData.leerMesas("mesas.txt");
                 CargarMesasSinEventos();
+                System.out.println(mesas);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -810,6 +956,7 @@ public class IniciarAdminController implements Initializable {
     public Pane CargarMesasSinEventos() throws IOException{
         
         vb1.getChildren().clear();
+        mesas=MesasData.leerMesas("mesas.txt");
         /*fpPantallaAdmin.getChildren().clear();
         //fp.getChildren().clear();
         //fpPantallaAdmin.setAlignment(Pos.CENTER);

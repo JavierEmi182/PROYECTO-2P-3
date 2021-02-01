@@ -95,7 +95,14 @@ public class VentaData {
             for(Venta v:ventas){
                 //15/01/2021;5;Pedro Carvo;1;Javier;2.00
                 
-                String linea = v.getDate().toString()+";"+v.getNumeroCuenta()+";"+v.getNombreCliente()+";"+v.getNumeroMesa().getNumero()+";"+v.getMesero()+";"+v.getTotal();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                //LocalDate localDate = LocalDate.parse(v.getDate().toString(), formatter);
+                //String[] partes =v.getDate().toString().split("-");
+                //String date= partes[0]+"/"+partes[1]+"/"+partes[2];
+                
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/LL/yyyy");
+                
+                String linea = v.getDate().format(dtf)+";"+v.getNumeroCuenta()+";"+v.getNombreCliente()+";"+v.getNumeroMesa().getNumero()+";"+v.getMesero()+";"+v.getTotal();
                 bw.write(linea);
                 bw.newLine();
             }

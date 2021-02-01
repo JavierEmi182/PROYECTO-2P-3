@@ -1,6 +1,5 @@
-2021-01-10;6;Carlos Vera;1;Javier;18.0
-2021-01-12;7;Juan Parraga;1;Javier;12.0
-2021-01-05;8;Javier Vergara;1;Javier;15.0
-2021-01-08;9;Juan Vergara;1;Javier;5.0
-2021-01-15;10;Pedro Carvo;1;Javier;2.0
-2021-01-31;11;ff;2;Javier;5.0
+10/01/2021;1;Carlos Vera;1;Javier;18.00
+12/01/2021;2;Juan Parraga;1;Javier;12.00
+05/01/2021;3;Javier Vergara;1;Javier;15.00
+08/01/2021;4;Juan Vergara;1;Javier;5.00
+15/01/2021;5;Pedro Carvo;1;Javier;2.00

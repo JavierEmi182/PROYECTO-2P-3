@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -392,6 +393,8 @@ public class TomaPedidoController implements Initializable {
                 System.out.println(pedidoMesa.getMesa());
                 System.out.println(pedidoMesa.getCliente());
                 System.out.println(pedidoMesa.getMesa().getMesero());
+                //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+                //LocalDate localDate = LocalDate.parse(LocalDate.now().toString(), formatter);
                 Venta venta = new Venta (LocalDate.now(),pedidoMesa.getCliente(),pedidoMesa.getMesa(),pedidoMesa.getMesa().getMesero(),pedidoMesa.getTotal());
                 Restaurant.añadirVenta(venta);
                 // 10/01/2021;1;Carlos Vera;1;Javier;18.00
