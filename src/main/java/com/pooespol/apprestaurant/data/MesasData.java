@@ -73,12 +73,16 @@ public class MesasData {
             
             for(Mesa m: mesas){
                 String StringMesero ="null";
+                try{
                 if(m.getMesero()!=null){
                     StringMesero=String.valueOf(m.getMesero().getNombre());
                 }
                 String linea = String.valueOf(m.getNumero())+","+String.valueOf(m.getCapacidad())+","+StringMesero+","+String.valueOf(m.isOcupada())+","+String.valueOf(m.getX())+","+String.valueOf(m.getY());
                 bw.write(linea);
                 bw.newLine();
+                }catch(NullPointerException ex1){
+                    System.out.println("Mesa sin mesero");
+                }
             }
         }
     }
