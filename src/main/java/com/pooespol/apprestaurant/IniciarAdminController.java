@@ -104,10 +104,10 @@ public class IniciarAdminController implements Initializable {
     public static boolean pausarHilo=false;
     public static boolean detenerHilo;
     
-    public static boolean click=true;
+    public static boolean click=false;
     public static boolean drag=false;
     public static boolean clickEliminarEditar=false;
-    
+    String opcion;
     @FXML
     private VBox vb1;
     
@@ -169,7 +169,10 @@ public class IniciarAdminController implements Initializable {
                vboxmenu.setAlignment(Pos.CENTER);
                //la imagen
                 InputStream inputImg= App.class.getResource(c.getRutaImagen()).openStream();
+               
                 ImageView imgv = new ImageView(new Image(inputImg));
+                Button bteditar = new Button("EDITAR");
+                vboxmenu.getChildren().add(bteditar);
                 vboxmenu.getChildren().add(imgv);
                 
                 
@@ -179,12 +182,11 @@ public class IniciarAdminController implements Initializable {
                 //anio
                 Label lprecio = new Label("$"+String.valueOf(c.getPrecio()));
                 vboxmenu.getChildren().add(lprecio);
-                vboxmenu.setPadding(new Insets(2,4,3,4));
+                vboxmenu.setPadding(new Insets(2,4,2,4));
                   
-                Button bteditar = new Button("EDITAR");
-                vboxmenu.getChildren().add(bteditar);
-                fpPantallaAdmin.getChildren().add(vboxmenu);
                 
+                fpPantallaAdmin.getChildren().add(vboxmenu);
+                vboxmenu.setSpacing(5);
                bteditar.setOnMouseClicked ( 
                        (MouseEvent) -> {
                    try {
@@ -214,8 +216,9 @@ public class IniciarAdminController implements Initializable {
     }
     public void PantallaEditarPlato(Comida comida) throws IOException {
         pausarHilo=true;
-           System.out.println(comida);
-           System.out.println(Restaurant.getComidas());
+     //   fpPantallaAdmin.getChildren().remove(vb1);
+         //  System.out.println(comida);
+        //   System.out.println(Restaurant.getComidas());
            
            fpPantallaAdmin.getChildren().clear();
            vb1.getChildren().clear();
@@ -225,7 +228,7 @@ public class IniciarAdminController implements Initializable {
             
             VBox vcontainer = new VBox();
             vcontainer.setAlignment(Pos.CENTER);
-            vcontainer.setSpacing(30);
+            vcontainer.setSpacing(15);
             
             InputStream inputImg= App.class.getResource(comida.getRutaImagen()).openStream();
             ImageView imgv = new ImageView(new Image(inputImg));
@@ -348,6 +351,7 @@ public class IniciarAdminController implements Initializable {
             pausarHilo=true;
             fpPantallaAdmin.getChildren().clear();
             vb1.getChildren().clear();
+            fpPantallaAdmin.getChildren().remove(vb1);
             //principal container
             fpPantallaAdmin.setAlignment(Pos.CENTER);
             
@@ -615,8 +619,8 @@ public class IniciarAdminController implements Initializable {
         ;
         };
 
-    @FXML
-    private void CreacionMesas(MouseEvent event) {
+    
+    private void CreacionMesas0(MouseEvent event) {
         vb1.getChildren().clear();
         ArrayList<String> listaAcciones= new ArrayList<String>();
         
@@ -889,7 +893,7 @@ public class IniciarAdminController implements Initializable {
                     Platform.runLater( ()->{
                     fpPantallaAdmin.getChildren().clear();
                         try {
-                            CargarMesasSinEventos();
+                            CargarMesasSinEventos(true);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -987,246 +991,17 @@ public class IniciarAdminController implements Initializable {
         });
         
         
-        
-        /*
-        pane.setOnMouseClicked((MouseEvent) -> {
-            click=false;
-            clickEliminarEditar=true;
-            drag=false;
-            
-            VBox cuadro1 =  new VBox();
-            
-            Stage stage = new Stage();
-            
-            try{ 
-            
-            cuadro1.setAlignment(Pos.CENTER);
-
-            
-            Label etiqueta3 = new Label("INGRESE CAPACIDAD");
-            TextField capacidad = new TextField("2");
-            HBox h3 = new HBox(etiqueta3,capacidad);
-            h3.setSpacing(30);
-            Label lbMensaje= new Label();
-            Label lbMensaje1= new Label();
-            
-            Button boton = new Button("CREAR");
-            cuadro1.getChildren().addAll(h3,boton);
-            cuadro1.setSpacing(30);
-            cuadro1.setPadding(new Insets(7,7,7,7));
-            Scene ventana = new Scene(cuadro1);
-            stage.setScene(ventana);
-            stage.setWidth(400);
-            stage.setHeight(400);
-            
-                        
-            
-            
-            if (click){
-                stage.show();
-            }
-            Point2D posicion = new Point2D(MouseEvent.getSceneX(), MouseEvent.getSceneY());
-            double posicionx = posicion.getX();
-            double posiciony = posicion.getY();
-            
-            boton.setOnMouseClicked((MouseEvent e)->{
-                lbMensaje1.setText("");
-                try {
-                        if(Integer.parseInt(capacidad.getText())<=0){
-                            throw new NumberFormatException();  
-                        }
-                        boolean condicionDistancia=false;
-                        boolean condicionClickMesa=false;
-                int contador=0;
-                for(Mesa m:mesas){
-                    Point2D posm= new Point2D(m.getX()+50,m.getY()+92);
-                    posicion.add(-50, -85);
-                    
-                    if(posm.distance(posicion)<=25){
-                        condicionClickMesa=true;
-                    }
-                    
-                    else if(posm.distance(posicion)>125){
-                     condicionDistancia=true;
-                     contador+=1;
-                     System.out.println(posm);
-                     System.out.println(posm.distance(posicion));
-                     
-                    }
-                    
-                    }
-                    System.out.println(contador);
-                    System.out.println(mesas.size());
-                    System.out.println(posicion);          
-                if(condicionDistancia&&(contador==mesas.size())){
-                    
-                Restaurant.mesas.add(new Mesa(Restaurant.mesas.size()+1,Integer.parseInt(capacidad.getText()), false, posicionx-50,posiciony-85));
-                        try {
-                            MesasData.escribirMesas(mesas, "mesas.txt");
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        } catch (URISyntaxException ex) {
-                            ex.printStackTrace();
-                        }
-                        
-                Ellipse elipse = new Ellipse(50,50);
-                elipse.setFill(Color.YELLOW);
-                String n = String.valueOf(Restaurant.mesas.size());
-                Label numeromesa = new Label(n);
-                StackPane st = new StackPane();
-                st.getChildren().addAll(elipse,numeromesa);                  
-                
-                Platform.runLater( ()->{
-                    
-                    fpPantallaAdmin.getChildren().clear();
-                    pane.getChildren().add(st);
-                    st.setLayoutX(posicionx-50);
-                    st.setLayoutY(posiciony-85);
-                    
-                    ArrastrarMesas(st,Restaurant.mesas.size()+1);
-                    
-                    fpPantallaAdmin.getChildren().add(pane);
-                    
-                    
-                 });
-                
-                stage.close();
-                }else{
-                        lbMensaje.setText("Porfavor ingrese la mesa mas distanciada de las otras");
-                        cuadro1.getChildren().add(lbMensaje);
-                    }
-                //stage.close();
-                if(condicionClickMesa){
-                stage.close();
-                VBox vb=new VBox();
-                Stage stageEditar = new Stage();
-                
-                Label lbNuevaCapacidad= new Label("Ingrese nueva capacidad");
-                TextField tfEditarCapacidad= new TextField();
-                HBox hb = new HBox();
-                Button btEditar= new Button("Editar");
-                Button btEliminar = new Button("Eliminar");
-                hb.getChildren().add(btEditar);
-                hb.getChildren().add(btEliminar);
-                vb.getChildren().add(lbNuevaCapacidad);
-                vb.getChildren().add(tfEditarCapacidad);
-                vb.getChildren().add(hb);
-                vb.setAlignment(Pos.CENTER);
-                hb.setAlignment(Pos.CENTER);
-                
-                vb.setSpacing(30);
-                vb.setPadding(new Insets(7,7,7,7));
-                Scene vtEditar = new Scene(vb);
-                stageEditar.setScene(vtEditar);
-                stageEditar.setWidth(400);
-                stageEditar.setHeight(400);
-                stageEditar.show();
-                
-                btEditar.setOnMouseClicked((MouseEvent e2)->{
-                    int capacidadNueva= Integer.parseInt(tfEditarCapacidad.getText());
-                    for(Mesa m:mesas){
-                        double x = m.getX()+50;
-                        double y = m.getY()+92;
-                        Point2D ptmesa= new Point2D(x,y);
-                        if(ptmesa.distance(posicion)<25){
-                            System.out.println(m);
-                            System.out.println(mesas);
-                            m.setCapacidad(capacidadNueva);
-                            System.out.println(m);
-                            System.out.println(mesas);
-                        }
-                        stageEditar.close();
-                    }
-                    try {
-                        MesasData.escribirMesas(mesas, "mesas.txt");
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    } catch (URISyntaxException ex) {
-                        ex.printStackTrace();
-                    }
-                });
-                
-                btEliminar.setOnMouseClicked((MouseEvent e3)->{
-                    boolean borrar=false;
-                    Mesa mesaBorrar=null;
-                    for(Mesa m:mesas){
-                        double x = m.getX()+50;
-                        double y = m.getY()+92;
-                        Point2D ptmesa= new Point2D(x,y);
-                        if(ptmesa.distance(posicion)<25){
-                            
-                            
-                                //Platform.runLater( ()->{
-                                    //try{
-                                    borrar=true;
-                                    mesaBorrar=m;
-                                    //MesasData.escribirMesas(mesas, "mesas.txt");
-                                    //CargarMesas();
-                                    //}catch(IOException ex){
-                                    //    System.out.println("Problemas tecnicos");
-                                    //}catch(URISyntaxException ex2){
-                                //        System.out.println("Problemas tecnicos");
-                                    //}
-                                //});
-                                
-                        }
-                        stageEditar.close();
-                    }
-                    if(borrar&&(mesaBorrar!=null)){
-                    mesas.remove(mesaBorrar);
-                    }
-                    try {
-                        MesasData.escribirMesas(mesas, "mesas.txt");
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                        System.out.println("Aqui1");
-                    } catch (URISyntaxException ex) {
-                        ex.printStackTrace();
-                        System.out.println("Aqui2");
-                    }
-                    
-                    Platform.runLater( ()->{
-                    fpPantallaAdmin.getChildren().clear();
-                        try {
-                            CargarMesasSinEventos();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-});
-                    
-                });
-                
-                
-                }
-                
-                    }catch (NumberFormatException ex) {
-                        
-                            lbMensaje1.setText("Ingrese un Valor Adecuado");
-                            cuadro1.getChildren().add(lbMensaje1);
-                        }
-                
-                 //Añadido for
-            });
-            mesas=MesasData.leerMesas("mesas.txt");
-            }catch(RuntimeException e){
-                System.out.println(e.getMessage());
-                System.out.println("Aqui esta");
-            }catch(Exception e){
-                System.out.println("Error");
-            }
-            
-            });*/
-    //pausarHilo=false;
     }   
     //Evento Arrastrar
+    
     public void ArrastrarMesas(StackPane sp, int nmesa){
         
         sp.setOnMouseDragged((MouseEvent ev) -> {
             double x = ev.getSceneX()-50;
             //click=false;
             double y = ev.getSceneY()-85;
-            sp.setLayoutX(x);
-            sp.setLayoutY(y);
+         //   sp.setLayoutX(x);
+        //    sp.setLayoutY(y);
             Mesa mEliminar = null;
             for(Mesa m : Restaurant.getMesas()){
                 if(m!=null){
@@ -1284,7 +1059,7 @@ public class IniciarAdminController implements Initializable {
                     sp.setLayoutY(y);
                     
                     sp.getChildren().addAll(elipse,lbNumMesa);
-                    ArrastrarMesas(sp, numeroMesa);
+                    //ArrastrarMesas(sp, numeroMesa);
                     pane.getChildren().add(sp);
                     
                 }
@@ -1309,7 +1084,7 @@ public class IniciarAdminController implements Initializable {
                 fpPantallaAdmin.getChildren().clear();
             try {
                 mesas=MesasData.leerMesas("mesas.txt");
-                CargarMesasSinEventos();
+                CargarMesasSinEventos(true);
                 System.out.println(mesas);
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -1328,51 +1103,11 @@ public class IniciarAdminController implements Initializable {
     }}
     
     //public Pane CargarMesasSinEventos(Pane fp){
-    public Pane CargarMesasSinEventos() throws IOException{
+    public Pane CargarMesasSinEventos(boolean t) throws IOException{
         
         vb1.getChildren().clear();
         mesas=MesasData.leerMesas("mesas.txt");
-        /*fpPantallaAdmin.getChildren().clear();
-        //fp.getChildren().clear();
-        //fpPantallaAdmin.setAlignment(Pos.CENTER);
-        Pane pane = new Pane();
-        //pane.setPrefHeight(fp.getHeight());
-        pane.setPrefHeight(fpPantallaAdmin.getHeight());
-        //pane.setPrefWidth(fp.getWidth());
-        pane.setPrefHeight(fpPantallaAdmin.getWidth());
-        
-        
-
-                try{
-                    for(Mesa m:Restaurant.mesas){
-                        StackPane sp = new StackPane();
-                        double x= m.getX();
-                        double y= m.getY();
-                        int numeroMesa= m.getNumero();
-
-                        Ellipse elipse = new Ellipse(50,50);
-                        if(m.isOcupada()==true){
-                            elipse.setFill(Color.RED);
-                        }else{
-                        elipse.setFill(Color.YELLOW);}
-
-                        Label lbNumMesa = new Label(String.valueOf(numeroMesa));
-
-                        sp.setLayoutX(x);
-                        sp.setLayoutY(y);
-
-                        sp.getChildren().addAll(elipse,lbNumMesa);                       
-                        pane.getChildren().add(sp);
-
-                    }
-                    //fp.getChildren().add(pane);
-                    fpPantallaAdmin.getChildren().add(pane);
-
-                }catch(RuntimeException e){
-                    System.out.println(e.getMessage());
-                }catch(Exception e){
-                    System.out.println("Error");
-                }*/
+       
         fpPantallaAdmin.getChildren().clear();
         Pane pane = new Pane();
         pane.setPrefHeight(fpPantallaAdmin.getHeight());
@@ -1456,9 +1191,14 @@ public class IniciarAdminController implements Initializable {
         hbNumComensales.getChildren().add(lbNumComensales);
         vb1.getChildren().add(hbNumComensales);
         vb1.getChildren().add(hbTotalFacturado);
-            
+        if (t==false){
+            vb1.getChildren().clear();
+        }
                 return pane;
         }
+    
+    
+    
     @FXML
    private void MostrarMonitoreo(MouseEvent event) throws IOException {
        pausarHilo=false;
@@ -1474,106 +1214,498 @@ public class IniciarAdminController implements Initializable {
        
        fpPantallaAdmin.getChildren().clear();
        //CargarMesasSinEventos(fpPantallaAdmin);
-       CargarMesasSinEventos();
+       CargarMesasSinEventos(true);
        
-       //VBox vb = new VBox();
-       /*HBox hbNumComensales = new HBox();
-       HBox hbTotalFacturado = new HBox();
-       
-       Label lbText1 = new Label("Número de Comensales: ");
-       Label lbNumComensales= new Label();
-       
-       Label lbText2 = new Label("Total Facturado: $");
-       Label lbTotalFacturado= new Label();
-       
-       
-       int contadorComensales=0;
-       
-       
-       int totalVentas=0;
-       
-       vb1.getChildren().add(hbNumComensales);
-       vb1.getChildren().add(hbTotalFacturado);
-       
-        try {
-            mesas= MesasData.leerMesas("mesas.txt");
-            } catch (IOException ex) {
-            System.out.println("Archivo no encontrado");
-        }
+      
         
-        //try {
-        ArrayList<Venta> ventas= VentaData.leerVentasPorFecha(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1));
-           // } catch (IOException ex) {
-           // System.out.println("Archivo no encontrado");
-        //}
+    }
+   @FXML
+   private void CreacionMesas(MouseEvent event) throws IOException{
+       
+       disenoPlano();
+   }
+   
+   public void disenoPlano() throws IOException{
+        pausarHilo=true;
+        fpPantallaAdmin.getChildren().clear();
+        vb1.getChildren().clear();
+        CargarMesasSinEventos(false);
+        ArrayList<String> listaAcciones= new ArrayList<String>();
+        listaAcciones.add("Agregar mesas");
+        listaAcciones.add("Editar o Eliminar");
+        listaAcciones.add("Mover");
+        ComboBox cbAccion = new ComboBox();
+        cbAccion.getItems().addAll(listaAcciones);
+        vb1.getChildren().add(cbAccion);
+       
         
-        for(Mesa m:mesas){
-            contadorComensales+=m.getCapacidad();           
-        }
+        Pane pane = new Pane();
+        pane.setPrefHeight(fpPantallaAdmin.getHeight());
+        pane.setPrefWidth(fpPantallaAdmin.getWidth());
         
-        for(Venta v:ventas){
-            totalVentas+=v.getTotal();
-        }
+        Pane pane1 = new Pane();
+        pane1.setPrefHeight(fpPantallaAdmin.getHeight());
+        pane1.setPrefWidth(fpPantallaAdmin.getWidth());
+                
+        Pane pane2 = new Pane();
+        pane2.setPrefHeight(fpPantallaAdmin.getHeight());
+        pane2.setPrefWidth(fpPantallaAdmin.getWidth());
         
-        lbNumComensales.setText(String.valueOf(contadorComensales));
-        lbTotalFacturado.setText(String.valueOf(totalVentas));
         
-        hbTotalFacturado.getChildren().add(lbText2);
-        hbTotalFacturado.getChildren().add(lbTotalFacturado);
-        hbNumComensales.getChildren().add(lbText1);
-        hbNumComensales.getChildren().add(lbNumComensales);
-        vb1.getChildren().add(hbNumComensales);
-        vb1.getChildren().add(hbTotalFacturado);*/
-        //menu.getChildren().add(vb);
-        //menu.setBottom(vb1);
-            
-            //pausarHilo=false;
-            /*System.out.println("Funciono");
-            
-            
-            fpPantallaAdmin.getChildren().clear();
-            Pane pane = new Pane();
-            pane.setPrefHeight(fpPantallaAdmin.getHeight());
-            pane.setPrefWidth(fpPantallaAdmin.getWidth());
-            
-            
-            try{
-            for(Mesa m:Restaurant.mesas){
-            StackPane sp = new StackPane();
-            double x= m.getX();
-            double y= m.getY();
-            int numeroMesa= m.getNumero();
-            
-            Ellipse elipse = new Ellipse(50,50);
-            if(m.isOcupada()==true){
-            elipse.setFill(Color.RED);
-            }else{
-            elipse.setFill(Color.YELLOW);}
-            
-            Label lbNumMesa = new Label(String.valueOf(numeroMesa));
-            
-            sp.setLayoutX(x);
-            sp.setLayoutY(y);
-            
-            sp.getChildren().addAll(elipse,lbNumMesa);
-            pane.getChildren().add(sp);
-            
-            }
-            fpPantallaAdmin.getChildren().add(pane);
-            
-            }catch(RuntimeException e){
-            System.out.println(e.getMessage());
-            }catch(Exception e){
-            System.out.println("Error");
-            }
-            
-            System.out.println("Termino");
-            System.out.println(Restaurant.mesas);
-            System.out.println(Restaurant.mesas.get(0).getMesero().getNombre());
-            */
-            //pausarHilo=false;
         
-    }}
+        cbAccion.setOnAction((ActionEvent)->{
+            
+           
+                opcion = String.valueOf(cbAccion.getValue());
+               System.out.println(opcion);
+                    
+                    if (opcion.equals("Agregar mesas")){
+                        pane.getChildren().clear();
+                        pane2.getChildren().clear();
+                        //opcion= null;
+                        click = true;
+                        drag = false;
+                        
+                        if (click == true){
+                            if(drag==false){
+                                
+                            
+                                fpPantallaAdmin.getChildren().clear();
+                        
+                        
+                            try {
+                        Restaurant.mesas= MesasData.leerMesas("mesas.txt");
+                        //System.out.println(Restaurant.getMesas());
+                        for (Mesa m:mesas ){
+                            StackPane sp = new StackPane();
+                            double d= m.getX();
+                            double f= m.getY();
+                            
+                            int numeroMesa= m.getNumero();
+                            
+                            Ellipse elipse = new Ellipse(50,50);
+                            if(m.isOcupada()==true){
+                                elipse.setFill(Color.RED);
+                            }else{
+                                elipse.setFill(Color.YELLOW);}
+                            
+                            Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+                            
+                            sp.setLayoutX(d);
+                            sp.setLayoutY(f);
+                            
+                            sp.getChildren().addAll(elipse,lbNumMesa);
+                            pane1.getChildren().add(sp);
+                            
+                 pane1.setOnMouseClicked((MouseEvent) -> {
+
+              
+
+                VBox cuadro1 =  new VBox();
+                cuadro1.setSpacing(10);
+
+                Stage stage = new Stage();
+
+                //try{ 
+
+                cuadro1.setAlignment(Pos.CENTER);
+
+
+                Label etiqueta3 = new Label("INGRESE CAPACIDAD");
+                TextField capacidad = new TextField("2");
+                HBox h3 = new HBox(etiqueta3,capacidad);
+                h3.setSpacing(30);
+                Label lbMensaje= new Label();
+                Label lbMensaje1= new Label();
+
+                Button boton = new Button("CREAR");
+                cuadro1.getChildren().addAll(h3,boton);
+                cuadro1.setSpacing(30);
+                cuadro1.setPadding(new Insets(7,7,7,7));
+                Scene ventana = new Scene(cuadro1);
+                stage.setScene(ventana);
+                stage.setWidth(400);
+                stage.setHeight(400);
+
+
+
+                stage.show();
+                
+                Point2D posicion = new Point2D(MouseEvent.getSceneX(), MouseEvent.getSceneY());
+                double posicionx = posicion.getX();
+                double posiciony = posicion.getY();
+
+                boton.setOnMouseClicked((MouseEvent e)->{
+                    lbMensaje1.setText("");
+                    //try {
+                            if(Integer.parseInt(capacidad.getText())<=0){
+                                throw new NumberFormatException();  
+                            }
+                            boolean condicionDistancia=false;
+
+                    int contador=0;
+                    for(Mesa me:mesas){
+                        Point2D posm= new Point2D(me.getX()+50,me.getY()+92);
+                        posicion.add(-50, -85);
+
+                        if(posm.distance(posicion)>125){
+                         condicionDistancia=true;
+                         contador+=1;
+                         System.out.println(posm);
+                         System.out.println(posm.distance(posicion));
+
+                        }
+
+                        }
+                        System.out.println(contador);
+                        System.out.println(mesas.size());
+                        System.out.println(posicion);          
+                    if(condicionDistancia&&(contador==mesas.size())){
+
+                    Restaurant.añadirMesa(new Mesa(Restaurant.mesas.size()+1,Integer.parseInt(capacidad.getText()), false, posicionx-50,posiciony-85));
+                   
+                    try {
+                                MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            } catch (URISyntaxException ex) {
+                                ex.printStackTrace();
+                            }
+
+                    Ellipse eli = new Ellipse(50,50);
+                    eli.setFill(Color.YELLOW);
+                    String n = String.valueOf(Restaurant.mesas.size());
+                    Label numeromesa = new Label(n);
+                    StackPane st = new StackPane();
+                    st.getChildren().addAll(eli,numeromesa);                  
+
+                  
+
+                        fpPantallaAdmin.getChildren().clear();
+                        pane1.getChildren().add(st);
+                        st.setLayoutX(posicionx-50);
+                        st.setLayoutY(posiciony-85);
+
+                        fpPantallaAdmin.getChildren().add(pane1);
+
+
+                     
+
+                    stage.close();
+                    }else{
+                            lbMensaje.setText("Porfavor ingrese la mesa mas distanciada de las otras");
+                            cuadro1.getChildren().add(lbMensaje);
+                        }});
+                });           
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                       
+                        }
+                        fpPantallaAdmin.getChildren().add(pane1);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                            }          
+                        }
+              
+                    
+                    }else if (opcion.equals("Editar o Eliminar")){
+                        pane.getChildren().clear();
+                        pane1.getChildren().clear();
+                        fpPantallaAdmin.getChildren().clear();
+                        
+                    try {
+                        Restaurant.mesas= MesasData.leerMesas("mesas.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                     //   System.out.println(Restaurant.getMesas());
+                        for (Mesa m:mesas ){
+                            StackPane sp = new StackPane();
+                            double x= m.getX();
+                            double y= m.getY();
+                            
+                            int numeroMesa= m.getNumero();
+                            
+                            Ellipse elipse = new Ellipse(50,50);
+                            if(m.isOcupada()==true){
+                                elipse.setFill(Color.RED);
+                            }else{
+                                elipse.setFill(Color.YELLOW);}
+                            
+                            Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+                            
+                          sp.setLayoutX(x);
+                           sp.setLayoutY(y);
+                            
+                            sp.getChildren().addAll(elipse,lbNumMesa);
+                            pane2.getChildren().add(sp);
+                            
+                            
+                 sp.setOnMouseClicked((MouseEvent) -> {
+           
+            
+            
+            Point2D posicion = new Point2D(MouseEvent.getSceneX(), MouseEvent.getSceneY());
+            double posicionx = posicion.getX();
+            double posiciony = posicion.getY();
+            
+            boolean condicionDistancia=false;
+            boolean condicionClickMesa=false;
+                int contador=0;
+               
+                    if(m!=null){
+                    Point2D posm= new Point2D(m.getX()+50,m.getY()+92);
+                    posicion.add(-50, -85);
+                    
+                    if(posm.distance(posicion)<=25){
+                        condicionClickMesa=true;
+                    }
+                    
+                    else if(posm.distance(posicion)>125){
+                     condicionDistancia=true;
+                     contador+=1;
+                     System.out.println(posm);
+                     System.out.println(posm.distance(posicion));
+                     
+                    
+                }
+                    }
+                    System.out.println(contador);
+                    System.out.println(mesas.size());
+                    System.out.println(posicion);          
+                
+                //stage.close();
+                if(condicionClickMesa){
+                
+                VBox vb=new VBox();
+                Stage stageEditar = new Stage();
+                
+                Label lbNuevaCapacidad= new Label("Ingrese nueva capacidad");
+                TextField tfEditarCapacidad= new TextField();
+                HBox hb = new HBox();
+                Button btEditar= new Button("Editar");
+                Button btEliminar = new Button("Eliminar");
+                hb.getChildren().add(btEditar);
+                hb.getChildren().add(btEliminar);
+                vb.getChildren().add(lbNuevaCapacidad);
+                vb.getChildren().add(tfEditarCapacidad);
+                vb.getChildren().add(hb);
+                vb.setAlignment(Pos.CENTER);
+                hb.setAlignment(Pos.CENTER);
+                
+                vb.setSpacing(30);
+                vb.setPadding(new Insets(7,7,7,7));
+                Scene vtEditar = new Scene(vb);
+                stageEditar.setScene(vtEditar);
+                stageEditar.setWidth(400);
+                stageEditar.setHeight(400);
+                stageEditar.show();
+                
+                btEditar.setOnMouseClicked((MouseEvent e2)->{
+                    try{
+                    int capacidadNueva= Integer.parseInt(tfEditarCapacidad.getText());
+                    
+                        double xb = m.getX()+50;
+                        double yb = m.getY()+92;
+                        Point2D ptmesa= new Point2D(xb,yb);
+                        if(ptmesa.distance(posicion)<25){
+                            System.out.println(m);
+                            System.out.println(mesas);
+                            
+                            m.setCapacidad(capacidadNueva);
+                            System.out.println(m);
+                            System.out.println(mesas);
+                        }
+                        stageEditar.close();
+                    }catch(InputMismatchException ec){
+                        System.out.println("No se puede");
+                    }catch(NumberFormatException ex){
+                        System.out.println("No se puede");
+                    }
+                    
+                    try {
+                        MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                    }
+                });
+                
+                btEliminar.setOnMouseClicked((MouseEvent e3)->{
+                    boolean borrar=false;
+                    Mesa mesaBorrar=null;
+                    
+                        if(m!=null){
+                        double xu = m.getX()+50;
+                        double yu = m.getY()+92;
+                        Point2D ptmesa= new Point2D(xu,yu);
+                        if(ptmesa.distance(posicion)<25){
+                            mesaBorrar =m;
+                            borrar = true;
+                            /*
+                               Platform.runLater( ()->{
+                                    try{
+                                    borrar=true;
+                                    mesaBorrar=m;
+                                    MesasData.escribirMesas(mesas, "mesas.txt");
+                                    CargarMesas();
+                                    }catch(IOException ex){
+                                        System.out.println("Problemas tecnicos");
+                                    }catch(URISyntaxException ex2){
+                                     System.out.println("Problemas tecnicos");
+                                   }
+                                });
+                                */
+                        }
+                        stageEditar.close();
+                    }
+                    if(borrar && (mesaBorrar!=null)){
+                    Restaurant.borrarMesa(mesaBorrar);
+                    
+                    try {
+                        MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Aqui1");
+                    } catch (URISyntaxException ex) {
+                        ex.printStackTrace();
+                        System.out.println("Aqui2");
+                    }
+                    
+                    
+                    
+                        fpPantallaAdmin.getChildren().clear();
+                        
+                        try {
+                            // pane2.getChildren().clear();
+                            disenoPlano();
+                            
+                            //vb1.getChildren().add(cbAccion);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                        
+                    
+                    }
+                });
+                
+                
+                }
+                
+                    
+        });
+                        
+                        
+                        
+                                   
+                            
+                        
+                        }fpPantallaAdmin.getChildren().add(pane2);
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        // System.out.println(opcion);   
+                    }else if (opcion.equals("Mover")){
+                        pane1.getChildren().clear();
+                        pane2.getChildren().clear();
+                        opcion = null;
+                        drag = true;
+                        click = false;
+                        
+                   if (drag==true){
+                       if (click==false){
+                           
+                       
+                          fpPantallaAdmin.getChildren().clear();
+                    try {
+                        Restaurant.mesas= MesasData.leerMesas("mesas.txt");
+                     //   System.out.println(Restaurant.getMesas());
+                        for (Mesa m:mesas ){
+                            StackPane sp = new StackPane();
+                            double x= m.getX();
+                            double y= m.getY();
+                            
+                            int numeroMesa= m.getNumero();
+                            
+                            Ellipse elipse = new Ellipse(50,50);
+                            if(m.isOcupada()==true){
+                                elipse.setFill(Color.RED);
+                            }else{
+                                elipse.setFill(Color.YELLOW);}
+                            
+                            Label lbNumMesa = new Label(String.valueOf(numeroMesa));
+                            
+                          sp.setLayoutX(x);
+                           sp.setLayoutY(y);
+                            
+                            sp.getChildren().addAll(elipse,lbNumMesa);
+                            pane.getChildren().add(sp);
+                            
+                            
+                            
+                            sp.setOnMouseDragged((MouseEvent ev) -> {
+                                double xx = ev.getSceneX()-50;
+                                //click=false;
+                                double yy = ev.getSceneY()-85;
+                                sp.setLayoutX(xx);
+                                sp.setLayoutY(yy);
+                                m.setX(xx);
+                                m.setY(yy);
+                                // System.out.println(Restaurant.getMesas());
+                                //mesas.remove(mEliminar);
+                                try {
+                                    MesasData.escribirMesas(Restaurant.getMesas(), "mesas.txt");
+                                    //   CargarMesasSinEventos();
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }catch (URISyntaxException ex) {
+                                    ex.printStackTrace();
+                                }
+                                //click=true;
+                                
+                            });
+                        }
+                        fpPantallaAdmin.getChildren().add(pane);
+                        //opcion = null;
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                       drag = false;
+                   }
+                   }
+               opcion = null;
+               
+                }
+                
+            
+            
+        //cbAccion.getItems().clear();
+         //   cbAccion.getItems().addAll(listaAcciones);
+        
+        });
+        
+   }
+}
 
 
             

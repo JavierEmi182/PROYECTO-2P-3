@@ -1,25 +1,27 @@
 --class-path
-'C:/Users/Javier/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13.jar'
+'C:/Users/user/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13.jar'
 --module-path
-'C:/Users/Javier/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13-win.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-win.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-win.jar;C:/Users/Javier/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-win.jar'
+'C:/Users/user/.m2/repository/org/openjfx/javafx-graphics/13/javafx-graphics-13-win.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-fxml/13/javafx-fxml-13-win.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-controls/13/javafx-controls-13-win.jar;C:/Users/user/.m2/repository/org/openjfx/javafx-base/13/javafx-base-13-win.jar'
 --patch-module
-com.pooespol.apprestaurant='C:/Users/Javier/Documents/NetBeansProjects/Proyecto-2P-3/src/main/java'
+com.pooespol.apprestaurant='C:/Users/user/Documents/NetBeansProjects/PROYECTO-2P-3/src/main/java'
 -encoding
 'UTF-8'
 -protected
 --module-source-path
-'C:/Users/Javier/Documents/NetBeansProjects/Proyecto-2P-3/target/site/apidocs/src'
+'C:/Users/user/Documents/NetBeansProjects/PROYECTO-2P-3/target/site/apidocs/src'
 -author
 -bottom
 'Copyright &#169; 2021. All rights reserved.'
 -charset
 'UTF-8'
 -d
-'C:/Users/Javier/Documents/NetBeansProjects/Proyecto-2P-3/target/site/apidocs'
+'C:/Users/user/Documents/NetBeansProjects/PROYECTO-2P-3/target/site/apidocs'
 -docencoding
 'UTF-8'
 -doctitle
 'Proyecto-2P-3 1.0 API'
+-linkoffline
+'https://docs.oracle.com/en/java/javase/11/docs/api' 'C:/Users/user/Documents/NetBeansProjects/PROYECTO-2P-3/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle

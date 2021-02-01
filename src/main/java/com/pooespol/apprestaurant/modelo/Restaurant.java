@@ -61,7 +61,9 @@ public class Restaurant {
                     }
         return localDate ;
     }
-    
+    public static void añadirMesa(Mesa m){
+        mesas.add(m);
+    }
     public static Mesa buscarMesa(int numeroMesa){
         for(Mesa m:mesas){
             if(m.getNumero()==numeroMesa){
@@ -91,8 +93,8 @@ public class Restaurant {
     public static void añadirUsuario (Usuario c){
         usuarios.add(c);
     }
-    public static void añadirMesa (Mesa c){
-        mesas.add(c);
+    public static void borrarMesa(Mesa m){
+        mesas.remove(m);
     }
     public static void añadirComidaInventario(Comida c){
         comidasInventario.add(c);

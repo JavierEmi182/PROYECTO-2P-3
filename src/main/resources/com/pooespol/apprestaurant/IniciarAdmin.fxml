@@ -18,7 +18,7 @@
             <Button fx:id="btnSalir" mnemonicParsing="false" onMouseClicked="#regresarPrincipalAdmin" text="Salir" />
          </children>
          <padding>
-            <Insets bottom="50.0" />
+            <Insets bottom="60.0" />
          </padding>
          <BorderPane.margin>
             <Insets />
