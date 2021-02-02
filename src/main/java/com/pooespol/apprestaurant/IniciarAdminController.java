@@ -699,11 +699,22 @@ public class IniciarAdminController implements Initializable {
             boton.setOnMouseClicked((MouseEvent e)->{
                 lbMensaje1.setText("");
                 //try {
-                        if(Integer.parseInt(capacidad.getText())<=0){
-                            throw new NumberFormatException();  
+                     /*   if(Integer.parseInt(capacidad.getText())<=0){
+                            //throw new NumberFormatException();  
+                            Label lbmensaje = new Label("Porfavor ingrese un formato valido.");
+                            cuadro1.getChildren().add(lbmensaje);
                         }
-                        boolean condicionDistancia=false;
+                        boolean condicionDistancia=false;*/
                         
+                boolean condicionDistancia=false;
+                    
+                            if(Integer.parseInt(capacidad.getText())<=0){
+                                throw new NumberFormatException();  
+                                //Label lbmensaje = new Label("Porfavor ingrese un formato valido.");
+                                //cuadro1.getChildren().add(lbmensaje);
+                            }
+                            
+                    
                 int contador=0;
                 for(Mesa m:mesas){
                     Point2D posm= new Point2D(m.getX()+50,m.getY()+92);
@@ -1251,7 +1262,40 @@ public class IniciarAdminController implements Initializable {
         pane2.setPrefHeight(fpPantallaAdmin.getHeight());
         pane2.setPrefWidth(fpPantallaAdmin.getWidth());
         
+        VBox cuadro1 = new VBox();
         
+        Label lbmensaje = new Label();
+        cuadro1.getChildren().add(lbmensaje);
+        
+        cuadro1.setSpacing(10);
+
+                Stage stage = new Stage();
+
+                //try{ 
+
+                cuadro1.setAlignment(Pos.CENTER);
+
+
+                Label etiqueta3 = new Label("INGRESE CAPACIDAD");
+                TextField capacidad = new TextField("2");
+                HBox h3 = new HBox(etiqueta3,capacidad);
+                h3.setSpacing(30);
+                
+                Label lbMensaje1= new Label();
+
+                Button boton = new Button("CREAR");
+                cuadro1.getChildren().addAll(h3,boton);
+                cuadro1.setSpacing(30);
+                cuadro1.setPadding(new Insets(7,7,7,7));
+                
+                Scene ventana = new Scene(cuadro1);
+                
+                stage.setScene(ventana);
+                stage.setWidth(400);
+                stage.setHeight(400);
+                
+                Label lbMensaje= new Label();
+                cuadro1.getChildren().add(lbMensaje);
         
         cbAccion.setOnAction((ActionEvent)->{
             
@@ -1259,7 +1303,8 @@ public class IniciarAdminController implements Initializable {
                 opcion = String.valueOf(cbAccion.getValue());
                System.out.println(opcion);
                     
-                    if (opcion.equals("Agregar mesas")){
+                    if (opcion.equals("Agregar mesas")){ 
+                        //try{//aqui
                         pane.getChildren().clear();
                         pane2.getChildren().clear();
                         //opcion= null;
@@ -1297,11 +1342,12 @@ public class IniciarAdminController implements Initializable {
                             sp.getChildren().addAll(elipse,lbNumMesa);
                             pane1.getChildren().add(sp);
                             
+                            //VBox cuadro1 =  new VBox();
                  pane1.setOnMouseClicked((MouseEvent) -> {
 
               
 
-                VBox cuadro1 =  new VBox();
+                /*
                 cuadro1.setSpacing(10);
 
                 Stage stage = new Stage();
@@ -1315,18 +1361,22 @@ public class IniciarAdminController implements Initializable {
                 TextField capacidad = new TextField("2");
                 HBox h3 = new HBox(etiqueta3,capacidad);
                 h3.setSpacing(30);
-                Label lbMensaje= new Label();
+                
                 Label lbMensaje1= new Label();
 
                 Button boton = new Button("CREAR");
                 cuadro1.getChildren().addAll(h3,boton);
                 cuadro1.setSpacing(30);
                 cuadro1.setPadding(new Insets(7,7,7,7));
+                
                 Scene ventana = new Scene(cuadro1);
+                
                 stage.setScene(ventana);
                 stage.setWidth(400);
                 stage.setHeight(400);
-
+                
+                Label lbMensaje= new Label();
+                cuadro1.getChildren().add(lbMensaje);*/
 
 
                 stage.show();
@@ -1336,12 +1386,18 @@ public class IniciarAdminController implements Initializable {
                 double posiciony = posicion.getY();
 
                 boton.setOnMouseClicked((MouseEvent e)->{
+                    try{
                     lbMensaje1.setText("");
-                    //try {
+                    lbmensaje.setText("");
+                    boolean condicionDistancia=false;
+                    
                             if(Integer.parseInt(capacidad.getText())<=0){
                                 throw new NumberFormatException();  
+                                //Label lbmensaje = new Label("Porfavor ingrese un formato valido.");
+                                //cuadro1.getChildren().add(lbmensaje);
                             }
-                            boolean condicionDistancia=false;
+                            
+                
 
                     int contador=0;
                     for(Mesa me:mesas){
@@ -1361,9 +1417,18 @@ public class IniciarAdminController implements Initializable {
                         System.out.println(mesas.size());
                         System.out.println(posicion);          
                     if(condicionDistancia&&(contador==mesas.size())){
-
+                        
+                        
+                    
+                            
+                
+                    
                     Restaurant.añadirMesa(new Mesa(Restaurant.mesas.size()+1,Integer.parseInt(capacidad.getText()), false, posicionx-50,posiciony-85));
-                   
+                        
+                        if(Integer.parseInt(capacidad.getText())<=0){
+                            throw new NumberFormatException();
+                        }
+                    
                     try {
                                 MesasData.escribirMesas(Restaurant.mesas, "mesas.txt");
                             } catch (IOException ex) {
@@ -1390,12 +1455,22 @@ public class IniciarAdminController implements Initializable {
 
 
                      
-
+                           //cuadro1.getChildren().remove(lbMensaje);
                     stage.close();
+                    //ventana.setRoot(null);
                     }else{
+                            
                             lbMensaje.setText("Porfavor ingrese la mesa mas distanciada de las otras");
-                            cuadro1.getChildren().add(lbMensaje);
-                        }});
+                            //cuadro1.getChildren().clear();
+                            
+                            }
+                    }catch(NumberFormatException ex2){
+                    lbmensaje.setText("Porfavor ingrese un formato valido.");
+                    //cuadro1.getChildren().add(lbmensaje);
+                }catch(InputMismatchException ex3){
+                    lbmensaje.setText("Porfavor ingrese un formato valido.");
+                }
+                });  //aqui termina mouse event
                 });           
                             
                             
@@ -1419,6 +1494,7 @@ public class IniciarAdminController implements Initializable {
                         pane.getChildren().clear();
                         pane1.getChildren().clear();
                         fpPantallaAdmin.getChildren().clear();
+                        Label lbprecaucion = new Label();
                         
                     try {
                         Restaurant.mesas= MesasData.leerMesas("mesas.txt");
@@ -1485,6 +1561,7 @@ public class IniciarAdminController implements Initializable {
                 if(condicionClickMesa){
                 
                 VBox vb=new VBox();
+                
                 Stage stageEditar = new Stage();
                 
                 Label lbNuevaCapacidad= new Label("Ingrese nueva capacidad");
@@ -1497,6 +1574,8 @@ public class IniciarAdminController implements Initializable {
                 vb.getChildren().add(lbNuevaCapacidad);
                 vb.getChildren().add(tfEditarCapacidad);
                 vb.getChildren().add(hb);
+                lbprecaucion.setText("");
+                vb.getChildren().add(lbprecaucion);
                 vb.setAlignment(Pos.CENTER);
                 hb.setAlignment(Pos.CENTER);
                 
@@ -1519,15 +1598,22 @@ public class IniciarAdminController implements Initializable {
                             System.out.println(m);
                             System.out.println(mesas);
                             
+                            if(capacidadNueva<=0){
+                                throw new NumberFormatException();
+                            }
+                            
                             m.setCapacidad(capacidadNueva);
+                            
                             System.out.println(m);
                             System.out.println(mesas);
                         }
                         stageEditar.close();
                     }catch(InputMismatchException ec){
                         System.out.println("No se puede");
+                        lbprecaucion.setText("Ingrese un formato valido");
                     }catch(NumberFormatException ex){
-                        System.out.println("No se puede");
+                        //System.out.println("No se puede");
+                        lbprecaucion.setText("Ingrese un formato valido");
                     }
                     
                     try {
