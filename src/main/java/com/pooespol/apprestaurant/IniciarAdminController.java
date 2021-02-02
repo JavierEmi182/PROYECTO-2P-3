@@ -291,6 +291,9 @@ public class IniciarAdminController implements Initializable {
                if(cbtTipo.getValue()!=null){
                    txtTipo.setText(cbtTipo.getValue().toString());
                    tipo =cbtTipo.getValue().toString();
+               } else if(precio<0){
+                  throw new NumberFormatException();
+                   
                }else{
                    tipo= txtTipo.getText();
                }
